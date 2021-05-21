@@ -1,5 +1,6 @@
-# Campion
+# Tacklebox
 
-Public-facing website of Campion, an edge-based circuit breaking middleware
+Public-facing website of Tacklebox, an open-source serverless framework that offers webhooks as a service.
 
-https://campion-breaker.github.io
+https://tacklebox-webhooks.github.io
+
