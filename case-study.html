@@ -831,18 +831,10 @@
           <h2 id="Challenges">6.4.2 How we handled message fanout</h2>
 
           <p>
-            The message fan-out process, in particular, is expensive. In our
-            current design, when an event comes in a lambda function gets fired
-            up and creates a list of messages that need to be sent to each
-            consumer listening for that event type. The lambda not only has to
-            send the messages, but also has to wait for a response from every
-            one before it can finish its work by writing the results to the
-            message history. Because webhooks are typically application or
-            user-specific, the number of consumers needing to be notified is
-            typically low, however there are use cases where the number of
-            consumers is high. As the number of consumers increases, so do the
-            number of HTTP requests and the probability that one of the
-            consumer’s endpoints will fail.
+            With this implementation, the message fanout process in particular
+            is expensive. When an event comes in a lambda function gets fired up
+            and creates a list of messages that need to be sent to each consumer
+            listening for that event type.
           </p>
 
           <div class="img-wrapper">
@@ -850,16 +842,28 @@
           </div>
 
           <p>
-            And when we think about consumer endpoints that fail, as in they
-            timeout or are unreachable, the burden still lies with the same
-            lambda. Retrying failed messages is a key part of a webhook service,
-            so in addition to sending its original set of messages, the lambda
-            would also need to repeatedly try to resend failed messages before
-            it can write to the db and finish. Using exponential backoff, which
-            is a common algorithm used in retry logic that increases the amount
-            of time between successive retries, means that with every failed
-            attempt it will have to run longer until it reaches the maximum
-            number of retries or hits lambda’s 15-minute execution time cap.
+            The lambda not only has to send the messages, but also has to wait
+            for a response from every one before it can finish its work by
+            writing the results to the message history. Because webhooks are
+            typically application or user-specific, the number of consumers
+            needing to be notified when a given event occurs is typically low,
+            however even with tens of consumers the chance that one of the
+            consumer’s endpoints will fail over time increases.
+            <!-- Insert citation for DDIA pg. 278 here -->
+          </p>
+
+          <p>
+            When a message fails to be delivered successfully, the burden of
+            resending still lies with the same lambda. It can't save the results
+            of any of the messages it delivered until all of the retries are
+            also done. We chose to implement our retry logic with an exponential
+            backoff, which is a common algorithm that increases the amount of
+            time between successive retries. This means that not only might a
+            lambda have to wait for multiple retries to finish, the amount of
+            time between retries is going to increase every time. We originally
+            chose to use lambdas to reduce unusued uptime, and having a lambda
+            function running for minutes at a time just waiting to run the next
+            retry was contrary to that decision.
           </p>
 
           <div class="img-wrapper">
@@ -867,25 +871,63 @@
           </div>
 
           <p>
-            We could have added a second type of lambda, which we’ll call a
-            messenger lambda, and separated the message creating and message
-            sending between them. With this approach, when an event comes in,
-            our intake lambda gathers the list of consumers that need messages
-            and calls a separate messenger lambda to actually send each message.
-            This way, our messenger lambdas can all run at the same time and
-            don’t have to wait for each other to finish. Retries would be
-            difficult to implement, though, because where do you put messages
-            that need to be retried? We could potentially put them in the
-            database, but that’s a lot of writing, reading, and deleting for
-            data that is really only meant to be temporary. We could also have
-            the intake lambda spin up new messenger lambdas for each retry, but
-            we’re basically back at our previous implementation and that intake
-            lambda is still doing a lot of work. Ideally we’d have another
-            service to put those messages into, something truly meant for
-            storing temporary data, like a queue. And a queue would have the
-            added benefit of centralizing our entire outgoing message list,
-            which simplifies debugging, and ensures we pull the messages off to
-            send to consumers in-order.
+            A quick note about endpoint failure and what that means in the
+            context of Tacklebox and webhooks in general. An HTTP response to a
+            webhook request typically falls into two general categories - you
+            either get a response from the consumer or you don't (i.e. a
+            timeout). At minimum, we need to know that a consumer's endpoint
+            received the message, so we consider timeouts within a reasonable
+            amount of time to be failures. When you do receive an explicit
+            response from a consumer, though, a few questions arise:
+          </p>
+
+          <ul>
+            <li>
+              <p>
+                Do we consider a response status from 300-399 a failure? If not,
+                do we follow the redirects until we get to a 200-299 response?
+                How many redirects do we follow if there are multiple?
+              </p>
+            </li>
+            <li>
+              <p>Do we consider a response status from 400-499 a failure?</p>
+            </li>
+            <li>
+              <p>
+                Do we consider a response status from 500-599 a failure? If not,
+                how do we know if we should send another message? The consumer's
+                endpoint could have failed before or after it actually processed
+                the message, and we'd have no way to tell.
+              </p>
+            </li>
+          </ul>
+
+          <p>
+            From a webhook provider's perspective, the question for any given
+            status code is not only does this indicate the consumer received the
+            message, but also does it make sense to try sending the message
+            again. Repeatedly sending messages to endpoints that are
+            misconfigured by the consumer, for example, may not make sense. If
+            you consider a certain status code a failure, you are indirectly
+            saying that you will retry when you encounter it. Existing webhook
+            implementations approach this in a wide variety of ways, from
+            strictly requiring a 200 response to considering anything other than
+            a 5xx response a success. We chose the latter approach as we thought
+            it was reasonable to view the core responsibility of a webhook
+            service as getting messages to their specified endpoints, not
+            ensuring those endpoints correctly process the message.
+          </p>
+
+          <p>
+            In order to reduce the number of messages our lambdas had to send,
+            we could have done a couple of things. We could have added a second
+            type of lambda, which we’ll call a messenger lambda, which would
+            have allowed us to separate the message creating and message sending
+            processes. With this approach, when an event comes in, our intake
+            lambda gathers the list of consumers that need messages and calls a
+            separate messenger lambda to send each message. This way, our
+            messenger lambdas can all run at the same time and don’t have to
+            wait for each other to finish.
           </p>
 
           <div class="img-wrapper">
@@ -893,21 +935,36 @@
           </div>
 
           <p>
+            Retries would be difficult to implement with this approach though -
+            where would we put messages that need to be retried? We could keep
+            the intake lambda running until all of the messenger lambdas finish,
+            so that if one fails it could spin up a new messenger lambda for the
+            retry, but then the intake lambda would again be waiting for all
+            retries to finish which we don't want. We could have also
+            potentially put outgoing messages in the database, but that’s a lot
+            of writing, reading, and deleting for temporary data.
+          </p>
+
+          <p>
+            We ideally wanted somewhere we could buffer our outgoing messages,
+            and have a mechanism to quickly pull them off in-order. That’s
+            exactly what a queue does, and a queue would have the added benefit
+            of centralizing our entire outgoing message list into one place,
+            which simplifies debugging.
+          </p>
+
+          <p>
             Amazon’s Simple Queue Service, or SQS for short, does exactly this.
-            SQS gives us a reliable place to dump both our original and retried
-            messages into, which is great because our intake lambdas can now
-            just focus on creating messages for an event. SQS doesn’t send
-            messages to consumers itself, so we keep our messenger lambdas
-            in-place and continue to use them to send messages. The one
-            additional thing they now do is check SQS for new messages, and pull
-            them off as soon as they appear. In order to ensure that our
-            messenger lambdas continue to only do one thing, we set them up to
-            put failed messages back into the queue instead of trying to resend
-            them themselves. Some other messenger lambda invocation will pick
-            that failed message up at a later time and send it. By adding SQS
-            we’ve increased the complexity of our implementation, but each piece
-            does fewer things and we’ve sufficiently separated our concerns
-            among services suited for their jobs.
+            SQS gives us a reliable place to store both our initial and retry
+            messages, which is great because our intake lambdas can now just
+            focus on creating messages for an event. SQS doesn’t send messages
+            to consumers itself, so we keep our messenger lambdas in-place and
+            continue to use them to send messages. The messenger lambdas check
+            SQS for new messages, and pull them off as soon as they appear. To
+            prevent our messenger lambdas from waiting on retries, we have them
+            immediately put failed messages back into the queue. Those failed
+            messages are then picked off of the queue by a different lambda
+            invocation at a later time.
           </p>
 
           <div class="img-wrapper">
@@ -915,20 +972,29 @@
           </div>
 
           <p>
-            This is a perfectly reasonable implementation, however we wondered
-            if we could eliminate, ironically enough for a webhook service, the
-            polling in our architecture. Our messenger lambdas uses polling to
-            constantly check SQS to see if new messages have been added. As
-            we’ve mentioned, webhook events can be intermittent, and all of
-            those polling requests in between events can add up. We could
-            potentially make the polling process more efficient by setting the
-            messenger lambdas to long-poll and increase the time in between when
-            they check for updates, but the tradeoff there is that consumers
-            might have to wait longer to receive their messages. With our use
-            case that isn’t the worst tradeoff to make, because webhook messages
-            typically aren’t needed within sub-second time frames. Still, if we
+            By adding SQS we increased the complexity of our implementation, but
+            each piece does fewer things and we sufficiently separated our
+            concerns among services suited for their individual jobs.
+          </p>
+
+          <p>
+            We thought that this was a perfectly reasonable implementation,
+            however we wondered if we could eliminate, ironically enough for a
+            webhook service, the polling in our architecture. Our messenger
+            lambdas use polling to constantly check SQS to see if new messages
+            have been added. As we’ve mentioned, webhook events can be
+            intermittent, and all of those polling requests in between events
+            can add up.
+          </p>
+          <p>
+            Under the hood it gets even more interesting, because when using
+            lambdas with SQS, Amazon requires that a minimum of 5 parallel
+            lambdas poll SQS, so the number of requests is higher still. When
+            your queue is constantly full, all of this polling is a benefit
+            because it allows you to dequeue more quickly, but with our use
+            case, there would likely be periods where this is wasteful. If we
             could eliminate that polling entirely, we could potentially make our
-            implementation even more efficient and reduce latency in the message
+            implementation more efficient and reduce latency in the message
             sending process.
           </p>
 
@@ -937,48 +1003,71 @@
           </div>
 
           <p>
-            It’s important to note that SNS itself stores subscription data
-            (i.e. which consumers need to be notified of a given event), so
-            that’s one more job SNS handles for us that our lambdas were
-            previously handling. With SNS, there is no longer a need to hit our
-            main database to pull consumer subscriptions when an event comes in
-            - SNS already knows who needs to be notified. Switching from SQS to
-            SNS simplifies our architecture and removes polling at a key step,
-            however there are some tradeoffs with this approach: SNS has a max
-            retry delay of 1 hr, compared to SQS’ 12 hrs, so it’s got less
-            flexibility to implement large retry windows Because SNS itself
-            keeps track of subscriptions, we now have to ensure that the
-            subscription data in our main database matches what is in SNS, and
-            when changes to subscriptions are made, we have to make the change
-            in two places. Likewise, things like adding new event types also
-            required double maintenance. Both SQS and SNS approaches meet our
-            project goals and both have their benefits, but in the end we chose
-            SNS because it better fits our use case, and it included features
-            like rate limiting and customizable per-consumer retry logic out of
-            the box.
+            We were able to remove polling from the message sending process by
+            using Amazon’s Simple Notification Service, or SNS. SNS is a
+            messaging service that, when given an event, sends a message to
+            every subscriber to that event. It also automatically handles
+            retries. In other words, it does the same job that the combination
+            of SQS and messenger lambda previously did for us. Rather than use
+            polling, SNS uses a pub/sub model where new messages are published
+            to topics, and anyone who is subscribed to that topic automatically
+            receives a message. In webhook parlance, every consumer that’s
+            listening for that event type receives a message.
           </p>
 
           <div class="img-wrapper">
             <img src="images/diagrams/sns.png" />
           </div>
 
+          <p>
+            It’s important to note that SNS itself stores subscription data, so
+            that’s one more job SNS handles for us that our lambdas were
+            previously handling. With SNS, there is no longer a need to pull
+            consumer subscriptions when an event comes in - SNS already knows
+            who needs to be notified.
+          </p>
+
+          <p>
+            Switching from SQS to SNS simplifies our architecture and increases
+            our efficiency, however there are some tradeoffs with this approach:
+          </p>
+
+          <ul>
+            <li>
+              <p>
+                SNS has a max retry delay of 1 hr, compared to SQS’ 12 hrs, so
+                it’s got less flexibility to implement large retry windows
+              </p>
+            </li>
+            <li>
+              <p>
+                Even though SNS keeps track of subscriptions for us, we still
+                need subscription data in our main database for querying
+                purposes. This means that we now have to keep track of
+                subscriptions in two places and make sure they remain identical.
+                For example, if a consumer chooses to change which event types
+                they are subscribed to, or if a provider decides to add a new
+                event type to their service, we have to make those changes in
+                both SNS and the main database.
+              </p>
+            </li>
+          </ul>
+
+          <p>
+            Both SQS and SNS approaches meet our project goals and both have
+            their benefits. In the end we chose SNS because it better fits our
+            use case, it removes polling from the message sending process, and
+            it includes features like rate limiting and customizable retry logic
+            out of the box.
+          </p>
+
           <h2 id="Challenges">6.4.3 How we persisted message history</h2>
 
           <p>
-            You may have noticed that in the past SNS slide, there wasn’t a line
-            between SNS and our database (aka message history). That’s because
             SNS doesn’t have a built-in way to write message data to our
             database. And in a way, this makes sense - its main job is to fan
-            out messages to consumers at every scale, and as far as it’s
-            concerned, once it delivers a message or makes every effort to, its
-            job is done. So our entire event/message lifecycle currently ends
-            the moment SNS sends a message to a consumer and receives a
-            response. The only thing that has been saved to our database at that
-            point is the original event itself, but no message data has been
-            saved. That means no record of who was sent a message and when, what
-            the payload was, what response SNS received back, etc. So we needed
-            to find a way to get message data from SNS into our message history
-            after the message send process completed.
+            out messages to consumers, and as far as it’s concerned, once it
+            delivers a message or makes every effort to, its job is done.
           </p>
 
           <div class="img-wrapper">
@@ -986,25 +1075,39 @@
           </div>
 
           <p>
+            Our entire event/message lifecycle currently ends the moment SNS
+            sends a message to a consumer and receives a response. The only
+            thing that’s been saved to our database at that point is the
+            original event itself, but no message data has been saved. That
+            means no record of who was sent a message and when, what the payload
+            was, what response SNS received back, etc. So we needed to find a
+            way to get message data from SNS into our message history after the
+            message send process completed.
+          </p>
+
+          <!-- insert image of post process? -->
+
+          <p>
             Our first thought was to see if we could tack on some post-process
             to SNS, like a function that it executes immediately after it
             receives a response back from a consumer. SNS doesn’t have a
-            built-in way to do this. So if we can’t add a function after
-            messages have been sent, we could potentially add a function between
-            SNS and the consumer, and have that function write to the database.
-            We can do this with lambda, however this would definitely add
-            complexity because the lambda is again the one sending the message
-            to the consumer, and we’re sort of back at our SQS implementation at
-            that point. Instead, we found a way to use a service that SNS was
-            already integrated with. SNS stores logging data in Amazon’s
-            CloudWatch Logs service, which is commonly used for debugging and a
-            variety of other tasks. SNS can be configured to log specific
-            events, and in this case we wanted it to log when messages received
-            responses back from consumers. Using CloudWatch Logs, we did now
-            have a persistent message history store, however we ideally wanted
-            all of our persistent data to be stored in one database, so we still
-            needed to find a way to get it from Cloudwatch Logs into our message
-            history.
+            built-in way to do this, but it does allow lambda triggers to be set
+            to run whenever a message is published. Inserting lambdas here
+            though, would add more complexity because the lambda would again be
+            responsible for sending the message to the consumer, and at that
+            point we’re essentially back at our previous SQS implementation.
+            Instead, we found a way to use a service that SNS was already
+            integrated with.
+          </p>
+
+          <p>
+            SNS stores logging data in Amazon’s CloudWatch Logs service, which
+            is commonly used for debugging and a variety of other tasks. SNS can
+            be configured to log specific events, and in this case we wanted it
+            to log every time it received a response back from a consumer. Using
+            CloudWatch Logs, we now had our persistent message store, but it
+            wasn’t in the same place as the rest of our data, so we needed to
+            find a way to get it from CloudWatch Logs into our message history.
           </p>
 
           <div class="img-wrapper">
@@ -1012,66 +1115,106 @@
           </div>
 
           <p>
-            That little bit of compute that was required to get data from
-            CloudWatch Logs to Message History can be provided by, yet again, a
-            lambda function. CloudWatch Logs can be set up to asynchronously
-            invoke a Lambda function when a log of a specific type is written to
-            it, so we set CloudWatch Logs to invoke the lambda when it receives
-            a new SNS Message Received log type, and once invoked the lambda
-            itself transfers the data to the main message history. In light of
-            these added steps and services, SNS definitely added complexity to
-            our implementation, however as I mentioned we thought that overall
-            its feature set best fit our implementation and provided a few
-            additional nice-to-haves out of the box. This is the implementation
-            we chose in the end, so hopefully you’ve got a bit more context now
-            as to how and why we ended up with this architecture.
+            CloudWatch Logs can be set up to asynchronously invoke a Lambda
+            function, so we set CloudWatch Logs to invoke the lambda when it
+            received a new SNS log, and once invoked, the lambda transfers the
+            message data in the log to the main message history.
           </p>
 
           <div class="img-wrapper">
             <img src="images/diagrams/sns4.png" />
           </div>
 
+          <p>
+            In light of these added steps and services, SNS definitely added
+            complexity to our architecture in some areas. It still, however,
+            abstracted away key functionality in others, and overall we felt
+            that its feature set best fit our implementation and provided a few
+            additional nice-to-haves out of the box.
+          </p>
+
           <h2 id="Future work">7. Future work</h2>
+
+          <p>
+            And that's Tacklebox! We've got a few ideas that we'd love to work
+            on moving forward, which could add to its flexibility as a webhook
+            service:
+          </p>
 
           <h3 id="Proxy Server">7.1 Proxy Server</h3>
 
           <p>
             Tacklebox currently does two things by default that, while useful,
-            are not features all consumers might want: It requires consumers to
-            confirm their endpoint, meaning they have to verify they are in
-            control of their endpoint before our service will send any webhook
-            notifications to them. It includes AWS metadata in messages sent to
-            consumers that isn’t necessarily relevant to Tacklebox Because these
-            are both feature of SNS itself, and SNS is the piece of our
-            infrastructure that communicates directly with consumers, we could
-            make both of these optional by putting some logic in between SNS and
-            consumers. One way we might do that would be to use a proxy server,
-            which would handle auto-confirmations and/or stripping of metadata.
-            Using a typical server would of course take us away from our
-            serverless goal, so we could also potentially use another layer of
-            lambdas instead, but again, we’d be adding more complexity to the
-            architecture for a feature that a fairly small percentage of our
-            users would use.
+            are not features all providers might want:
+          </p>
+
+          <ul>
+            <li>
+              <p>
+                It requires consumers to confirm their endpoint, meaning they
+                have to verify they are in control of their endpoint before our
+                service will send any webhook notifications to them.
+              </p>
+            </li>
+            <li>
+              <p>
+                It includes AWS metadata in messages sent to consumers that
+                isn’t necessarily relevant to Tacklebox
+              </p>
+            </li>
+          </ul>
+
+          <p>
+            We could make both of these optional by putting some logic in
+            between SNS and consumers. One way we might do that would be to use
+            a proxy server, which would handle the auto-confirmations and
+            stripping of metadata. But using a typical server would cause us to
+            lose some of that uptime efficiency we gained by going with lambdas.
           </p>
 
           <div class="img-wrapper">
             <img src="images/diagrams/proxy.png" />
           </div>
 
+          <p>
+            Speaking of which, we could use lambdas to accomplish this, but as
+            we saw in the last section, that extra set of lambdas again adds
+            complexity to the architecture for a feature that only a small
+            percentage of our users would probably use.
+          </p>
+
           <h3 id="Other Ideas">7.2 Other Ideas</h3>
 
-          <p>
-            Another few things we’d like to add are: The ability to dynamically
-            set and change settings like retry policy and rate limiting on a
-            per-consumer endpoint basis. A consumer UI that potentially allows
-            them to view their own messages history for a particular endpoint
-            and do things like resend failed messages A dead-letter queue for
-            efficient processing of messages that still, after the max number of
-            retries, failed to be delivered to their consumer endpoint A feature
-            that detects when a consumer endpoint has passed some threshold for
-            successive failures and automatically removes that consumer’s
-            subscription from our service
-          </p>
+          <p>Another few things we’d like to add are:</p>
+
+          <ul>
+            <li>
+              <p>
+                The ability to dynamically set and change settings like retry
+                policy and rate limiting on a per-consumer basis.
+              </p>
+            </li>
+            <li>
+              <p>
+                A consumer UI that potentially allows them to view their own
+                message history and do things like resend failed messages
+              </p>
+            </li>
+            <li>
+              <p>
+                A dead-letter queue for efficient processing of messages that
+                still, after the max number of retries, failed to be delivered
+                to their consumer endpoint
+              </p>
+            </li>
+            <li>
+              <p>
+                A feature that detects when a consumer endpoint has passed some
+                threshold for successive failures and automatically removes that
+                consumer’s subscription from our service
+              </p>
+            </li>
+          </ul>
 
           <h2 id="References">8. References</h2>
           <div class="footnotes">
