@@ -54,23 +54,23 @@
           <a href="#Introduction"> 1. Introduction</a>
         </li>
         <li>
-          <a href="#Intro to Webhooks"> 2. Intro to Webhooks</a>
+          <a href="#IntroToWebhooks"> 2. Intro to Webhooks</a>
         </li>
         <li>
-          <a href="#Building webhooks is not trivial">
-            3. Building webhooks is not trivial</a>
+          <a href="#BuildingWebhooks">
+            3. Building Webhooks Is Not Trivial</a>
         </li>
         <li>
-          <a href="#Existing Solutions"> 4. Existing Solutions</a>
+          <a href="#ExistingSolutions"> 4. Existing Solutions</a>
         </li>
         <li>
-          <a href="#How to use Tacklebox"> 5. How to use Tacklebox</a>
+          <a href="#UsingTacklebox"> 5. How to Use Tacklebox</a>
         </li>
         <li>
-          <a href="#How we built Tacklebox"> 6. How we built Tacklebox</a>
+          <a href="#BuildingTacklebox"> 6. How We Built Tacklebox</a>
         </li>
         <li>
-          <a href="#Future work"> 7. Future work</a>
+          <a href="#FutureWork"> 7. Future Work</a>
         </li>
         <li>
           <a href="#References"> 8. References</a>
@@ -86,23 +86,23 @@
 
         <p>
           APIs, or Application Programming Interfaces, offer a way for computers
-          to communicate with each other. APIs that are designed with web 
+          to communicate with each other. APIs that are designed with web
           technologies and that work similarly to the web itself are called
           Web APIs.
         </p>
-          
+
         <p>
           Web APIs can provide tools and technologies that may come in handy
           at some point in time. One such tool is known as webhooks.
         </p>
-          
+
         <p>
           Tacklebox is an open-source serverless framework that offers webhooks
           as a service. Now, don't worry if that seems like a mouthful, because
           it is, so we'll try to unpack the meaning behind that phrase throughout
           this case study.
         </p>
-          
+
         <p>
           Throughout this case study, we are going to introduce the concept of
           webhooks, specify the benefits they provide, explain why building webhooks
@@ -112,9 +112,9 @@
           some future ideas.
         </p>
 
-        <h2 id="Intro to Webhooks">2. Intro to Webhooks</h2>
+        <h2 id="IntroToWebhooks">2. Intro to Webhooks</h2>
 
-        <h3 id="What are webhooks">2.1 What are webhooks?</h3>
+        <h3 id="What-are-webhooks">2.1 What are webhooks?</h3>
 
         <p>
           To understand what webhooks are, let’s begin with an example using a
@@ -232,7 +232,7 @@
           <img src="images/diagrams/githubExample3.png" alt="What are webhooks" />
         </div>
 
-        <h3 id="Who uses webhooks">2.2 Who uses webhooks?</h3>
+        <h3 id="Who-uses-webhooks">2.2 Who uses webhooks?</h3>
 
         <p>
           So far, when talking about webhooks, we've only talked about GitHub.
@@ -250,7 +250,7 @@
           <img src="images/diagrams/whoUsesWebhooks.png" alt="who uses webhooks" />
         </div>
 
-        <h3 id="Pros and Cons of building webhooks">
+        <h3 id="Pros-and-Cons-of-building-webhooks">
           2.3 Pros and Cons of building webhooks
         </h3>
 
@@ -269,11 +269,11 @@
           well is not easy in the next section.<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup>
         </p>
 
-        <h2 id="Building webhooks is not trivial">
+        <h2 id="BuildingWebhooks">
           3. Building webhooks is not trivial
         </h2>
 
-        <h3 id="Considerations when building webhooks">
+        <h3 id="Considerations-when-building-webhooks">
           3.1 Considerations when building webhooks
         </h3>
         <p>
@@ -306,7 +306,7 @@
           <img src="images/diagrams/considerations.png" alt="Considerations when building webhooks" />
         </div>
 
-        <h3 id="Building webhooks for a single application">
+        <h3 id="Building-webhooks-for-a-single-application">
           3.2 Building webhooks for a single application
         </h3>
 
@@ -323,7 +323,7 @@
           <img src="images/diagrams/considerationsOne.png" alt="Considerations when building webhooks" />
         </div>
 
-        <h3 id="Building webhooks for multiple applications">
+        <h3 id="Building-webhooks-for-multiple-applications">
           3.3 Building webhooks for multiple applications
         </h3>
 
@@ -346,7 +346,7 @@
           you enforce control over your data?
         </p>
 
-        <h3 id="Extracting webhooks into a service">
+        <h3 id="Extracting-webhooks-into-a-service">
           3.4 Extracting webhooks into a service
         </h3>
 
@@ -371,7 +371,7 @@
           <img src="images/diagrams/considerationsExtracted.png" alt="Asynchronous Communication" />
         </div>
 
-        <h2 id="Existing Solutions">4. Existing Solutions</h2>
+        <h2 id="ExistingSolutions">4. Existing Solutions</h2>
 
         <p>
           So if you’re thinking about implementing a webhooks solution
@@ -382,7 +382,7 @@
           <sup class="footnote-ref"><a href="#fn7" id="fnref7">[7]</a></sup>
         </p>
 
-        <h3 id="In-House solutions">4.1 In-House solutions</h3>
+        <h3 id="In-HouseSolutions">4.1 In-House Solutions</h3>
 
         <p>
           We took particular inspiration from how Square went about
@@ -415,7 +415,7 @@
           <img src="images/diagrams/wiseEngineering.png" alt="In-House solutions" />
         </div>
 
-        <h3 id="Commercial and Open Source">
+        <h3 id="Commercial-and-Open-Source">
           4.2 Commercial and Open Source
         </h3>
 
@@ -439,7 +439,7 @@
               id="fnref8">[8]</a></sup>
         </p>
 
-        <h3 id="Commercial vs. DIY">4.3 Commercial vs. DIY</h3>
+        <h3 id="Commercial-vs-DIY">4.3 Commercial vs. DIY</h3>
 
         <p>
           The commercial solutions handle the data storage, message sending
@@ -462,7 +462,7 @@
           <img src="images/diagrams/commercialvDIY.png" alt="Commercial vs. DIY" />
         </div>
 
-        <h3 id="Tacklebox use case">4.4 Tacklebox use case</h3>
+        <h3 id="Tacklebox-use-case">4.4 Tacklebox use case</h3>
 
         <p>
           So who is Tacklebox geared toward? A good way to find out is to ask
@@ -474,9 +474,9 @@
           Tacklebox would likely be a good fit for you.
         </p>
 
-        <h2 id="How to use Tacklebox">5. How to use Tacklebox</h2>
+        <h2 id="UsingTacklebox">5. How to use Tacklebox</h2>
 
-        <h3 id="Project Goals">5.1 Project Goals</h3>
+        <h3 id="Project-Goals">5.1 Project Goals</h3>
 
         <p>
           Make it easy to provide webhooks across multiple applications. Make
@@ -522,7 +522,7 @@
           <img src="images/diagrams/uiDash.png" />
         </div>
 
-        <h3 id="Client libraries">5.3 Client libraries</h3>
+        <h3 id="Client-libraries">5.3 Client libraries</h3>
 
         <small>
           To make our framework even easier to manage across your apps, we
@@ -533,7 +533,7 @@
           <img src="images/diagrams/clientLibraries.png" />
         </div>
 
-        <h3 id="Tacklebox Demo">5.4 Tacklebox Demo</h3>
+        <h3 id="Tacklebox-Demo">5.4 Tacklebox Demo</h3>
         <p>
           Now we are going to show a brief demo of Tacklebox in action. So
           imagine that you’re a software engineer at a consumer electronics
@@ -633,12 +633,12 @@
           <img src="images/gifs/destroy.gif" />
         </div>
 
-        <h2 id="How we built Tacklebox">6. How we built Tacklebox</h2>
+        <h2 id="BuildingTacklebox">6. How we built Tacklebox</h2>
         <p>
           In this section, we will explore how we built Tacklebox, and some of the implementation decisions we made
           along the way.
         </p>
-        <h2 id="Webhook feature requirements">
+        <h2 id="Webhook-feature-requirements">
           6.1 Webhook feature requirements
         </h2>
 
@@ -657,7 +657,7 @@
           Tacklebox. Without this, it is not a webhook service.
         </p>
 
-        <h2 id="Event / Message lifecycle">6.2 Event / Message lifecycle</h2>
+        <h2 id="Event-Message-lifecycle">6.2 Event / Message Life Cycle</h2>
 
         <p>
           The core functionality of a webhook service is sending messages to endpoints when events occur. That process
@@ -695,7 +695,7 @@
           <img src="images/diagrams/messageLifeCycle.png" />
         </div>
 
-        <h2 id="Tacklebox Architecture">6.3 Tacklebox Architecture</h2>
+        <h2 id="TackleboxArchitecture">6.3 Tacklebox Architecture</h2>
 
         <p>
           In our architecture, notification intake is handled by a pair of services: API Gateway and Lambda Functions.
@@ -723,7 +723,7 @@
           infrastructure. In these cases, the intake lambda, upon receiving a request from API Gateway, interacts with
           the database directly.
         </p>
-
+        <!-- Insert diagram of non-SNS operations -->
         <div class="img-wrapper">
           <img src="images/diagrams/tackleBoxArchitecture.png" />
         </div>
@@ -812,16 +812,7 @@
         <h2 id="Challenges">6.4.1 How we dealt with wasted uptime</h2>
 
         <p>
-          Our initial implementation of Tacklebox used a single application
-          server. It could have worked for our use-case, but we saw an
-          opportunity to optimize our infrastructure. Webhooks usage patterns
-          are often unpredictable and can have moments of high-use as well as
-          periods of minimal usage. As a result, with this single app server
-          architecture, we may have had a lot of unused compute resources. To
-          address this, we decided to use AWS Lambda Functions. - Focus less
-          on fact that implementation works, more on the fact that the
-          architecture works. Less about our personal implementation and more
-          about how architecture in general satisfies requirements.
+          Our initial implementation of Tacklebox used a single application server.
         </p>
 
         <div class="img-wrapper">
@@ -829,14 +820,11 @@
         </div>
 
         <p>
-          Lambda functions, which are AWS’s “Function as a Service” offering,
-          allow us to only run code when needed. This also means that you only
-          pay for compute that you actually need. Lambdas, of course, come
-          with tradeoffs: Cold start times can increase latency - cold start
-          time refers to the time it takes to load the function into memory
-          before it can be invoked. Stateless, so accessing persistent data
-          requires a call to another service Function execution time has a
-          limit
+          This approach worked for our use-case, but we saw an opportunity to optimize our infrastructure. Webhooks
+          usage patterns are often unpredictable and
+          can have moments of high-use as well as periods of minimal usage. As a result, with this single app server
+          architecture, we were leaving a decent amount of compute power unused. To address this inefficiency, we
+          decided to use AWS Lambda Functions.
         </p>
 
         <div class="img-wrapper">
@@ -844,19 +832,34 @@
         </div>
 
         <p>
-          We were ok with these tradeoffs, so we decided to use lambdas. Going
-          with lambdas, though, meant that each lambda would have to do all of
-          the following tasks every time it runs: They would need to: Intake
-          the new event and persist it to db Gather subscriptions and create
-          messages for each consumer Send messages to all consumers and wait
-          for their responses Write responses to db Respond back to the event
-          producer after all of these tasks are done This is a lot of
-          responsibility (and potentially a lot of execution time) for a
-          single function. So while we believed lambdas improved our
-          architecture, they also added some additional challenges we wanted
-          to address. To explain these remaining challenges, and how they
-          influenced our architecture.
+          Lambda functions, which are a “Function as a Service” offering from AWS, allow us to only run code when
+          needed.
+          This also means that you only pay for the compute that you actually need. As with any service, lambdas come
+          with tradeoffs:
         </p>
+
+        <ul>
+          <li>First of all, cold start times can increase latency (cold start time refers to the time that it takes to
+            load the function into memory before it can be invoked)</li>
+          <!-- [https://lumigo.io/blog/this-is-all-you-need-to-know-about-lambda-cold-starts/] -->
+          <li>Lambdas are stateless, so accessing persistent data requires a call to another service</li>
+          <!-- [https://aws.amazon.com/lambda/faqs/#AWS_Lambda_functions] -->
+          <li>Lambdas have an execution time limit - currently this is set to 15 minutes.</li>
+          <!-- [https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-limits.html] -->
+        </ul>
+
+        <p>
+          We found these tradeoffs acceptable for Tacklebox. Going with lambdas, though, meant that each lambda would
+          have to do all of the following tasks every time it runs:
+        </p>
+
+        <ul>
+          <li>Intake a new event and persist it to the database</li>
+          <li>Gather subscriptions and create messages for each subscriber</li>
+          <li>Send messages to all subscribers and wait for their responses</li>
+          <li>Write responses to the database</li>
+          <li>Respond back to the event producer</li>
+        </ul>
 
         <div class="img-wrapper">
           <img src="images/diagrams/manyJobs.png" />
@@ -1167,7 +1170,7 @@
           additional nice-to-haves out of the box.
         </p>
 
-        <h2 id="Future work">7. Future work</h2>
+        <h2 id="FutureWork">7. Future Work</h2>
 
         <p>
           And that's Tacklebox! We've got a few ideas that we'd love to work
@@ -1175,7 +1178,7 @@
           service:
         </p>
 
-        <h3 id="Proxy Server">7.1 Proxy Server</h3>
+        <h3 id="ProxyServer">7.1 Proxy Server</h3>
 
         <p>
           Tacklebox currently does two things by default that, while useful,
@@ -1217,7 +1220,7 @@
           percentage of our users would probably use.
         </p>
 
-        <h3 id="Other Ideas">7.2 Other Ideas</h3>
+        <h3 id="OtherIdeas">7.2 Other Ideas</h3>
 
         <p>Another few things we’d like to add are:</p>
 
