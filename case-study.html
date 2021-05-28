@@ -638,9 +638,9 @@
           In this section, we will explore how we built Tacklebox, and some of the implementation decisions we made
           along the way.
         </p>
-        <h2 id="Webhook-feature-requirements">
+        <h3 id="Webhook-feature-requirements">
           6.1 Webhook feature requirements
-        </h2>
+        </h3>
 
         <p>
           Before we can talk about the Tacklebox architecture, it’s important to understand the feature requirements for
@@ -657,7 +657,7 @@
           Tacklebox. Without this, it is not a webhook service.
         </p>
 
-        <h2 id="Event-Message-lifecycle">6.2 Event / Message Life Cycle</h2>
+        <h3 id="Event-Message-lifecycle">6.2 Event / Message Life Cycle</h3>
 
         <p>
           The core functionality of a webhook service is sending messages to endpoints when events occur. That process
@@ -695,7 +695,7 @@
           <img src="images/diagrams/messageLifeCycle.png" />
         </div>
 
-        <h2 id="TackleboxArchitecture">6.3 Tacklebox Architecture</h2>
+        <h3 id="TackleboxArchitecture">6.3 Tacklebox Architecture</h3>
 
         <p>
           In our architecture, notification intake is handled by a pair of services: API Gateway and Lambda Functions.
@@ -807,9 +807,9 @@
           didn't really take advantage of DynamoDB's strengths, so we chose RDS w/ PostgreSQL.
         </p>
 
-        <h2 id="Challenges">6.4 Challenges</h2>
+        <h3 id="Challenges">6.4 Challenges</h3>
 
-        <h2 id="Challenges">6.4.1 How we dealt with wasted uptime</h2>
+        <h3 id="Challenges">6.4.1 How we dealt with wasted uptime</h3>
 
         <p>
           Our initial implementation of Tacklebox used a single application server.
@@ -865,7 +865,7 @@
           <img src="images/diagrams/manyJobs.png" />
         </div>
 
-        <h2 id="Challenges">6.4.2 How we handled message fanout</h2>
+        <h3 id="Challenges">6.4.2 How we handled message fanout</h3>
 
         <p>
           With this implementation, the message fanout process in particular
@@ -1098,7 +1098,7 @@
           out of the box.
         </p>
 
-        <h2 id="Challenges">6.4.3 How we persisted message history</h2>
+        <h3 id="Challenges">6.4.3 How we persisted message history</h3>
 
         <p>
           SNS doesn’t have a built-in way to write message data to our
