@@ -85,22 +85,31 @@
         <h2 id="Introduction">1. Introduction</h2>
 
         <p>
-          The traditional model of service-to-service communication in web
-          development can be described as request/response interaction. This
-          synchronous model involves a caller sending a request to a receiver,
-          waiting on a response from the receiver, and processing the response
-          when it is returned. In this model, the caller "asks" the receiver
-          to do something.
+          APIs, or Application Programming Interfaces, offer a way for computers
+          to communicate with each other. APIs that are designed with web 
+          technologies and that work similarly to the web itself are called
+          Web APIs.
         </p>
-
+          
         <p>
-          Another model of service-to-service communication is
-          <strong>event-based</strong>
-          interaction, wherein publishers "announce" events that have already
-          happened, and consumers react to those events. In this model,
-          neither the publisher or the consumer "asks" the other to do
-          anything - the publisher simply announces the event and the consumer
-          reacts to it.
+          Web APIs can provide tools and technologies that may come in handy
+          at some point in time. One such tool is known as webhooks.
+        </p>
+          
+        <p>
+          Tacklebox is an open-source serverless framework that offers webhooks
+          as a service. Now, don't worry if that seems like a mouthful, because
+          it is, so we'll try to unpack the meaning behind that phrase throughout
+          this case study.
+        </p>
+          
+        <p>
+          Throughout this case study, we are going to introduce the concept of
+          webhooks, specify the benefits they provide, explain why building webhooks
+          well is hard, explore some already-implemented solutions, talk about what
+          Tacklebox is all about, get into the nitty-gritty stuff of how we actually
+          got to the final implementation of Tacklebox, and last but not least, mention
+          some future ideas.
         </p>
 
         <h2 id="Intro to Webhooks">2. Intro to Webhooks</h2>
