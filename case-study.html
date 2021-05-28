@@ -773,6 +773,63 @@
             <img src="images/diagrams/tackleBoxArchitecture.png" />
           </div>
 
+          <h3 id="Database">6.3.2 Database Choice</h3>
+
+          <p>
+            Before we move into the next section to talk about the evolution of our architecture and the challenges we solved along the way, we'd like to briefly discuss our choice of database. 
+          </p>
+
+          <p>
+            Webhook data seems, at first glance, inherently unstructured.  Webhooks have a wide range of real-world applications, and each application dictates what information is passed back and forth between webhook provider and webhook consumer.  An open-source webhook service needs to be flexible enough to handle many of those applications, so having a database that could stretch to meet those needs seemed important.
+          </p>
+
+          <p>
+            This initially led us to consider NoSQL databases due to their strength handling schemaless data.  Because we were using AWS infrastructure, the most likely candidate became their DynamoDB service.  DynamoDB certainly had its advantages:
+          </p>
+
+          <ul>
+            <li>
+              <p>
+                It's fully managed so our users wouldn't have to maintain it
+              </p>
+            </li>
+            <li>
+              <p>
+                It's designed to be highly available, and that property could be an asset during times when new events are coming in thick and fast and/or large numbers of completed messages are being written to the database.
+              </p>
+            </li>
+            <li>
+              <p>
+                It offers a feature called "Streams" which you can integrate with lambda functions to automatically run code when a record is added, updated, or deleted.
+              </p>
+            </li>
+          </ul>
+          </p>
+
+          <p>
+            The more we considered this, however, the more we realized that webhook data as a whole is actually quite predictable and structured.  Entities like users, events, messages, and subscriptions share common characteristics across webhook implementations.  In fact, the only piece of data related to webhooks that is really quite different across implementations is the payload that gets delivered to the consumer when an event occurs.  We would certainly need to be able to handle a range of payloads, but even those have high-level similarities, and most can be represented by a JSON object.
+          </p>
+
+          <p>
+            The following Entity Relationship Diagram shows how we ended up structuring our data.  We used the jsonb data type for our payload field in the events table, which allows us to store normal JSON objects efficiently.
+          </p>
+
+          <div class="img-wrapper">
+            <img src="images/diagrams/tackleBoxERD.png" />
+          </div>
+
+          <p>
+            Most of the features we'd be trading off by going with Postgres instead of DynamoDB were ones our use case didn't really demand - specifically built for high availability, schemaless, and able to support tables of virtually any size and very high read/write traffic.  The one thing we didn't want to lose was the fact that DynamoDB is fully managed, which was key to our project goal of making Tacklebox easy to deploy and manage.
+          </p>
+
+          <p>
+            Amazon's Relational Database Service (RDS) allowed us to retain most of that benefit.  It's not quite as hands-off as DynamoDB when it comes to things like scaling, however it comes close regarding overall maintenance.  RDS handles the hosting, provisioning, and patching of the database, and it allowed us to use PostgreSQL as the actual database, which is widely used and reliable.
+          </p>
+
+          <p>
+            In the end, both DynamoDB and RDS w/ PostgreSQL would have worked in our implementation, but our use case didn't really take advantage of DynamoDB's strengths, so we chose RDS w/ PostgreSQL.
+          </p>
+
           <h2 id="Challenges">6.4 Challenges</h2>
 
           <h2 id="Challenges">6.4.1 How we dealt with wasted uptime</h2>
