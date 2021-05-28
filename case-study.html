@@ -1,1585 +1,1512 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Tacklebox Webhooks as a Service</title>
 
-    <link rel="stylesheet" href="stylesheets/reset.css" />
-    <link rel="stylesheet" href="stylesheets/main.css" />
+<head>
+  <meta charset="UTF-8" />
+  <title>Tacklebox Webhooks as a Service</title>
 
-    <link
-      rel="apple-touch-icon"
-      sizes="180x180"
-      href="images/icons/favicons/graphic-red.png"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="32x32"
-      href="images/icons/favicons/graphic-red.png"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="16x16"
-      href="images/icons/favicons/graphic-red.png"
-    />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="stylesheets/reset.css" />
+  <link rel="stylesheet" href="stylesheets/main.css" />
 
-    <link rel="preconnect" href="https://fonts.gstatic.com" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:ital,wght@0,400;0,700;0,900;1,400&display=swap"
-      rel="stylesheet"
-    />
+  <link rel="apple-touch-icon" sizes="180x180" href="images/icons/favicons/graphic-red.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="images/icons/favicons/graphic-red.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="images/icons/favicons/graphic-red.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <script type="text/javascript" src="javascripts/sidebar.js"></script>
-    <meta property="og:image" content="/images/logos/graphic-red.png" />
-    <meta property="og:title" content="Tacklebox" />
-    <meta
-      property="og:description"
-      content="An open-source serverless framework that offers webhooks as a
-            service"
-    />
-  </head>
-  <body>
-    <header class="header-short">
-      <nav>
+  <link rel="preconnect" href="https://fonts.gstatic.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:ital,wght@0,400;0,700;0,900;1,400&display=swap"
+    rel="stylesheet" />
+
+  <script type="text/javascript" src="javascripts/sidebar.js"></script>
+  <meta property="og:image" content="/images/logos/graphic-red.png" />
+  <meta property="og:title" content="Tacklebox" />
+  <meta property="og:description" content="An open-source serverless framework that offers webhooks as a
+            service" />
+</head>
+
+<body>
+  <header class="header-short">
+    <nav>
+      <ul>
+        <li>
+          <a href="index.html">
+            <img src="images/logos/graphic-red.png" />
+          </a>
+        </li>
+        <li>
+          <a href="index.html">Home</a>
+        </li>
+        <li><a href="case-study.html" class="active">Case Study</a></li>
+        <li><a href="team.html">Our Team</a></li>
+        <li class="flex-float-right">
+          <a href="https://github.com/tacklebox-webhooks" target="_blank">
+            <img src="images/logos/github-mark-light.png" alt="Tacklebox GitHub" class="github" />
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </header>
+
+  <div class="study-wrapper">
+    <aside class="sidebar">
+      <ul>
+        <li>
+          <a href="#Introduction"> 1. Introduction</a>
+        </li>
+        <li>
+          <a href="#Intro to Webhooks"> 2. Intro to Webhooks</a>
+        </li>
+        <li>
+          <a href="#Building webhooks is not trivial">
+            3. Building webhooks is not trivial</a>
+        </li>
+        <li>
+          <a href="#Existing Solutions"> 4. Existing Solutions</a>
+        </li>
+        <li>
+          <a href="#How to use Tacklebox"> 5. How to use Tacklebox</a>
+        </li>
+        <li>
+          <a href="#How we built Tacklebox"> 6. How we built Tacklebox</a>
+        </li>
+        <li>
+          <a href="#Future work"> 7. Future work</a>
+        </li>
+        <li>
+          <a href="#References"> 8. References</a>
+        </li>
+      </ul>
+    </aside>
+
+    <main>
+      <section id="case-study">
+        <h1>Case Study</h1>
+
+        <h2 id="Introduction">1. Introduction</h2>
+
+        <p>
+          The traditional model of service-to-service communication in web
+          development can be described as request/response interaction. This
+          synchronous model involves a caller sending a request to a receiver,
+          waiting on a response from the receiver, and processing the response
+          when it is returned. In this model, the caller "asks" the receiver
+          to do something.
+        </p>
+
+        <p>
+          Another model of service-to-service communication is
+          <strong>event-based</strong>
+          interaction, wherein publishers "announce" events that have already
+          happened, and consumers react to those events. In this model,
+          neither the publisher or the consumer "asks" the other to do
+          anything - the publisher simply announces the event and the consumer
+          reacts to it.
+        </p>
+
+        <h2 id="Intro to Webhooks">2. Intro to Webhooks</h2>
+
+        <h3 id="What are webhooks">2.1 What are webhooks?</h3>
+
+        <p>
+          To understand what webhooks are, let’s begin with an example using a
+          tool we all know: GitHub. ​ Imagine you: - are part of a team - have
+          one repo for the project the team will work on - want to do
+          something programmatically when a branch is created by a teammate,
+          like for example, post a message on Slack or something like that. ​
+          The flow would look something like this: first, one of your
+          teammates creates a new branch locally then, the change is pushed to
+          the repo next, the branch is actually created on the repo and
+          finally you want to do something programmatically as a result of
+          this branch creation.
+        </p>
+
+        <div class="img-wrapper">
+          <img src="images/diagrams/githubExample.png" alt="What are webhooks" />
+        </div>
+
+        <p>
+          So the question then becomes, how can you automate what you want to
+          do once the event happens, which in this case, is a branch being
+          created? You basically have two options: Polling and Webhooks.
+        </p>
+
+        <p>
+          In the context of Web APIs, the party interested in data (which in
+          this case, it's you) is called the consumer, and the party that
+          provides the data of interest (which in this case, it's GitHub) is
+          called the provider.<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>
+          With polling, you basically send and HTTP request to GitHub every so
+          often to see if there's any updates. In this case, you happen to
+          send a couple requests first with no updates from GitHub, and then a
+          third one where there's an update.<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup>
+        </p>
+        <div class="img-wrapper">
+          <img src="images/diagrams/polling.png" alt="What are webhooks" />
+        </div>
+
+        <p>
+          With webhooks, however, instead of having GitHub wait for incoming
+          requests in order to handle them, now GitHub proactively sends an
+          HTTP request to you every time an event you care about occurs. To be
+          more specific, GitHub sends an HTTP request to a URL that you
+          register with them every time something of interest happens.<sup class="footnote-ref"><a href="#fn3"
+              id="fnref3">[3]</a></sup>
+        </p>
+
+        <div class="img-wrapper">
+          <img src="images/diagrams/webhooks.png" alt="What are webhooks" />
+        </div>
+
+        <p>
+          In this particular case, a branch was created, so GitHub sends an
+          HTTP request to your endpoint, and you then acknowledge the request.
+          In other words, a webhook is nothing more than an HTTP request sent
+          when an event happens.
+        </p>
+
+        <p>
+          Up to this point, we have only talked about webhooks from the
+          perspective of the consumer. Now, let's switch gears a little bit to
+          talk about webhooks, but from the perspective of the provider, which
+          in the example was GitHub. In other words, let's put ourselves in
+          GitHub's shoes.
+        </p>
+
+        <div class="img-wrapper">
+          <img src="images/diagrams/webhookProviderExample.png" alt="What are webhooks" />
+        </div>
+
+        <p>
+          Following the same example, if we're GitHub, and a consumer is
+          interested in receiving a webhook every time a branch is created,
+          the workflow would look something like this: first, you receive a
+          subscription request with a URL to send webhooks to, which would be
+          the URL on the right of the slide. This subscription request also
+          specifies the event type you'll look out for to send these webhooks,
+          which in this case is a branch creation. then, you'll persist the
+          subscription after that, a branch is created at some point in time
+          then, you check to see who is subscribed to that event type since
+          there may be more interested parties. and lastly, you send a webhook
+          to the URL of each consumer subscribed to that particular event
+          type, which in this case, for simplicity's sake, is just the
+          consumer from step one.
+        </p>
+
+        <p>
+          To show you how webhooks look like in real applications, here's a
+          screenshot of the UI GitHub offers for webhooks. Up to the right,
+          you can see an "add" button which would be used to request a
+          subscription.
+        </p>
+
+        <div class="img-wrapper">
+          <img src="images/diagrams/githubExample1.png" alt="What are webhooks" />
+        </div>
+
+        <p>
+          After clicking that button, you get to the page where you specify
+          the URL where you want to receive webhooks, the event type you're
+          interested in, among other things.
+        </p>
+
+        <div class="img-wrapper">
+          <img src="images/diagrams/githubExample2.png" alt="What are webhooks" />
+        </div>
+
+        <p>
+          And once you register a URL to receive webhooks, you can see all the
+          webhooks that GitHub has sent you, their headers, their payload,
+          etc.
+        </p>
+
+        <div class="img-wrapper">
+          <img src="images/diagrams/githubExample3.png" alt="What are webhooks" />
+        </div>
+
+        <h3 id="Who uses webhooks">2.2 Who uses webhooks?</h3>
+
+        <p>
+          So far, when talking about webhooks, we've only talked about GitHub.
+          However, it turns out that GitHub is not the only company that
+          offers webhooks. Some examples of companies that offer webhooks are:
+          Stripe, which can send you a webhook when for example a payment is
+          processed Twitter can send you a webhook when for example you
+          receive a direct message Intuit, the company that owns products like
+          TurboTax and QuickBooks, can send you a webhook for example when a
+          budget is created and I mean, I can keep going. The point is,
+          webhooks are everywhere.<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup>
+        </p>
+
+        <div class="img-wrapper">
+          <img src="images/diagrams/whoUsesWebhooks.png" alt="who uses webhooks" />
+        </div>
+
+        <h3 id="Pros and Cons of building webhooks">
+          2.3 Pros and Cons of building webhooks
+        </h3>
+
+        <p>
+          Now that we have some context around webhooks, we can start talking
+          about things to consider when building them. As a provider, webhooks
+          offer a few benefits: For example, you can provide a better
+          experience to your users that want or need webhooks. And also, you
+          can lower the amount of requests your infrastructure needs to handle
+          over time. ​ However, webhooks are not perfect: If you want a very
+          simple webhooks implementation, it may not take you much. However,
+          if you want a robust implementation, you have to spend a lot of time
+          and effort building it. And the reason you have to spend a lot of
+          time and effort building webhooks well is because building webhooks
+          well is not easy. We're going to talk about why building webhooks
+          well is not easy in the next section.<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup>
+        </p>
+
+        <h2 id="Building webhooks is not trivial">
+          3. Building webhooks is not trivial
+        </h2>
+
+        <h3 id="Considerations when building webhooks">
+          3.1 Considerations when building webhooks
+        </h3>
+        <p>
+          Now you, the provider, want to build webhooks in your app. However,
+          implementing webhooks well is not as trivial as it may seem at first
+          glance. Since we can go down a rabbit hole here, we decided to talk
+          about 4 different areas or categories that may present a significant
+          amount of challenges. The first area that comes to mind when
+          thinking about building webhooks is failed messages. For example: -
+          What happens if a consumer URL endpoint fails or is unreachable? -
+          Do you try to send the message again? - And if you do, how often and
+          how many times do you retry before you stop? ​ The second area that
+          comes to mind is security and authentication. For instance: - Do you
+          want to make sure the appropriate consumer controls an endpoint
+          before you send messages to it? - How do you allow consumers to
+          verify the integrity of messages? - How about allowing them to
+          verify the origin of messages? The third area revolves around
+          monitoring. For example: - How do you identify frequently failing
+          endpoints? - How do you monitor historical usage patterns? And last
+          but not least we have the area of allowing your consumers to trigger
+          events manually for testing or other purposes. In other words,
+          consumer experience. For instance: - Do you want to allow your
+          consumers to manually trigger events for testing and other purposes?
+          - For example, aside from testing, do you want to allow them to
+          resend a message manually? - And if you do, how would you implement
+          that?
+        </p>
+
+        <div class="img-wrapper">
+          <img src="images/diagrams/considerations.png" alt="Considerations when building webhooks" />
+        </div>
+
+        <h3 id="Building webhooks for a single application">
+          3.2 Building webhooks for a single application
+        </h3>
+
+        <p>
+          In the simplest scenario, building webhooks in one app would look
+          something like this. For simplicity, we have two consumers, but
+          there could be more. All the questions and areas of concern we have
+          would fall into this new webhook implementation we would build in
+          this single app.
+          <sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup>
+        </p>
+
+        <div class="img-wrapper">
+          <img src="images/diagrams/considerationsOne.png" alt="Considerations when building webhooks" />
+        </div>
+
+        <h3 id="Building webhooks for multiple applications">
+          3.3 Building webhooks for multiple applications
+        </h3>
+
+        <p>
+          But what if you need webhooks in more than one app? If you need
+          webhooks in more than one app, it would look something like this.
+        </p>
+
+        <div class="img-wrapper">
+          <img src="images/diagrams/considerationsMulti.png" alt="Considerations when building webhooks" />
+        </div>
+
+        <p>
+          Now, you have all the concerns from before times the number of apps.
+          ​And on top of that, more questions come up in this scenario. For
+          example: - How do you avoid redundant work while implementing and
+          maintaining webhooks across all your apps? - How do you make sure
+          that webhooks are consistent across all your apps? - And lastly, is
+          governance or compliance critical to your apps? and if so, how do
+          you enforce control over your data?
+        </p>
+
+        <h3 id="Extracting webhooks into a service">
+          3.4 Extracting webhooks into a service
+        </h3>
+
+        <p>
+          At this point, the need for building a robust webhooks
+          implementation as its own service becomes clear.<sup class="footnote-ref"><a href="#fn6"
+              id="fnref6">[6]</a></sup>
+          Now, all these concerns are abstracted away by this service, and
+          this would give us many benefits. For example: - first, we would
+          have a single place to maintain code and add features - also, we
+          would have a single place to monitor the service performance and
+          other metrics - aside from that, we would have one place where to
+          manage related infrastructure - also, we could have consistency
+          across all the apps - aside from that, now the apps don’t have to be
+          aware of who is consuming their webhooks, allowing more focus on
+          business logic - and last but not least, now we would have
+          centralized control over data in order to enforce governance or
+          compliance if those are important for our apps
+        </p>
+
+        <div class="img-wrapper">
+          <img src="images/diagrams/considerationsExtracted.png" alt="Asynchronous Communication" />
+        </div>
+
+        <h2 id="Existing Solutions">4. Existing Solutions</h2>
+
+        <p>
+          So if you’re thinking about implementing a webhooks solution
+          yourself, the question that naturally arises is “how do I do that?”.
+          Thankfully as we saw earlier, many companies have already
+          implemented their own in-house solution and posted their learnings
+          online so there are quite a few blueprints out there.
+          <sup class="footnote-ref"><a href="#fn7" id="fnref7">[7]</a></sup>
+        </p>
+
+        <h3 id="In-House solutions">4.1 In-House solutions</h3>
+
+        <p>
+          We took particular inspiration from how Square went about
+          implementing this feature themselves. They decided to go with AWS
+          because it offered the simplest solution thanks to a new feature
+          that allowed them to configure Lambdas to pull from Simple Queue
+          Service automatically. Some other key features that we liked are: -
+          how they used a queue for messages waiting to be sent to subscribers
+          - how they used lambdas to dequeue messages and send them to
+          subscribers - and how they went about storing successful or failed
+          messages in a separate queue or database<sup class="footnote-ref"><a href="#fn8" id="fnref8">[8]</a></sup>
+        </p>
+
+        <div class="img-wrapper">
+          <img src="images/diagrams/square.png" alt="In-House solutions" />
+        </div>
+
+        <p>
+          We also liked Wise Engineering’s webhook service implementation.
+          They utilized the SNS (Simple Notification Service) AWS service to
+          handle consumer subscriptions. This meant that in regards to: •
+          Figuring out which subscriptions need to be notified when an event
+          happens • Sending messages to subscribing endpoints when the event
+          is triggered • Handling the retrying logic for failed messages. All
+          of these operations were extracted from the main app logic and were
+          handled by a single service (SNS).<sup class="footnote-ref"><a href="#fn8" id="fnref8">[8]</a></sup>
+        </p>
+
+        <div class="img-wrapper">
+          <img src="images/diagrams/wiseEngineering.png" alt="In-House solutions" />
+        </div>
+
+        <h3 id="Commercial and Open Source">
+          4.2 Commercial and Open Source
+        </h3>
+
+        <p>
+          So yea, as we mentioned earlier, trying to build webhooks and
+          integrate them even in just one app can be very complex, so as you
+          think about trying to expand that out to multiple different apps in
+          your ecosystem that can be a very difficult and time consuming thing
+          to do. Let’s say for instance that you decide that you don’t want to
+          do that because of the complexity and you’d rather off load that to
+          a 3rd party provider. Generally, you would have two options, either
+          a commercial solution or an open source solution. Unfortunately,
+          there currently isn’t an open source solution that provides webhooks
+          as a service so that bring us back to considering building a
+          solution in-house instead. If you decide to go the commercial route,
+          there are a couple of companies that offer Webhooks as a Service.
+          The general workflow when using the commercial solutions would be as
+          follows: - You, the provider, communicate with their service via API
+          calls to set up subscriptions, create event types, send messages
+          when an event is triggered, and access message history.<sup class="footnote-ref"><a href="#fn8"
+              id="fnref8">[8]</a></sup>
+        </p>
+
+        <h3 id="Commercial vs. DIY">4.3 Commercial vs. DIY</h3>
+
+        <p>
+          The commercial solutions handle the data storage, message sending
+          processes to your consumers and general infrastructure management. -
+          The trade offs that arise when using commercial solutions would be
+          the fact that’d you’d be sharing data with a third party vendor and
+          there would be a lack of software customization because it isn’t
+          open source. As we saw earlier there are a number of large existing
+          companies that offer webhooks to their customers like Github,
+          Stripe, Twitter, and Square. They had to build their own solutions
+          in-house and manage their own infrastructure but by accepting those
+          trade offs, they were able to have control of their data and
+          customize their solution to better suit their business needs as they
+          change. By examining the pros and cons of each approach we set out
+          to create an open source framework that’s easy to deploy and manage.
+          And that’s where Tacklebox comes into play.
+        </p>
+
+        <div class="img-wrapper">
+          <img src="images/diagrams/commercialvDIY.png" alt="Commercial vs. DIY" />
+        </div>
+
+        <h3 id="Tacklebox use case">4.4 Tacklebox use case</h3>
+
+        <p>
+          So who is Tacklebox geared toward? A good way to find out is to ask
+          yourself these 4 questions. 1.) Do you want to be able to easily
+          integrate this feature across multiple applications? 2.) Do you want
+          to have control over your data? 3.) Are you a small to medium size
+          application. 4.) Is your applications core competency anything but
+          webhooks? If you answered yes to all of the above questions, then
+          Tacklebox would likely be a good fit for you.
+        </p>
+
+        <h2 id="How to use Tacklebox">5. How to use Tacklebox</h2>
+
+        <h3 id="Project Goals">5.1 Project Goals</h3>
+
+        <p>
+          Make it easy to provide webhooks across multiple applications. Make
+          it easy to deploy and manage its infrastructure Make it easy to
+          integrate with an application.
+        </p>
+
+        <h3 id="Deployment">5.1 Deployment</h3>
+
+        <p>
+          To realize the goal of easy deployment, we created our framework in
+          such a way that deployment is abstracted to one simple command.
+          “Tacklebox deploy”. This process usually takes upwards of 20 minutes
+          but is sped up for demo purposes. As you can see here, the output of
+          the deployment has two parts: first, the API Host, which is the Base
+          URL you'll use to communicate with the Tacklebox API; and second,
+          the API Key, which is the key the Tacklebox API uses to authenticate
+          you. These two pieces of information are all you need to use our
+          client libraries, and you don't have to leave your CLI to retrieve
+          them.
+        </p>
+
+        <div class="img-wrapper">
+          <img src="images/gifs/deploy.gif" alt="Deployment" />
+        </div>
+
+        <h3 id="UI">5.2 UI</h3>
+
+        <p>
+          After running tacklebox deploy, you can run the management UI on
+          your local server with one command: tacklebox ui. This management UI
+          ties back to making it easy to provide webhooks across multiple
+          applications. Instead of having to make API calls to figure out the
+          KPIs of your webhooks feature for one of your apps, you can just
+          view it all in a convenient dashboard
+        </p>
+
+        <div class="img-wrapper">
+          <img src="images/gifs/ui.gif" alt="DeployUI" />
+        </div>
+
+        <div class="img-wrapper">
+          <img src="images/diagrams/uiDash.png" />
+        </div>
+
+        <h3 id="Client libraries">5.3 Client libraries</h3>
+
+        <small>
+          To make our framework even easier to manage across your apps, we
+          provided client libraries in 4 languages to make using the Tacklebox
+          framework standard and DRY.
+        </small>
+        <div class="img-wrapper">
+          <img src="images/diagrams/clientLibraries.png" />
+        </div>
+
+        <h3 id="Tacklebox Demo">5.4 Tacklebox Demo</h3>
+        <p>
+          Now we are going to show a brief demo of Tacklebox in action. So
+          imagine that you’re a software engineer at a consumer electronics
+          company and you’re tasked with enabling automatic notifications from
+          the purchase order app to several other supply chain apps.
+        </p>
+
+        <small>
+          The initial workflow when using Tacklebox is to register a service
+          by providing the name of it in a JSON body. The service in this case
+          is going to be our orderApp. This is the app that is going to be
+          providing webhooks.
+        </small>
+        <div class="img-wrapper">
+          <img src="images/diagrams/shouldBeDemoGif.png" />
+        </div>
+
+        <small>
+          Now that we have created a service, we can use its ID in the path
+          parameters to register an event type that users can subscribe to. In
+          this case, we want notifications to be sent whenever a purchase
+          order is created. So we’ll call the event type order created.
+        </small>
+        <div class="img-wrapper">
+          <img src="images/diagrams/shouldBeDemoGif.png" />
+        </div>
+
+        <small>
+          Next you can create users in order to group their endpoints in one
+          place and ensure that they only receive messages intended for them.
+          Something to note here as well, is that Users a.k.a, entities that
+          are interested in being notified of an event occurrence, can be
+          thought of in a few different ways depending on the use case. In our
+          example, the users are other supply chain apps like our InvoiceApp
+          that want to be notified that a purchase order was created. For
+          Github, their users are repositories. For a todo app, the user could
+          be the actual user who signed up. Just something to keep in mind
+          here.
+        </small>
+        <div class="img-wrapper">
+          <img src="images/diagrams/shouldBeDemoGif.png" />
+        </div>
+
+        <small>
+          In the same way that we used the service ID to create event types,
+          we can use the user ID to register endpoints. After providing the
+          user ID in the path parameters, we also include the url and
+          eventTypes that this endpoint will be subscribed to. In this case,
+          the InvoiceApp only cares about being notified when a purchase order
+          is generated so that is the only event Type that we list here.
+        </small>
+        <div class="img-wrapper">
+          <img src="images/diagrams/shouldBeDemoGif.png" />
+        </div>
+
+        <small>
+          So after the initial setup, we can view our management dashboard for
+          the service we just registered. Currently we are viewing the
+          dashboard for the OrderApp and there’s only one user and one
+          endpoint. From here, we are able to view more granular details about
+          user, event type, and endpoints that were just created.
+        </small>
+        <div class="img-wrapper">
+          <img src="images/diagrams/shouldBeDashGif.png" />
+        </div>
+
+        <small>
+          So here on the left we have our purchase order app and on the right
+          we have an endpoint that our user registered for notifications. So
+          let’s say a purchase order for 5 computers is created, this triggers
+          a message to be sent to the subscribing endpoints which can then
+          view the webhook content and take action accordingly.
+        </small>
+        <div class="img-wrapper">
+          <img src="images/diagrams/shouldBeEventTriggerGif.png" />
+        </div>
+
+        <small>
+          So going back to our management dashboard after the triggered event,
+          we see the corresponding data has updated accordingly with one event
+          being triggered and one message being sent. From here, we are also
+          able to view more granular details about the recently triggered
+          event as well as the corresponding message that was sent.
+        </small>
+        <div class="img-wrapper">
+          <img src="images/diagrams/shouldBeDashGif.png" />
+        </div>
+
+        <h3 id="Teardown">5.5 Teardown</h3>
+
+        <small>
+          If you decide that you no longer need the webhooks feature then you
+          can simple remove the infrastructure with one simple command,
+          “tacklebox destroy”.
+        </small>
+        <div class="img-wrapper">
+          <img src="images/gifs/destroy.gif" />
+        </div>
+
+        <h2 id="How we built Tacklebox">6. How we built Tacklebox</h2>
+        <p>
+          In this section, we will explore how we built Tacklebox, and some of the implementation decisions we made
+          along the way.
+        </p>
+        <h2 id="Webhook feature requirements">
+          6.1 Webhook feature requirements
+        </h2>
+
+        <p>
+          Before we can talk about the Tacklebox architecture, it’s important to understand the feature requirements for
+          a webhook service.
+          Since consolidation is a key part of our use-case, allowing multiple applications to use Tacklebox
+          simultaneously was important to us. Additionally, we wanted to allow providers to specify event types when
+          setting up their webhook service. Recalling the Github example, their webhooks feature would be less useful if
+          their users received notifications for all types of events, rather than being able to select a subset.
+          Allowing granular control over event types is important.
+          Next, we wanted to provide easy access to message history. This includes two distinct parts: persisting every
+          message sent by Tacklebox (along with delivery statuses), and providing an interface to view that message
+          history.
+          Finally, we wanted to send messages to consumers when events occur. Again, this is the central piece of
+          Tacklebox. Without this, it is not a webhook service.
+        </p>
+
+        <h2 id="Event / Message lifecycle">6.2 Event / Message lifecycle</h2>
+
+        <p>
+          The core functionality of a webhook service is sending messages to endpoints when events occur. That process
+          might include the following steps:
+        </p>
+
         <ul>
           <li>
-            <a href="index.html">
-              <img src="images/logos/graphic-red.png" />
-            </a>
+            <p>
+              An event occurs in an application, and that application notifies the webhook service.
+            </p>
           </li>
           <li>
-            <a href="index.html">Home</a>
+            <p>
+              The webhook service looks at the event type, and gathers a list of subscribers that need to be notified.
+            </p>
           </li>
-          <li><a href="case-study.html" class="active">Case Study</a></li>
-          <li><a href="team.html">Our Team</a></li>
-          <li class="flex-float-right">
-            <a href="https://github.com/tacklebox-webhooks" target="_blank">
-              <img
-                src="images/logos/github-mark-light.png"
-                alt="Tacklebox GitHub"
-                class="github"
-              />
-            </a>
+          <li>
+            <p>
+              The webhook service sends a message to every valid subscriber letting them know that an event has
+              occurred.
+              If any message delivery fails, the webhook service attempts to resend the message until it succeeds or
+              reaches a set number of attempts.
+            </p>
+          </li>
+          <li>
+            <p>
+              Each message and its result gets saved to the database, regardless of whether it was successful or not.
+            </p>
           </li>
         </ul>
-      </nav>
-    </header>
 
-    <div class="study-wrapper">
-      <aside class="sidebar">
+
+        <div class="img-wrapper">
+          <img src="images/diagrams/messageLifeCycle.png" />
+        </div>
+
+        <h2 id="Tacklebox Architecture">6.3 Tacklebox Architecture</h2>
+
+        <p>
+          In our architecture, notification intake is handled by a pair of services: API Gateway and Lambda Functions.
+          API Gateway serves as the entry point into Tacklebox, and passes incoming notifications to an intake Lambda.
+          The next two steps in the life cycle, gathering consumers and sending messages, are handled by the Simple
+          Notification Service.
+        </p>
+        <p>
+          The last step, saving messages to the database, is taken care of by a combination of a log service, CloudWatch
+          Logs, and a lambda that transfers message information from the logs to our database.
+        </p>
+        <p>
+          Even though we are going to be focusing almost exclusively on the event/message lifecycle as we discuss our
+          architecture moving forward, our architecture also tracks additional entities in the database, such as
+          applications, users, and event types. Generally speaking, almost all of our CRUD operations are handled by our
+          intake lambda, which communicates directly with the database as needed. Because of our focus on the
+          event/message lifecycle, we’re going to call our database the “message history” moving forward, but this is
+          really a store for all persistent data, including applications, users, event types, etc. There are a few
+          processes that require interacting with both the database and SNS, like creating or updating a subscription,
+          and in those cases the lambda orchestrates the process.
+        </p>
+        <p>
+          Database operations within Tacklebox fall into two categories: workflows which involve SNS, and ones that do
+          not involve SNS. The non-SNS operations are much more simple, and involve fewer pieces of the Tacklebox
+          infrastructure. In these cases, the intake lambda, upon receiving a request from API Gateway, interacts with
+          the database directly.
+        </p>
+
+        <div class="img-wrapper">
+          <img src="images/diagrams/tackleBoxArchitecture.png" />
+        </div>
+
+        <h3 id="Database">6.3.2 Database Choice</h3>
+
+        <p>
+          Before we move into the next section to talk about the evolution of our architecture and the challenges we
+          solved along the way, we'd like to briefly discuss our choice of database.
+        </p>
+
+        <p>
+          Webhook data seems, at first glance, inherently unstructured. Webhooks have a wide range of real-world
+          applications, and each application dictates the kind of information passed back and forth between webhook
+          provider and webhook consumer. An open-source webhook service needs to be flexible enough to handle many of
+          those applications, so having a database that could adapt to meet those needs seemed important.
+        </p>
+
+        <p>
+          This initially led us to consider NoSQL databases due to their strength handling schemaless data. Because we
+          were using AWS infrastructure, the most likely candidate became their DynamoDB service. DynamoDB certainly had
+          its advantages:
+        </p>
+
+        <p>
         <ul>
           <li>
-            <a href="#Introduction"> 1. Introduction</a>
+            <p>
+              It's fully managed so our users wouldn't have to maintain it
+            </p>
           </li>
           <li>
-            <a href="#Intro to Webhooks"> 2. Intro to Webhooks</a>
+            <p>
+              It's designed to be highly available, and that property could be an asset during times when a large volume
+              of events are coming in.
+            </p>
           </li>
           <li>
-            <a href="#Building webhooks is not trivial">
-              3. Building webhooks is not trivial</a
-            >
-          </li>
-          <li>
-            <a href="#Existing Solutions"> 4. Existing Solutions</a>
-          </li>
-          <li>
-            <a href="#How to use Tacklebox"> 5. How to use Tacklebox</a>
-          </li>
-          <li>
-            <a href="#How we built Tacklebox"> 6. How we built Tacklebox</a>
-          </li>
-          <li>
-            <a href="#Future work"> 7. Future work</a>
-          </li>
-          <li>
-            <a href="#References"> 8. References</a>
+            <p>
+              It offers a feature called "Streams" which you can integrate with lambda functions to automatically run
+              code when a record is added, updated, or deleted.
+            </p>
           </li>
         </ul>
-      </aside>
-
-      <main>
-        <section id="case-study">
-          <h1>Case Study</h1>
-
-          <h2 id="Introduction">1. Introduction</h2>
-
-          <p>
-            The traditional model of service-to-service communication in web
-            development can be described as request/response interaction. This
-            synchronous model involves a caller sending a request to a receiver,
-            waiting on a response from the receiver, and processing the response
-            when it is returned. In this model, the caller "asks" the receiver
-            to do something.
-          </p>
-
-          <p>
-            Another model of service-to-service communication is
-            <strong>event-based</strong>
-            interaction, wherein publishers "announce" events that have already
-            happened, and consumers react to those events. In this model,
-            neither the publisher or the consumer "asks" the other to do
-            anything - the publisher simply announces the event and the consumer
-            reacts to it.
-          </p>
-
-          <h2 id="Intro to Webhooks">2. Intro to Webhooks</h2>
-
-          <h3 id="What are webhooks">2.1 What are webhooks?</h3>
-
-          <p>
-            To understand what webhooks are, let’s begin with an example using a
-            tool we all know: GitHub. ​ Imagine you: - are part of a team - have
-            one repo for the project the team will work on - want to do
-            something programmatically when a branch is created by a teammate,
-            like for example, post a message on Slack or something like that. ​
-            The flow would look something like this: first, one of your
-            teammates creates a new branch locally then, the change is pushed to
-            the repo next, the branch is actually created on the repo and
-            finally you want to do something programmatically as a result of
-            this branch creation.
-          </p>
-
-          <div class="img-wrapper">
-            <img
-              src="images/diagrams/githubExample.png"
-              alt="What are webhooks"
-            />
-          </div>
-
-          <p>
-            So the question then becomes, how can you automate what you want to
-            do once the event happens, which in this case, is a branch being
-            created? You basically have two options: Polling and Webhooks.
-          </p>
-
-          <p>
-            In the context of Web APIs, the party interested in data (which in
-            this case, it's you) is called the consumer, and the party that
-            provides the data of interest (which in this case, it's GitHub) is
-            called the provider.<sup class="footnote-ref"
-              ><a href="#fn1" id="fnref1">[1]</a></sup
-            >
-            With polling, you basically send and HTTP request to GitHub every so
-            often to see if there's any updates. In this case, you happen to
-            send a couple requests first with no updates from GitHub, and then a
-            third one where there's an update.<sup class="footnote-ref"
-              ><a href="#fn2" id="fnref2">[2]</a></sup
-            >
-          </p>
-          <div class="img-wrapper">
-            <img src="images/diagrams/polling.png" alt="What are webhooks" />
-          </div>
-
-          <p>
-            With webhooks, however, instead of having GitHub wait for incoming
-            requests in order to handle them, now GitHub proactively sends an
-            HTTP request to you every time an event you care about occurs. To be
-            more specific, GitHub sends an HTTP request to a URL that you
-            register with them every time something of interest happens.<sup
-              class="footnote-ref"
-              ><a href="#fn3" id="fnref3">[3]</a></sup
-            >
-          </p>
-
-          <div class="img-wrapper">
-            <img src="images/diagrams/webhooks.png" alt="What are webhooks" />
-          </div>
-
-          <p>
-            In this particular case, a branch was created, so GitHub sends an
-            HTTP request to your endpoint, and you then acknowledge the request.
-            In other words, a webhook is nothing more than an HTTP request sent
-            when an event happens.
-          </p>
-
-          <p>
-            Up to this point, we have only talked about webhooks from the
-            perspective of the consumer. Now, let's switch gears a little bit to
-            talk about webhooks, but from the perspective of the provider, which
-            in the example was GitHub. In other words, let's put ourselves in
-            GitHub's shoes.
-          </p>
-
-          <div class="img-wrapper">
-            <img
-              src="images/diagrams/webhookProviderExample.png"
-              alt="What are webhooks"
-            />
-          </div>
-
-          <p>
-            Following the same example, if we're GitHub, and a consumer is
-            interested in receiving a webhook every time a branch is created,
-            the workflow would look something like this: first, you receive a
-            subscription request with a URL to send webhooks to, which would be
-            the URL on the right of the slide. This subscription request also
-            specifies the event type you'll look out for to send these webhooks,
-            which in this case is a branch creation. then, you'll persist the
-            subscription after that, a branch is created at some point in time
-            then, you check to see who is subscribed to that event type since
-            there may be more interested parties. and lastly, you send a webhook
-            to the URL of each consumer subscribed to that particular event
-            type, which in this case, for simplicity's sake, is just the
-            consumer from step one.
-          </p>
-
-          <p>
-            To show you how webhooks look like in real applications, here's a
-            screenshot of the UI GitHub offers for webhooks. Up to the right,
-            you can see an "add" button which would be used to request a
-            subscription.
-          </p>
-
-          <div class="img-wrapper">
-            <img
-              src="images/diagrams/githubExample1.png"
-              alt="What are webhooks"
-            />
-          </div>
-
-          <p>
-            After clicking that button, you get to the page where you specify
-            the URL where you want to receive webhooks, the event type you're
-            interested in, among other things.
-          </p>
-
-          <div class="img-wrapper">
-            <img
-              src="images/diagrams/githubExample2.png"
-              alt="What are webhooks"
-            />
-          </div>
-
-          <p>
-            And once you register a URL to receive webhooks, you can see all the
-            webhooks that GitHub has sent you, their headers, their payload,
-            etc.
-          </p>
-
-          <div class="img-wrapper">
-            <img
-              src="images/diagrams/githubExample3.png"
-              alt="What are webhooks"
-            />
-          </div>
-
-          <h3 id="Who uses webhooks">2.2 Who uses webhooks?</h3>
-
-          <p>
-            So far, when talking about webhooks, we've only talked about GitHub.
-            However, it turns out that GitHub is not the only company that
-            offers webhooks. Some examples of companies that offer webhooks are:
-            Stripe, which can send you a webhook when for example a payment is
-            processed Twitter can send you a webhook when for example you
-            receive a direct message Intuit, the company that owns products like
-            TurboTax and QuickBooks, can send you a webhook for example when a
-            budget is created and I mean, I can keep going. The point is,
-            webhooks are everywhere.<sup class="footnote-ref"
-              ><a href="#fn4" id="fnref4">[4]</a></sup
-            >
-          </p>
-
-          <div class="img-wrapper">
-            <img
-              src="images/diagrams/whoUsesWebhooks.png"
-              alt="who uses webhooks"
-            />
-          </div>
-
-          <h3 id="Pros and Cons of building webhooks">
-            2.3 Pros and Cons of building webhooks
-          </h3>
-
-          <p>
-            Now that we have some context around webhooks, we can start talking
-            about things to consider when building them. As a provider, webhooks
-            offer a few benefits: For example, you can provide a better
-            experience to your users that want or need webhooks. And also, you
-            can lower the amount of requests your infrastructure needs to handle
-            over time. ​ However, webhooks are not perfect: If you want a very
-            simple webhooks implementation, it may not take you much. However,
-            if you want a robust implementation, you have to spend a lot of time
-            and effort building it. And the reason you have to spend a lot of
-            time and effort building webhooks well is because building webhooks
-            well is not easy. We're going to talk about why building webhooks
-            well is not easy in the next section.<sup class="footnote-ref"
-              ><a href="#fn4" id="fnref4">[4]</a></sup
-            >
-          </p>
-
-          <h2 id="Building webhooks is not trivial">
-            3. Building webhooks is not trivial
-          </h2>
-
-          <h3 id="Considerations when building webhooks">
-            3.1 Considerations when building webhooks
-          </h3>
-          <p>
-            Now you, the provider, want to build webhooks in your app. However,
-            implementing webhooks well is not as trivial as it may seem at first
-            glance. Since we can go down a rabbit hole here, we decided to talk
-            about 4 different areas or categories that may present a significant
-            amount of challenges. The first area that comes to mind when
-            thinking about building webhooks is failed messages. For example: -
-            What happens if a consumer URL endpoint fails or is unreachable? -
-            Do you try to send the message again? - And if you do, how often and
-            how many times do you retry before you stop? ​ The second area that
-            comes to mind is security and authentication. For instance: - Do you
-            want to make sure the appropriate consumer controls an endpoint
-            before you send messages to it? - How do you allow consumers to
-            verify the integrity of messages? - How about allowing them to
-            verify the origin of messages? The third area revolves around
-            monitoring. For example: - How do you identify frequently failing
-            endpoints? - How do you monitor historical usage patterns? And last
-            but not least we have the area of allowing your consumers to trigger
-            events manually for testing or other purposes. In other words,
-            consumer experience. For instance: - Do you want to allow your
-            consumers to manually trigger events for testing and other purposes?
-            - For example, aside from testing, do you want to allow them to
-            resend a message manually? - And if you do, how would you implement
-            that?
-          </p>
-
-          <div class="img-wrapper">
-            <img
-              src="images/diagrams/considerations.png"
-              alt="Considerations when building webhooks"
-            />
-          </div>
-
-          <h3 id="Building webhooks for a single application">
-            3.2 Building webhooks for a single application
-          </h3>
-
-          <p>
-            In the simplest scenario, building webhooks in one app would look
-            something like this. For simplicity, we have two consumers, but
-            there could be more. All the questions and areas of concern we have
-            would fall into this new webhook implementation we would build in
-            this single app.
-            <sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup>
-          </p>
-
-          <div class="img-wrapper">
-            <img
-              src="images/diagrams/considerationsOne.png"
-              alt="Considerations when building webhooks"
-            />
-          </div>
-
-          <h3 id="Building webhooks for multiple applications">
-            3.3 Building webhooks for multiple applications
-          </h3>
-
-          <p>
-            But what if you need webhooks in more than one app? If you need
-            webhooks in more than one app, it would look something like this.
-          </p>
-
-          <div class="img-wrapper">
-            <img
-              src="images/diagrams/considerationsMulti.png"
-              alt="Considerations when building webhooks"
-            />
-          </div>
-
-          <p>
-            Now, you have all the concerns from before times the number of apps.
-            ​And on top of that, more questions come up in this scenario. For
-            example: - How do you avoid redundant work while implementing and
-            maintaining webhooks across all your apps? - How do you make sure
-            that webhooks are consistent across all your apps? - And lastly, is
-            governance or compliance critical to your apps? and if so, how do
-            you enforce control over your data?
-          </p>
-
-          <h3 id="Extracting webhooks into a service">
-            3.4 Extracting webhooks into a service
-          </h3>
-
-          <p>
-            At this point, the need for building a robust webhooks
-            implementation as its own service becomes clear.<sup
-              class="footnote-ref"
-              ><a href="#fn6" id="fnref6">[6]</a></sup
-            >
-            Now, all these concerns are abstracted away by this service, and
-            this would give us many benefits. For example: - first, we would
-            have a single place to maintain code and add features - also, we
-            would have a single place to monitor the service performance and
-            other metrics - aside from that, we would have one place where to
-            manage related infrastructure - also, we could have consistency
-            across all the apps - aside from that, now the apps don’t have to be
-            aware of who is consuming their webhooks, allowing more focus on
-            business logic - and last but not least, now we would have
-            centralized control over data in order to enforce governance or
-            compliance if those are important for our apps
-          </p>
-
-          <div class="img-wrapper">
-            <img
-              src="images/diagrams/considerationsExtracted.png"
-              alt="Asynchronous Communication"
-            />
-          </div>
-
-          <h2 id="Existing Solutions">4. Existing Solutions</h2>
-
-          <p>
-            So if you’re thinking about implementing a webhooks solution
-            yourself, the question that naturally arises is “how do I do that?”.
-            Thankfully as we saw earlier, many companies have already
-            implemented their own in-house solution and posted their learnings
-            online so there are quite a few blueprints out there.
-            <sup class="footnote-ref"><a href="#fn7" id="fnref7">[7]</a></sup>
-          </p>
-
-          <h3 id="In-House solutions">4.1 In-House solutions</h3>
-
-          <p>
-            We took particular inspiration from how Square went about
-            implementing this feature themselves. They decided to go with AWS
-            because it offered the simplest solution thanks to a new feature
-            that allowed them to configure Lambdas to pull from Simple Queue
-            Service automatically. Some other key features that we liked are: -
-            how they used a queue for messages waiting to be sent to subscribers
-            - how they used lambdas to dequeue messages and send them to
-            subscribers - and how they went about storing successful or failed
-            messages in a separate queue or database<sup class="footnote-ref"
-              ><a href="#fn8" id="fnref8">[8]</a></sup
-            >
-          </p>
-
-          <div class="img-wrapper">
-            <img src="images/diagrams/square.png" alt="In-House solutions" />
-          </div>
-
-          <p>
-            We also liked Wise Engineering’s webhook service implementation.
-            They utilized the SNS (Simple Notification Service) AWS service to
-            handle consumer subscriptions. This meant that in regards to: •
-            Figuring out which subscriptions need to be notified when an event
-            happens • Sending messages to subscribing endpoints when the event
-            is triggered • Handling the retrying logic for failed messages. All
-            of these operations were extracted from the main app logic and were
-            handled by a single service (SNS).<sup class="footnote-ref"
-              ><a href="#fn8" id="fnref8">[8]</a></sup
-            >
-          </p>
-
-          <div class="img-wrapper">
-            <img
-              src="images/diagrams/wiseEngineering.png"
-              alt="In-House solutions"
-            />
-          </div>
-
-          <h3 id="Commercial and Open Source">
-            4.2 Commercial and Open Source
-          </h3>
-
-          <p>
-            So yea, as we mentioned earlier, trying to build webhooks and
-            integrate them even in just one app can be very complex, so as you
-            think about trying to expand that out to multiple different apps in
-            your ecosystem that can be a very difficult and time consuming thing
-            to do. Let’s say for instance that you decide that you don’t want to
-            do that because of the complexity and you’d rather off load that to
-            a 3rd party provider. Generally, you would have two options, either
-            a commercial solution or an open source solution. Unfortunately,
-            there currently isn’t an open source solution that provides webhooks
-            as a service so that bring us back to considering building a
-            solution in-house instead. If you decide to go the commercial route,
-            there are a couple of companies that offer Webhooks as a Service.
-            The general workflow when using the commercial solutions would be as
-            follows: - You, the provider, communicate with their service via API
-            calls to set up subscriptions, create event types, send messages
-            when an event is triggered, and access message history.<sup
-              class="footnote-ref"
-              ><a href="#fn8" id="fnref8">[8]</a></sup
-            >
-          </p>
-
-          <h3 id="Commercial vs. DIY">4.3 Commercial vs. DIY</h3>
-
-          <p>
-            The commercial solutions handle the data storage, message sending
-            processes to your consumers and general infrastructure management. -
-            The trade offs that arise when using commercial solutions would be
-            the fact that’d you’d be sharing data with a third party vendor and
-            there would be a lack of software customization because it isn’t
-            open source. As we saw earlier there are a number of large existing
-            companies that offer webhooks to their customers like Github,
-            Stripe, Twitter, and Square. They had to build their own solutions
-            in-house and manage their own infrastructure but by accepting those
-            trade offs, they were able to have control of their data and
-            customize their solution to better suit their business needs as they
-            change. By examining the pros and cons of each approach we set out
-            to create an open source framework that’s easy to deploy and manage.
-            And that’s where Tacklebox comes into play.
-          </p>
-
-          <div class="img-wrapper">
-            <img
-              src="images/diagrams/commercialvDIY.png"
-              alt="Commercial vs. DIY"
-            />
-          </div>
-
-          <h3 id="Tacklebox use case">4.4 Tacklebox use case</h3>
-
-          <p>
-            So who is Tacklebox geared toward? A good way to find out is to ask
-            yourself these 4 questions. 1.) Do you want to be able to easily
-            integrate this feature across multiple applications? 2.) Do you want
-            to have control over your data? 3.) Are you a small to medium size
-            application. 4.) Is your applications core competency anything but
-            webhooks? If you answered yes to all of the above questions, then
-            Tacklebox would likely be a good fit for you.
-          </p>
-
-          <h2 id="How to use Tacklebox">5. How to use Tacklebox</h2>
-
-          <h3 id="Project Goals">5.1 Project Goals</h3>
-
-          <p>
-            Make it easy to provide webhooks across multiple applications. Make
-            it easy to deploy and manage its infrastructure Make it easy to
-            integrate with an application.
-          </p>
-
-          <h3 id="Deployment">5.1 Deployment</h3>
-
-          <p>
-            To realize the goal of easy deployment, we created our framework in
-            such a way that deployment is abstracted to one simple command.
-            “Tacklebox deploy”. This process usually takes upwards of 20 minutes
-            but is sped up for demo purposes. As you can see here, the output of
-            the deployment has two parts: first, the API Host, which is the Base
-            URL you'll use to communicate with the Tacklebox API; and second,
-            the API Key, which is the key the Tacklebox API uses to authenticate
-            you. These two pieces of information are all you need to use our
-            client libraries, and you don't have to leave your CLI to retrieve
-            them.
-          </p>
-
-          <div class="img-wrapper">
-            <img src="images/diagrams/deployment.png" alt="Deployment" />
-          </div>
-
-          <h3 id="UI">5.2 UI</h3>
-
-          <p>
-            After running tacklebox deploy, you can run the management UI on
-            your local server with one command: tacklebox ui. This management UI
-            ties back to making it easy to provide webhooks across multiple
-            applications. Instead of having to make API calls to figure out the
-            KPIs of your webhooks feature for one of your apps, you can just
-            view it all in a convenient dashboard
-          </p>
-
-          <div class="img-wrapper">
-            <img src="images/diagrams/uiDeploy.png" alt="Deployment" />
-          </div>
-
-          <div class="img-wrapper">
-            <img src="images/diagrams/uiDash.png" />
-          </div>
-
-          <h3 id="Client libraries">5.3 Client libraries</h3>
-
-          <small>
-            To make our framework even easier to manage across your apps, we
-            provided client libraries in 4 languages to make using the Tacklebox
-            framework standard and DRY.
-          </small>
-          <div class="img-wrapper">
-            <img src="images/diagrams/clientLibraries.png" />
-          </div>
-
-          <h3 id="Tacklebox Demo">5.4 Tacklebox Demo</h3>
-          <p>
-            Now we are going to show a brief demo of Tacklebox in action. So
-            imagine that you’re a software engineer at a consumer electronics
-            company and you’re tasked with enabling automatic notifications from
-            the purchase order app to several other supply chain apps.
-          </p>
-
-          <small>
-            The initial workflow when using Tacklebox is to register a service
-            by providing the name of it in a JSON body. The service in this case
-            is going to be our orderApp. This is the app that is going to be
-            providing webhooks.
-          </small>
-          <div class="img-wrapper">
-            <img src="images/diagrams/shouldBeDemoGif.png" />
-          </div>
-
-          <small>
-            Now that we have created a service, we can use its ID in the path
-            parameters to register an event type that users can subscribe to. In
-            this case, we want notifications to be sent whenever a purchase
-            order is created. So we’ll call the event type order created.
-          </small>
-          <div class="img-wrapper">
-            <img src="images/diagrams/shouldBeDemoGif.png" />
-          </div>
-
-          <small>
-            Next you can create users in order to group their endpoints in one
-            place and ensure that they only receive messages intended for them.
-            Something to note here as well, is that Users a.k.a, entities that
-            are interested in being notified of an event occurrence, can be
-            thought of in a few different ways depending on the use case. In our
-            example, the users are other supply chain apps like our InvoiceApp
-            that want to be notified that a purchase order was created. For
-            Github, their users are repositories. For a todo app, the user could
-            be the actual user who signed up. Just something to keep in mind
-            here.
-          </small>
-          <div class="img-wrapper">
-            <img src="images/diagrams/shouldBeDemoGif.png" />
-          </div>
-
-          <small>
-            In the same way that we used the service ID to create event types,
-            we can use the user ID to register endpoints. After providing the
-            user ID in the path parameters, we also include the url and
-            eventTypes that this endpoint will be subscribed to. In this case,
-            the InvoiceApp only cares about being notified when a purchase order
-            is generated so that is the only event Type that we list here.
-          </small>
-          <div class="img-wrapper">
-            <img src="images/diagrams/shouldBeDemoGif.png" />
-          </div>
-
-          <small>
-            So after the initial setup, we can view our management dashboard for
-            the service we just registered. Currently we are viewing the
-            dashboard for the OrderApp and there’s only one user and one
-            endpoint. From here, we are able to view more granular details about
-            user, event type, and endpoints that were just created.
-          </small>
-          <div class="img-wrapper">
-            <img src="images/diagrams/shouldBeDashGif.png" />
-          </div>
-
-          <small>
-            So here on the left we have our purchase order app and on the right
-            we have an endpoint that our user registered for notifications. So
-            let’s say a purchase order for 5 computers is created, this triggers
-            a message to be sent to the subscribing endpoints which can then
-            view the webhook content and take action accordingly.
-          </small>
-          <div class="img-wrapper">
-            <img src="images/diagrams/shouldBeEventTriggerGif.png" />
-          </div>
-
-          <small>
-            So going back to our management dashboard after the triggered event,
-            we see the corresponding data has updated accordingly with one event
-            being triggered and one message being sent. From here, we are also
-            able to view more granular details about the recently triggered
-            event as well as the corresponding message that was sent.
-          </small>
-          <div class="img-wrapper">
-            <img src="images/diagrams/shouldBeDashGif.png" />
-          </div>
-
-          <h3 id="Teardown">5.5 Teardown</h3>
-
-          <small>
-            If you decide that you no longer need the webhooks feature then you
-            can simple remove the infrastructure with one simple command,
-            “tacklebox destroy”.
-          </small>
-          <div class="img-wrapper">
-            <img src="images/diagrams/tearDown.png" />
-          </div>
-
-          <h2 id="How we built Tacklebox">6. How we built Tacklebox</h2>
-
-          <h2 id="Webhook feature requirements">
-            6.1 Webhook feature requirements
-          </h2>
-
-          <p>
-            Before we can talk about the Tacklebox architecture, it’s important
-            to understand the feature requirements for a webhook service. Since
-            consolidation is a key part of our use-case, allowing multiple
-            applications to use Tacklebox simultaneously was important to us. We
-            wanted to allow users to specify event types when creating a new
-            webhook subscription. Recalling the Github example, their webhooks
-            feature would be less useful if it was an all-or-nothing approach.
-            Allowing granular control over these event types is key. Next, we
-            wanted to provide easy access to message history. This includes two
-            distinct parts: persisting every message sent by Tacklebox (along
-            with delivery statuses), and providing an interface to view that
-            message history. Finally, we wanted to send messages to consumers
-            when events occur. Again, this is the central piece of Tacklebox.
-            Without this, it’s not a webhooks service. (As a side note, I want
-            to mention that while this message delivery often occurs shortly
-            after an event notification is sent to Tacklebox, delivery speed was
-            not a primary goal.)
-          </p>
-
-          <h2 id="Event / Message lifecycle">6.2 Event / Message lifecycle</h2>
-
-          <p>
-            The core functionality of a webhook service is sending messages to
-            endpoints when events occur. That process might include the
-            following steps: An event occurs in an application, and that
-            application notifies the webhook service. The webhook service looks
-            at the event type, and gathers a list of subscribers that need to be
-            notified The webhook service sends a message to every valid
-            subscriber letting them know that an event has occurred. If any
-            message delivery fails, the webhook service attempts to resend the
-            message until it succeeds or reaches a set number of attempts. Each
-            message and its result gets saved to the database, regardless of
-            whether it was successful or not.<sup class="footnote-ref"
-              ><a href="#fn13" id="fnref13">[13]</a></sup
-            >
-          </p>
-
-          <div class="img-wrapper">
-            <img src="images/diagrams/messageLifeCycle.png" />
-          </div>
-
-          <h2 id="Tacklebox Architecture">6.3 Tacklebox Architecture</h2>
-
-          <p>
-            Now even though we’re going to be focusing almost exclusively on the
-            event/message lifecycle as we discuss our architecture moving
-            forward, I did want to add a quick comment about how our
-            architecture handles basic processes like adding, updating, and
-            deleting entities. Generally speaking, almost all of our CRUD
-            operations are handled by our intake lambda, and its communication
-            with the database. Because of our focus on the event/message
-            lifecycle, we’re going to call our database the “message history”
-            moving forward, but this is really our store for all persistent
-            data, including services, users, event types, etc. There are a few
-            processes that require touching both the database and SNS, like
-            creating or updating a subscription, and in those cases the lambda
-            again orchestrates the process.
-            <sup class="footnote-ref"
-              ><a href="#fn13" id="fnref13">[13]</a></sup
-            >
-          </p>
-
-          <div class="img-wrapper">
-            <img src="images/diagrams/tackleBoxArchitecture.png" />
-          </div>
-
-          <h3 id="Database">6.3.2 Database Choice</h3>
-
-          <p>
-            Before we move into the next section to talk about the evolution of our architecture and the challenges we solved along the way, we'd like to briefly discuss our choice of database. 
-          </p>
-
-          <p>
-            Webhook data seems, at first glance, inherently unstructured.  Webhooks have a wide range of real-world applications, and each application dictates the kind of information passed back and forth between webhook provider and webhook consumer.  An open-source webhook service needs to be flexible enough to handle many of those applications, so having a database that could adapt to meet those needs seemed important.
-          </p>
-
-          <p>
-            This initially led us to consider NoSQL databases due to their strength handling schemaless data.  Because we were using AWS infrastructure, the most likely candidate became their DynamoDB service.  DynamoDB certainly had its advantages:
-          </p>
-
-          <ul>
-            <li>
-              <p>
-                It's fully managed so our users wouldn't have to maintain it
-              </p>
+        </p>
+
+        <p>
+          The more we considered this, however, the more we realized that webhook data as a whole is actually quite
+          predictable and structured. Entities like users, events, messages, and subscriptions share common
+          characteristics across webhook implementations. In fact, the only piece of data related to webhooks that is
+          really quite different across implementations is the payload that gets delivered to the consumer when an event
+          occurs. We would certainly need to be able to handle a range of payloads, but even those have high-level
+          similarities, and most can be represented by a JSON object.
+        </p>
+
+        <p>
+          The following Entity Relationship Diagram shows how we ended up structuring our data. We used the jsonb data
+          type for our payload field in the events table, which allows us to store normal JSON objects efficiently.
+        </p>
+
+        <div class="img-wrapper">
+          <img src="images/diagrams/tackleboxERD.png" />
+        </div>
+
+        <p>
+          Most of the features we'd be trading off by going with PostgreSQL instead of DynamoDB were ones our use case
+          didn't really demand - specifically built for high availability, schemaless, and able to support tables of
+          virtually any size and very high read/write traffic. The one thing we didn't want to lose was the fact that
+          DynamoDB is fully managed, which was key to our project goal of making Tacklebox easy to deploy and manage.
+        </p>
+
+        <p>
+          Amazon's Relational Database Service (RDS) allowed us to retain most of that benefit. It's not quite as
+          hands-off as DynamoDB when it comes to things like scaling, however it comes close regarding overall
+          maintenance. RDS handles the hosting, provisioning, and patching of the database, and it allowed us to use
+          PostgreSQL as the actual database, which is widely used and reliable.
+        </p>
+
+        <p>
+          In the end, both DynamoDB and RDS w/ PostgreSQL would have worked in our implementation, but our use case
+          didn't really take advantage of DynamoDB's strengths, so we chose RDS w/ PostgreSQL.
+        </p>
+
+        <h2 id="Challenges">6.4 Challenges</h2>
+
+        <h2 id="Challenges">6.4.1 How we dealt with wasted uptime</h2>
+
+        <p>
+          Our initial implementation of Tacklebox used a single application
+          server. It could have worked for our use-case, but we saw an
+          opportunity to optimize our infrastructure. Webhooks usage patterns
+          are often unpredictable and can have moments of high-use as well as
+          periods of minimal usage. As a result, with this single app server
+          architecture, we may have had a lot of unused compute resources. To
+          address this, we decided to use AWS Lambda Functions. - Focus less
+          on fact that implementation works, more on the fact that the
+          architecture works. Less about our personal implementation and more
+          about how architecture in general satisfies requirements.
+        </p>
+
+        <div class="img-wrapper">
+          <img src="images/diagrams/whyServerless.png" />
+        </div>
+
+        <p>
+          Lambda functions, which are AWS’s “Function as a Service” offering,
+          allow us to only run code when needed. This also means that you only
+          pay for compute that you actually need. Lambdas, of course, come
+          with tradeoffs: Cold start times can increase latency - cold start
+          time refers to the time it takes to load the function into memory
+          before it can be invoked. Stateless, so accessing persistent data
+          requires a call to another service Function execution time has a
+          limit
+        </p>
+
+        <div class="img-wrapper">
+          <img src="images/diagrams/lambdas.png" />
+        </div>
+
+        <p>
+          We were ok with these tradeoffs, so we decided to use lambdas. Going
+          with lambdas, though, meant that each lambda would have to do all of
+          the following tasks every time it runs: They would need to: Intake
+          the new event and persist it to db Gather subscriptions and create
+          messages for each consumer Send messages to all consumers and wait
+          for their responses Write responses to db Respond back to the event
+          producer after all of these tasks are done This is a lot of
+          responsibility (and potentially a lot of execution time) for a
+          single function. So while we believed lambdas improved our
+          architecture, they also added some additional challenges we wanted
+          to address. To explain these remaining challenges, and how they
+          influenced our architecture.
+        </p>
+
+        <div class="img-wrapper">
+          <img src="images/diagrams/manyJobs.png" />
+        </div>
+
+        <h2 id="Challenges">6.4.2 How we handled message fanout</h2>
+
+        <p>
+          With this implementation, the message fanout process in particular
+          is expensive. When an event comes in a lambda function gets fired up
+          and creates a list of messages that need to be sent to each consumer
+          listening for that event type.
+        </p>
+
+        <div class="img-wrapper">
+          <img src="images/diagrams/fanOut.png" />
+        </div>
+
+        <p>
+          The lambda not only has to send the messages, but also has to wait
+          for a response from every one before it can finish its work by
+          writing the results to the message history. Because webhooks are
+          typically application or user-specific, the number of consumers
+          needing to be notified when a given event occurs is typically low,
+          however even with tens of consumers the chance that one of the
+          consumer’s endpoints will fail over time increases.
+          <!-- Insert citation for DDIA pg. 278 here -->
+        </p>
+
+        <p>
+          When a message fails to be delivered successfully, the burden of
+          resending still lies with the same lambda. It can't save the results
+          of any of the messages it delivered until all of the retries are
+          also done. We chose to implement our retry logic with an exponential
+          backoff, which is a common algorithm that increases the amount of
+          time between successive retries. This means that not only might a
+          lambda have to wait for multiple retries to finish, the amount of
+          time between retries is going to increase every time. We originally
+          chose to use lambdas to reduce unusued uptime, and having a lambda
+          function running for minutes at a time just waiting to run the next
+          retry was contrary to that decision.
+        </p>
+
+        <div class="img-wrapper">
+          <img src="images/diagrams/retries.png" />
+        </div>
+
+        <p>
+          A quick note about endpoint failure and what that means in the
+          context of Tacklebox and webhooks in general. An HTTP response to a
+          webhook request typically falls into two general categories - you
+          either get a response from the consumer or you don't (i.e. a
+          timeout). At minimum, we need to know that a consumer's endpoint
+          received the message, so we consider timeouts within a reasonable
+          amount of time to be failures. When you do receive an explicit
+          response from a consumer, though, a few questions arise:
+        </p>
+
+        <ul>
+          <li>
+            <p>
+              Do we consider a response status from 300-399 a failure? If not,
+              do we follow the redirects until we get to a 200-299 response?
+              How many redirects do we follow if there are multiple?
+            </p>
+          </li>
+          <li>
+            <p>Do we consider a response status from 400-499 a failure?</p>
+          </li>
+          <li>
+            <p>
+              Do we consider a response status from 500-599 a failure? If not,
+              how do we know if we should send another message? The consumer's
+              endpoint could have failed before or after it actually processed
+              the message, and we'd have no way to tell.
+            </p>
+          </li>
+        </ul>
+
+        <p>
+          From a webhook provider's perspective, the question for any given
+          status code is not only does this indicate the consumer received the
+          message, but also does it make sense to try sending the message
+          again. Repeatedly sending messages to endpoints that are
+          misconfigured by the consumer, for example, may not make sense. If
+          you consider a certain status code a failure, you are indirectly
+          saying that you will retry when you encounter it. Existing webhook
+          implementations approach this in a wide variety of ways, from
+          strictly requiring a 200 response to considering anything other than
+          a 5xx response a success. We chose the latter approach as we thought
+          it was reasonable to view the core responsibility of a webhook
+          service as getting messages to their specified endpoints, not
+          ensuring those endpoints correctly process the message.
+        </p>
+
+        <p>
+          In order to reduce the number of messages our lambdas had to send,
+          we could have done a couple of things. We could have added a second
+          type of lambda, which we’ll call a messenger lambda, which would
+          have allowed us to separate the message creating and message sending
+          processes. With this approach, when an event comes in, our intake
+          lambda gathers the list of consumers that need messages and calls a
+          separate messenger lambda to send each message. This way, our
+          messenger lambdas can all run at the same time and don’t have to
+          wait for each other to finish.
+        </p>
+
+        <div class="img-wrapper">
+          <img src="images/diagrams/initialApproach.png" />
+        </div>
+
+        <p>
+          Retries would be difficult to implement with this approach though -
+          where would we put messages that need to be retried? We could keep
+          the intake lambda running until all of the messenger lambdas finish,
+          so that if one fails it could spin up a new messenger lambda for the
+          retry, but then the intake lambda would again be waiting for all
+          retries to finish which we don't want. We could have also
+          potentially put outgoing messages in the database, but that’s a lot
+          of writing, reading, and deleting for temporary data.
+        </p>
+
+        <p>
+          We ideally wanted somewhere we could buffer our outgoing messages,
+          and have a mechanism to quickly pull them off in-order. That’s
+          exactly what a queue does, and a queue would have the added benefit
+          of centralizing our entire outgoing message list into one place,
+          which simplifies debugging.
+        </p>
+
+        <p>
+          Amazon’s Simple Queue Service, or SQS for short, does exactly this.
+          SQS gives us a reliable place to store both our initial and retry
+          messages, which is great because our intake lambdas can now just
+          focus on creating messages for an event. SQS doesn’t send messages
+          to consumers itself, so we keep our messenger lambdas in-place and
+          continue to use them to send messages. The messenger lambdas check
+          SQS for new messages, and pull them off as soon as they appear. To
+          prevent our messenger lambdas from waiting on retries, we have them
+          immediately put failed messages back into the queue. Those failed
+          messages are then picked off of the queue by a different lambda
+          invocation at a later time.
+        </p>
+
+        <div class="img-wrapper">
+          <img src="images/diagrams/sqs.png" />
+        </div>
+
+        <p>
+          By adding SQS we increased the complexity of our implementation, but
+          each piece does fewer things and we sufficiently separated our
+          concerns among services suited for their individual jobs.
+        </p>
+
+        <p>
+          We thought that this was a perfectly reasonable implementation,
+          however we wondered if we could eliminate, ironically enough for a
+          webhook service, the polling in our architecture. Our messenger
+          lambdas use polling to constantly check SQS to see if new messages
+          have been added. As we’ve mentioned, webhook events can be
+          intermittent, and all of those polling requests in between events
+          can add up.
+        </p>
+        <p>
+          Under the hood it gets even more interesting, because when using
+          lambdas with SQS, Amazon requires that a minimum of 5 parallel
+          lambdas poll SQS, so the number of requests is higher still. When
+          your queue is constantly full, all of this polling is a benefit
+          because it allows you to dequeue more quickly, but with our use
+          case, there would likely be periods where this is wasteful. If we
+          could eliminate that polling entirely, we could potentially make our
+          implementation more efficient and reduce latency in the message
+          sending process.
+        </p>
+
+        <div class="img-wrapper">
+          <img src="images/diagrams/lasers.png" />
+        </div>
+
+        <p>
+          We were able to remove polling from the message sending process by
+          using Amazon’s Simple Notification Service, or SNS. SNS is a
+          messaging service that, when given an event, sends a message to
+          every subscriber to that event. It also automatically handles
+          retries. In other words, it does the same job that the combination
+          of SQS and messenger lambda previously did for us. Rather than use
+          polling, SNS uses a pub/sub model where new messages are published
+          to topics, and anyone who is subscribed to that topic automatically
+          receives a message. In webhook parlance, every consumer that’s
+          listening for that event type receives a message.
+        </p>
+
+        <div class="img-wrapper">
+          <img src="images/diagrams/sns.png" />
+        </div>
+
+        <p>
+          It’s important to note that SNS itself stores subscription data, so
+          that’s one more job SNS handles for us that our lambdas were
+          previously handling. With SNS, there is no longer a need to pull
+          consumer subscriptions when an event comes in - SNS already knows
+          who needs to be notified.
+        </p>
+
+        <p>
+          Switching from SQS to SNS simplifies our architecture and increases
+          our efficiency, however there are some tradeoffs with this approach:
+        </p>
+
+        <ul>
+          <li>
+            <p>
+              SNS has a max retry delay of 1 hr, compared to SQS’ 12 hrs, so
+              it’s got less flexibility to implement large retry windows
+            </p>
+          </li>
+          <li>
+            <p>
+              Even though SNS keeps track of subscriptions for us, we still
+              need subscription data in our main database for querying
+              purposes. This means that we now have to keep track of
+              subscriptions in two places and make sure they remain identical.
+              For example, if a consumer chooses to change which event types
+              they are subscribed to, or if a provider decides to add a new
+              event type to their service, we have to make those changes in
+              both SNS and the main database.
+            </p>
+          </li>
+        </ul>
+
+        <p>
+          Both SQS and SNS approaches meet our project goals and both have
+          their benefits. In the end we chose SNS because it better fits our
+          use case, it removes polling from the message sending process, and
+          it includes features like rate limiting and customizable retry logic
+          out of the box.
+        </p>
+
+        <h2 id="Challenges">6.4.3 How we persisted message history</h2>
+
+        <p>
+          SNS doesn’t have a built-in way to write message data to our
+          database. And in a way, this makes sense - its main job is to fan
+          out messages to consumers, and as far as it’s concerned, once it
+          delivers a message or makes every effort to, its job is done.
+        </p>
+
+        <div class="img-wrapper">
+          <img src="images/diagrams/sns2.png" />
+        </div>
+
+        <p>
+          Our entire event/message lifecycle currently ends the moment SNS
+          sends a message to a consumer and receives a response. The only
+          thing that’s been saved to our database at that point is the
+          original event itself, but no message data has been saved. That
+          means no record of who was sent a message and when, what the payload
+          was, what response SNS received back, etc. So we needed to find a
+          way to get message data from SNS into our message history after the
+          message send process completed.
+        </p>
+
+        <!-- insert image of post process? -->
+
+        <p>
+          Our first thought was to see if we could tack on some post-process
+          to SNS, like a function that it executes immediately after it
+          receives a response back from a consumer. SNS doesn’t have a
+          built-in way to do this, but it does allow lambda triggers to be set
+          to run whenever a message is published. Inserting lambdas here
+          though, would add more complexity because the lambda would again be
+          responsible for sending the message to the consumer, and at that
+          point we’re essentially back at our previous SQS implementation.
+          Instead, we found a way to use a service that SNS was already
+          integrated with.
+        </p>
+
+        <p>
+          SNS stores logging data in Amazon’s CloudWatch Logs service, which
+          is commonly used for debugging and a variety of other tasks. SNS can
+          be configured to log specific events, and in this case we wanted it
+          to log every time it received a response back from a consumer. Using
+          CloudWatch Logs, we now had our persistent message store, but it
+          wasn’t in the same place as the rest of our data, so we needed to
+          find a way to get it from CloudWatch Logs into our message history.
+        </p>
+
+        <div class="img-wrapper">
+          <img src="images/diagrams/sns3.png" />
+        </div>
+
+        <p>
+          CloudWatch Logs can be set up to asynchronously invoke a Lambda
+          function, so we set CloudWatch Logs to invoke the lambda when it
+          received a new SNS log, and once invoked, the lambda transfers the
+          message data in the log to the main message history.
+        </p>
+
+        <div class="img-wrapper">
+          <img src="images/diagrams/sns4.png" />
+        </div>
+
+        <p>
+          In light of these added steps and services, SNS definitely added
+          complexity to our architecture in some areas. It still, however,
+          abstracted away key functionality in others, and overall we felt
+          that its feature set best fit our implementation and provided a few
+          additional nice-to-haves out of the box.
+        </p>
+
+        <h2 id="Future work">7. Future work</h2>
+
+        <p>
+          And that's Tacklebox! We've got a few ideas that we'd love to work
+          on moving forward, which could add to its flexibility as a webhook
+          service:
+        </p>
+
+        <h3 id="Proxy Server">7.1 Proxy Server</h3>
+
+        <p>
+          Tacklebox currently does two things by default that, while useful,
+          are not features all providers might want:
+        </p>
+
+        <ul>
+          <li>
+            <p>
+              It requires consumers to confirm their endpoint, meaning they
+              have to verify they are in control of their endpoint before our
+              service will send any webhook notifications to them.
+            </p>
+          </li>
+          <li>
+            <p>
+              It includes AWS metadata in messages sent to consumers that
+              isn’t necessarily relevant to Tacklebox
+            </p>
+          </li>
+        </ul>
+
+        <p>
+          We could make both of these optional by putting some logic in
+          between SNS and consumers. One way we might do that would be to use
+          a proxy server, which would handle the auto-confirmations and
+          stripping of metadata. But using a typical server would cause us to
+          lose some of that uptime efficiency we gained by going with lambdas.
+        </p>
+
+        <div class="img-wrapper">
+          <img src="images/diagrams/proxy.png" />
+        </div>
+
+        <p>
+          Speaking of which, we could use lambdas to accomplish this, but as
+          we saw in the last section, that extra set of lambdas again adds
+          complexity to the architecture for a feature that only a small
+          percentage of our users would probably use.
+        </p>
+
+        <h3 id="Other Ideas">7.2 Other Ideas</h3>
+
+        <p>Another few things we’d like to add are:</p>
+
+        <ul>
+          <li>
+            <p>
+              The ability to dynamically set and change settings like retry
+              policy and rate limiting on a per-consumer basis.
+            </p>
+          </li>
+          <li>
+            <p>
+              A consumer UI that potentially allows them to view their own
+              message history and do things like resend failed messages
+            </p>
+          </li>
+          <li>
+            <p>
+              A dead-letter queue for efficient processing of messages that
+              still, after the max number of retries, failed to be delivered
+              to their consumer endpoint
+            </p>
+          </li>
+          <li>
+            <p>
+              A feature that detects when a consumer endpoint has passed some
+              threshold for successive failures and automatically removes that
+              consumer’s subscription from our service
+            </p>
+          </li>
+        </ul>
+
+        <h2 id="References">8. References</h2>
+        <div class="footnotes">
+          <ol class="footnotes-list">
+            <li id="fn1" class="footnote-item">
+              <a href="https://martinfowler.com/bliki/MonolithFirst.html">
+                https://martinfowler.com/bliki/MonolithFirst.html
+              </a>
+              <a href="#fnref1">↩︎</a>
             </li>
-            <li>
-              <p>
-                It's designed to be highly available, and that property could be an asset during times when a large volume of events are coming in.
-              </p>
+            <li id="fn2" class="footnote-item">
+              <a href="https://martinfowler.com/articles/break-monolith-into-microservices.html">
+                https://martinfowler.com/articles/break-monolith-into-microservices.html
+              </a>
+              <a href="#fnref2">↩︎</a>
             </li>
-            <li>
-              <p>
-                It offers a feature called "Streams" which you can integrate with lambda functions to automatically run code when a record is added, updated, or deleted.
-              </p>
+            <li id="fn3" class="footnote-item">
+              <a href="https://martinfowler.com/articles/microservices.html">
+                https://martinfowler.com/articles/microservices.html
+              </a>
+              <a href="#fnref3">↩︎</a>
             </li>
-          </ul>
-          </p>
-
-          <p>
-            The more we considered this, however, the more we realized that webhook data as a whole is actually quite predictable and structured.  Entities like users, events, messages, and subscriptions share common characteristics across webhook implementations.  In fact, the only piece of data related to webhooks that is really quite different across implementations is the payload that gets delivered to the consumer when an event occurs.  We would certainly need to be able to handle a range of payloads, but even those have high-level similarities, and most can be represented by a JSON object.
-          </p>
-
-          <p>
-            The following Entity Relationship Diagram shows how we ended up structuring our data.  We used the jsonb data type for our payload field in the events table, which allows us to store normal JSON objects efficiently.
-          </p>
-
-          <div class="img-wrapper">
-            <img src="images/diagrams/tackleboxERD.png" />
-          </div>
-
-          <p>
-            Most of the features we'd be trading off by going with PostgreSQL instead of DynamoDB were ones our use case didn't really demand - specifically built for high availability, schemaless, and able to support tables of virtually any size and very high read/write traffic.  The one thing we didn't want to lose was the fact that DynamoDB is fully managed, which was key to our project goal of making Tacklebox easy to deploy and manage.
-          </p>
-
-          <p>
-            Amazon's Relational Database Service (RDS) allowed us to retain most of that benefit.  It's not quite as hands-off as DynamoDB when it comes to things like scaling, however it comes close regarding overall maintenance.  RDS handles the hosting, provisioning, and patching of the database, and it allowed us to use PostgreSQL as the actual database, which is widely used and reliable.
-          </p>
-
-          <p>
-            In the end, both DynamoDB and RDS w/ PostgreSQL would have worked in our implementation, but our use case didn't really take advantage of DynamoDB's strengths, so we chose RDS w/ PostgreSQL.
-          </p>
-
-          <h2 id="Challenges">6.4 Challenges</h2>
-
-          <h2 id="Challenges">6.4.1 How we dealt with wasted uptime</h2>
-
-          <p>
-            Our initial implementation of Tacklebox used a single application
-            server. It could have worked for our use-case, but we saw an
-            opportunity to optimize our infrastructure. Webhooks usage patterns
-            are often unpredictable and can have moments of high-use as well as
-            periods of minimal usage. As a result, with this single app server
-            architecture, we may have had a lot of unused compute resources. To
-            address this, we decided to use AWS Lambda Functions. - Focus less
-            on fact that implementation works, more on the fact that the
-            architecture works. Less about our personal implementation and more
-            about how architecture in general satisfies requirements.
-          </p>
-
-          <div class="img-wrapper">
-            <img src="images/diagrams/whyServerless.png" />
-          </div>
-
-          <p>
-            Lambda functions, which are AWS’s “Function as a Service” offering,
-            allow us to only run code when needed. This also means that you only
-            pay for compute that you actually need. Lambdas, of course, come
-            with tradeoffs: Cold start times can increase latency - cold start
-            time refers to the time it takes to load the function into memory
-            before it can be invoked. Stateless, so accessing persistent data
-            requires a call to another service Function execution time has a
-            limit
-          </p>
-
-          <div class="img-wrapper">
-            <img src="images/diagrams/lambdas.png" />
-          </div>
-
-          <p>
-            We were ok with these tradeoffs, so we decided to use lambdas. Going
-            with lambdas, though, meant that each lambda would have to do all of
-            the following tasks every time it runs: They would need to: Intake
-            the new event and persist it to db Gather subscriptions and create
-            messages for each consumer Send messages to all consumers and wait
-            for their responses Write responses to db Respond back to the event
-            producer after all of these tasks are done This is a lot of
-            responsibility (and potentially a lot of execution time) for a
-            single function. So while we believed lambdas improved our
-            architecture, they also added some additional challenges we wanted
-            to address. To explain these remaining challenges, and how they
-            influenced our architecture.
-          </p>
-
-          <div class="img-wrapper">
-            <img src="images/diagrams/manyJobs.png" />
-          </div>
-
-          <h2 id="Challenges">6.4.2 How we handled message fanout</h2>
-
-          <p>
-            With this implementation, the message fanout process in particular
-            is expensive. When an event comes in a lambda function gets fired up
-            and creates a list of messages that need to be sent to each consumer
-            listening for that event type.
-          </p>
-
-          <div class="img-wrapper">
-            <img src="images/diagrams/fanOut.png" />
-          </div>
-
-          <p>
-            The lambda not only has to send the messages, but also has to wait
-            for a response from every one before it can finish its work by
-            writing the results to the message history. Because webhooks are
-            typically application or user-specific, the number of consumers
-            needing to be notified when a given event occurs is typically low,
-            however even with tens of consumers the chance that one of the
-            consumer’s endpoints will fail over time increases.
-            <!-- Insert citation for DDIA pg. 278 here -->
-          </p>
-
-          <p>
-            When a message fails to be delivered successfully, the burden of
-            resending still lies with the same lambda. It can't save the results
-            of any of the messages it delivered until all of the retries are
-            also done. We chose to implement our retry logic with an exponential
-            backoff, which is a common algorithm that increases the amount of
-            time between successive retries. This means that not only might a
-            lambda have to wait for multiple retries to finish, the amount of
-            time between retries is going to increase every time. We originally
-            chose to use lambdas to reduce unusued uptime, and having a lambda
-            function running for minutes at a time just waiting to run the next
-            retry was contrary to that decision.
-          </p>
-
-          <div class="img-wrapper">
-            <img src="images/diagrams/retries.png" />
-          </div>
-
-          <p>
-            A quick note about endpoint failure and what that means in the
-            context of Tacklebox and webhooks in general. An HTTP response to a
-            webhook request typically falls into two general categories - you
-            either get a response from the consumer or you don't (i.e. a
-            timeout). At minimum, we need to know that a consumer's endpoint
-            received the message, so we consider timeouts within a reasonable
-            amount of time to be failures. When you do receive an explicit
-            response from a consumer, though, a few questions arise:
-          </p>
-
-          <ul>
-            <li>
-              <p>
-                Do we consider a response status from 300-399 a failure? If not,
-                do we follow the redirects until we get to a 200-299 response?
-                How many redirects do we follow if there are multiple?
-              </p>
+            <li id="fn4" class="footnote-item">
+              <a href="https://martinfowler.com/articles/microservices.html">
+                https://martinfowler.com/articles/microservices.html
+              </a>
+              <a href="#fnref4">↩︎</a>
             </li>
-            <li>
-              <p>Do we consider a response status from 400-499 a failure?</p>
+            <li id="fn5" class="footnote-item">
+              <a href="http://msdl.cs.mcgill.ca/people/tfeng/thesis/node38.html">
+                http://msdl.cs.mcgill.ca/people/tfeng/thesis/node38.html
+              </a>
+              <a href="#fnref5">↩︎</a>
             </li>
-            <li>
-              <p>
-                Do we consider a response status from 500-599 a failure? If not,
-                how do we know if we should send another message? The consumer's
-                endpoint could have failed before or after it actually processed
-                the message, and we'd have no way to tell.
-              </p>
+            <li id="fn6" class="footnote-item">
+              <a href="http://msdl.cs.mcgill.ca/people/tfeng/thesis/node38.html">
+                http://msdl.cs.mcgill.ca/people/tfeng/thesis/node38.html
+              </a>
+              <a href="#fnref6">↩︎</a>
             </li>
-          </ul>
-
-          <p>
-            From a webhook provider's perspective, the question for any given
-            status code is not only does this indicate the consumer received the
-            message, but also does it make sense to try sending the message
-            again. Repeatedly sending messages to endpoints that are
-            misconfigured by the consumer, for example, may not make sense. If
-            you consider a certain status code a failure, you are indirectly
-            saying that you will retry when you encounter it. Existing webhook
-            implementations approach this in a wide variety of ways, from
-            strictly requiring a 200 response to considering anything other than
-            a 5xx response a success. We chose the latter approach as we thought
-            it was reasonable to view the core responsibility of a webhook
-            service as getting messages to their specified endpoints, not
-            ensuring those endpoints correctly process the message.
-          </p>
-
-          <p>
-            In order to reduce the number of messages our lambdas had to send,
-            we could have done a couple of things. We could have added a second
-            type of lambda, which we’ll call a messenger lambda, which would
-            have allowed us to separate the message creating and message sending
-            processes. With this approach, when an event comes in, our intake
-            lambda gathers the list of consumers that need messages and calls a
-            separate messenger lambda to send each message. This way, our
-            messenger lambdas can all run at the same time and don’t have to
-            wait for each other to finish.
-          </p>
-
-          <div class="img-wrapper">
-            <img src="images/diagrams/initialApproach.png" />
-          </div>
-
-          <p>
-            Retries would be difficult to implement with this approach though -
-            where would we put messages that need to be retried? We could keep
-            the intake lambda running until all of the messenger lambdas finish,
-            so that if one fails it could spin up a new messenger lambda for the
-            retry, but then the intake lambda would again be waiting for all
-            retries to finish which we don't want. We could have also
-            potentially put outgoing messages in the database, but that’s a lot
-            of writing, reading, and deleting for temporary data.
-          </p>
-
-          <p>
-            We ideally wanted somewhere we could buffer our outgoing messages,
-            and have a mechanism to quickly pull them off in-order. That’s
-            exactly what a queue does, and a queue would have the added benefit
-            of centralizing our entire outgoing message list into one place,
-            which simplifies debugging.
-          </p>
-
-          <p>
-            Amazon’s Simple Queue Service, or SQS for short, does exactly this.
-            SQS gives us a reliable place to store both our initial and retry
-            messages, which is great because our intake lambdas can now just
-            focus on creating messages for an event. SQS doesn’t send messages
-            to consumers itself, so we keep our messenger lambdas in-place and
-            continue to use them to send messages. The messenger lambdas check
-            SQS for new messages, and pull them off as soon as they appear. To
-            prevent our messenger lambdas from waiting on retries, we have them
-            immediately put failed messages back into the queue. Those failed
-            messages are then picked off of the queue by a different lambda
-            invocation at a later time.
-          </p>
-
-          <div class="img-wrapper">
-            <img src="images/diagrams/sqs.png" />
-          </div>
-
-          <p>
-            By adding SQS we increased the complexity of our implementation, but
-            each piece does fewer things and we sufficiently separated our
-            concerns among services suited for their individual jobs.
-          </p>
-
-          <p>
-            We thought that this was a perfectly reasonable implementation,
-            however we wondered if we could eliminate, ironically enough for a
-            webhook service, the polling in our architecture. Our messenger
-            lambdas use polling to constantly check SQS to see if new messages
-            have been added. As we’ve mentioned, webhook events can be
-            intermittent, and all of those polling requests in between events
-            can add up.
-          </p>
-          <p>
-            Under the hood it gets even more interesting, because when using
-            lambdas with SQS, Amazon requires that a minimum of 5 parallel
-            lambdas poll SQS, so the number of requests is higher still. When
-            your queue is constantly full, all of this polling is a benefit
-            because it allows you to dequeue more quickly, but with our use
-            case, there would likely be periods where this is wasteful. If we
-            could eliminate that polling entirely, we could potentially make our
-            implementation more efficient and reduce latency in the message
-            sending process.
-          </p>
-
-          <div class="img-wrapper">
-            <img src="images/diagrams/lasers.png" />
-          </div>
-
-          <p>
-            We were able to remove polling from the message sending process by
-            using Amazon’s Simple Notification Service, or SNS. SNS is a
-            messaging service that, when given an event, sends a message to
-            every subscriber to that event. It also automatically handles
-            retries. In other words, it does the same job that the combination
-            of SQS and messenger lambda previously did for us. Rather than use
-            polling, SNS uses a pub/sub model where new messages are published
-            to topics, and anyone who is subscribed to that topic automatically
-            receives a message. In webhook parlance, every consumer that’s
-            listening for that event type receives a message.
-          </p>
-
-          <div class="img-wrapper">
-            <img src="images/diagrams/sns.png" />
-          </div>
-
-          <p>
-            It’s important to note that SNS itself stores subscription data, so
-            that’s one more job SNS handles for us that our lambdas were
-            previously handling. With SNS, there is no longer a need to pull
-            consumer subscriptions when an event comes in - SNS already knows
-            who needs to be notified.
-          </p>
-
-          <p>
-            Switching from SQS to SNS simplifies our architecture and increases
-            our efficiency, however there are some tradeoffs with this approach:
-          </p>
-
-          <ul>
-            <li>
-              <p>
-                SNS has a max retry delay of 1 hr, compared to SQS’ 12 hrs, so
-                it’s got less flexibility to implement large retry windows
-              </p>
+            <li id="fn7" class="footnote-item">
+              <a href="https://dzone.com/articles/expecting-failures-in-microservices-and-working-ar">
+                https://dzone.com/articles/expecting-failures-in-microservices-and-working-ar
+              </a>
+              <a href="#fnref7">↩︎</a>
             </li>
-            <li>
-              <p>
-                Even though SNS keeps track of subscriptions for us, we still
-                need subscription data in our main database for querying
-                purposes. This means that we now have to keep track of
-                subscriptions in two places and make sure they remain identical.
-                For example, if a consumer chooses to change which event types
-                they are subscribed to, or if a provider decides to add a new
-                event type to their service, we have to make those changes in
-                both SNS and the main database.
-              </p>
+            <li id="fn8" class="footnote-item">
+              <a href="https://dzone.com/articles/patterns-for-microservices-sync-vs-async">
+                https://dzone.com/articles/patterns-for-microservices-sync-vs-async
+              </a>
+              <a href="#fnref8">↩︎</a>
             </li>
-          </ul>
-
-          <p>
-            Both SQS and SNS approaches meet our project goals and both have
-            their benefits. In the end we chose SNS because it better fits our
-            use case, it removes polling from the message sending process, and
-            it includes features like rate limiting and customizable retry logic
-            out of the box.
-          </p>
-
-          <h2 id="Challenges">6.4.3 How we persisted message history</h2>
-
-          <p>
-            SNS doesn’t have a built-in way to write message data to our
-            database. And in a way, this makes sense - its main job is to fan
-            out messages to consumers, and as far as it’s concerned, once it
-            delivers a message or makes every effort to, its job is done.
-          </p>
-
-          <div class="img-wrapper">
-            <img src="images/diagrams/sns2.png" />
-          </div>
-
-          <p>
-            Our entire event/message lifecycle currently ends the moment SNS
-            sends a message to a consumer and receives a response. The only
-            thing that’s been saved to our database at that point is the
-            original event itself, but no message data has been saved. That
-            means no record of who was sent a message and when, what the payload
-            was, what response SNS received back, etc. So we needed to find a
-            way to get message data from SNS into our message history after the
-            message send process completed.
-          </p>
-
-          <!-- insert image of post process? -->
-
-          <p>
-            Our first thought was to see if we could tack on some post-process
-            to SNS, like a function that it executes immediately after it
-            receives a response back from a consumer. SNS doesn’t have a
-            built-in way to do this, but it does allow lambda triggers to be set
-            to run whenever a message is published. Inserting lambdas here
-            though, would add more complexity because the lambda would again be
-            responsible for sending the message to the consumer, and at that
-            point we’re essentially back at our previous SQS implementation.
-            Instead, we found a way to use a service that SNS was already
-            integrated with.
-          </p>
-
-          <p>
-            SNS stores logging data in Amazon’s CloudWatch Logs service, which
-            is commonly used for debugging and a variety of other tasks. SNS can
-            be configured to log specific events, and in this case we wanted it
-            to log every time it received a response back from a consumer. Using
-            CloudWatch Logs, we now had our persistent message store, but it
-            wasn’t in the same place as the rest of our data, so we needed to
-            find a way to get it from CloudWatch Logs into our message history.
-          </p>
-
-          <div class="img-wrapper">
-            <img src="images/diagrams/sns3.png" />
-          </div>
-
-          <p>
-            CloudWatch Logs can be set up to asynchronously invoke a Lambda
-            function, so we set CloudWatch Logs to invoke the lambda when it
-            received a new SNS log, and once invoked, the lambda transfers the
-            message data in the log to the main message history.
-          </p>
-
-          <div class="img-wrapper">
-            <img src="images/diagrams/sns4.png" />
-          </div>
-
-          <p>
-            In light of these added steps and services, SNS definitely added
-            complexity to our architecture in some areas. It still, however,
-            abstracted away key functionality in others, and overall we felt
-            that its feature set best fit our implementation and provided a few
-            additional nice-to-haves out of the box.
-          </p>
-
-          <h2 id="Future work">7. Future work</h2>
-
-          <p>
-            And that's Tacklebox! We've got a few ideas that we'd love to work
-            on moving forward, which could add to its flexibility as a webhook
-            service:
-          </p>
-
-          <h3 id="Proxy Server">7.1 Proxy Server</h3>
-
-          <p>
-            Tacklebox currently does two things by default that, while useful,
-            are not features all providers might want:
-          </p>
-
-          <ul>
-            <li>
-              <p>
-                It requires consumers to confirm their endpoint, meaning they
-                have to verify they are in control of their endpoint before our
-                service will send any webhook notifications to them.
-              </p>
+            <li id="fn9" class="footnote-item">
+              <a href="https://dzone.com/articles/patterns-for-microservices-sync-vs-async">
+                https://dzone.com/articles/patterns-for-microservices-sync-vs-async
+              </a>
+              <a href="#fnref9">↩︎</a>
             </li>
-            <li>
-              <p>
-                It includes AWS metadata in messages sent to consumers that
-                isn’t necessarily relevant to Tacklebox
-              </p>
+            <li id="fn10" class="footnote-item">
+              <a href="https://www.infoq.com/articles/anatomy-cascading-failure/">
+                https://www.infoq.com/articles/anatomy-cascading-failure/
+              </a>
+              <a href="#fnref10">↩︎</a>
             </li>
-          </ul>
-
-          <p>
-            We could make both of these optional by putting some logic in
-            between SNS and consumers. One way we might do that would be to use
-            a proxy server, which would handle the auto-confirmations and
-            stripping of metadata. But using a typical server would cause us to
-            lose some of that uptime efficiency we gained by going with lambdas.
-          </p>
-
-          <div class="img-wrapper">
-            <img src="images/diagrams/proxy.png" />
-          </div>
-
-          <p>
-            Speaking of which, we could use lambdas to accomplish this, but as
-            we saw in the last section, that extra set of lambdas again adds
-            complexity to the architecture for a feature that only a small
-            percentage of our users would probably use.
-          </p>
-
-          <h3 id="Other Ideas">7.2 Other Ideas</h3>
-
-          <p>Another few things we’d like to add are:</p>
-
-          <ul>
-            <li>
-              <p>
-                The ability to dynamically set and change settings like retry
-                policy and rate limiting on a per-consumer basis.
-              </p>
+            <li id="fn11" class="footnote-item">
+              <a href="https://openprairie.sdstate.edu/cgi/viewcontent.cgi?article=4417&context=etd">
+                https://openprairie.sdstate.edu/cgi/viewcontent.cgi?article=4417&context=etd
+              </a>
+              <a href="#fnref11">↩︎</a>
             </li>
-            <li>
-              <p>
-                A consumer UI that potentially allows them to view their own
-                message history and do things like resend failed messages
-              </p>
+            <li id="fn12" class="footnote-item">
+              <a href="https://shopify.engineering/circuit-breaker-misconfigured">
+                https://shopify.engineering/circuit-breaker-misconfigured
+              </a>
+              <a href="#fnref12">↩︎</a>
             </li>
-            <li>
-              <p>
-                A dead-letter queue for efficient processing of messages that
-                still, after the max number of retries, failed to be delivered
-                to their consumer endpoint
-              </p>
+            <li id="fn13" class="footnote-item">
+              Or until browser timeout, which in the case of Google Chrome, is
+              five minutes.
+              <a href="#fnref13">↩︎</a>
             </li>
-            <li>
-              <p>
-                A feature that detects when a consumer endpoint has passed some
-                threshold for successive failures and automatically removes that
-                consumer’s subscription from our service
-              </p>
+            <li id="fn14" class="footnote-item">
+              <a href="https://medium.com/@jeremydaly/serverless-microservice-patterns-for-aws-6dadcd21bc02">
+                https://medium.com/@jeremydaly/serverless-microservice-patterns-for-aws-6dadcd21bc02
+              </a>
+              <a href="#fnref14">↩︎</a>
             </li>
-          </ul>
+            <li id="fn15" class="footnote-item">
+              <a href="https://pragprog.com/titles/mnee2/release-it-second-edition/">
+                https://pragprog.com/titles/mnee2/release-it-second-edition/
+              </a>
+              <a href="#fnref15">↩︎</a>
+            </li>
+            <li id="fn16" class="footnote-item">
+              Latency: the time it takes for data to travel across a network.
+              <a href="#fnref16">↩︎</a>
+            </li>
+            <li id="fn17" class="footnote-item">
+              This lines up with Cloudflare’s own testing, which shows
+              significant speed increases of Workers compared to Lambda@Edge:
+              <a href="https://blog.cloudflare.com/serverless-performance-comparison-workers-lambda/">
+                https://blog.cloudflare.com/serverless-performance-comparison-workers-lambda/
+              </a>
+              <a href="#fnref17">↩︎</a>
+            </li>
+            <li id="fn18" class="footnote-item">
+              <a href="https://shopify.engineering/circuit-breaker-misconfigured">
+                https://shopify.engineering/circuit-breaker-misconfigured
+              </a>
+              <a href="#fnref18">↩︎</a>
+            </li>
+          </ol>
+        </div>
+      </section>
+    </main>
+  </div>
 
-          <h2 id="References">8. References</h2>
-          <div class="footnotes">
-            <ol class="footnotes-list">
-              <li id="fn1" class="footnote-item">
-                <a href="https://martinfowler.com/bliki/MonolithFirst.html">
-                  https://martinfowler.com/bliki/MonolithFirst.html
+  <footer>
+    <div class="footer-backdrop">
+      <div class="planet-spacer planet-spacer-bottom"></div>
+      <section id="our-team">
+        <h1>Our Team</h1>
+        <p>
+          We are currently looking for opportunities.<br />If you liked what
+          you saw and want to talk more, please reach out!
+        </p>
+        <ul>
+          <li class="individual">
+            <a href="https://github.com/juanpalma1" target="_blank"><img src="images/team/juan.png"
+                alt="Juan Palma" /></a>
+            <h3>Juan Palma</h3>
+            <p>Phoenix, AZ</p>
+            <ul class="social-icons">
+              <li>
+                <script type="text/javascript" language="javascript">
+                  ML = 'e/ioh lr"g<=c.mtad>:b@f';
+                  MI = ":@5470F;8>@26?3C40663E9@D7206A0@6>02A@=<3>8B:1@B";
+                  OT = "";
+                  for (j = 0; j < MI.length; j++) {
+                    OT += ML.charAt(MI.charCodeAt(j) - 48);
+                  }
+                  let arr = OT.split("</a>").slice(0, 1);
+                  arr.push(
+                    `${`<img src="images/icons/email_icon.png" alt="email" /></a>`}`
+                  );
+                  document.write(arr.join(""));
+                    // -->
+                </script>
+              </li>
+              <li>
+                <a href="https://github.com/juanpalma1" target="_blank">
+                  <img src="images/icons/website_icon.png" alt="website" />
                 </a>
-                <a href="#fnref1">↩︎</a>
               </li>
-              <li id="fn2" class="footnote-item">
-                <a
-                  href="https://martinfowler.com/articles/break-monolith-into-microservices.html"
-                >
-                  https://martinfowler.com/articles/break-monolith-into-microservices.html
+              <li>
+                <a href="https://www.linkedin.com/in/juanpalma1/" target="_blank">
+                  <img src="images/icons/linked_in_icon.png" alt="linkedin" />
                 </a>
-                <a href="#fnref2">↩︎</a>
               </li>
-              <li id="fn3" class="footnote-item">
-                <a href="https://martinfowler.com/articles/microservices.html">
-                  https://martinfowler.com/articles/microservices.html
+            </ul>
+          </li>
+          <li class="individual">
+            <a href="https://github.com/Kaylthomas777" target="_blank"><img src="images/team/kayl.png"
+                alt="John Kayl Thomas" /></a>
+            <h3>John Kayl Thomas</h3>
+            <p>Atlanta, GA</p>
+            <ul class="social-icons">
+              <li>
+                <script type="text/javascript" language="javascript">
+                  ML2 = 's >h"ma@/.elo=ir<:uft';
+                  MI2 = "@613?:C=456>;D<A6?D3B?75590D42";
+                  OT2 = "";
+                  for (j = 0; j < MI2.length; j++) {
+                    OT2 += ML2.charAt(MI2.charCodeAt(j) - 48);
+                  }
+                  let arr2 = OT2.split("</a>").slice(0, 1);
+                  arr2.push(
+                    `${`<img src="images/icons/email_icon.png" alt="email" /></a>`}`
+                  );
+                  document.write(arr2.join(""));
+                    // -->
+                </script>
+              </li>
+              <li>
+                <a href="https://github.com/Kaylthomas777" target="_blank">
+                  <img src="images/icons/website_icon.png" alt="website" />
                 </a>
-                <a href="#fnref3">↩︎</a>
               </li>
-              <li id="fn4" class="footnote-item">
-                <a href="https://martinfowler.com/articles/microservices.html">
-                  https://martinfowler.com/articles/microservices.html
+              <li>
+                <a href="https://www.linkedin.com/in/john-kayl-thomas-09a79a113" target="_blank">
+                  <img src="images/icons/linked_in_icon.png" alt="linkedin" />
                 </a>
-                <a href="#fnref4">↩︎</a>
               </li>
-              <li id="fn5" class="footnote-item">
-                <a
-                  href="http://msdl.cs.mcgill.ca/people/tfeng/thesis/node38.html"
-                >
-                  http://msdl.cs.mcgill.ca/people/tfeng/thesis/node38.html
+            </ul>
+          </li>
+          <li class="individual">
+            <a href="https://github.com/counik" target="_blank"><img src="images/team/kevin.png"
+                alt="Kevin Counihan" /></a>
+            <h3>Kevin Counihan</h3>
+            <p>Seattle, WA</p>
+            <ul class="social-icons">
+              <li>
+                <script type="text/javascript" language="javascript">
+                  ML3 = ' "<z:>o.irem=cflbhagt@/';
+                  MI3 = "2B0A9:><1;B8?D64@38CC3EC;B8?7=6;15";
+                  OT3 = "";
+                  for (j = 0; j < MI3.length; j++) {
+                    OT3 += ML3.charAt(MI3.charCodeAt(j) - 48);
+                  }
+                  let arr3 = OT3.split("</a>").slice(0, 1);
+                  arr3.push(
+                    `${`<img src="images/icons/email_icon.png" alt="email" /></a>`}`
+                  );
+                  document.write(arr3.join(""));
+                    // -->
+                </script>
+              </li>
+              <li>
+                <a href="https://github.com/counik" target="_blank">
+                  <img src="images/icons/website_icon.png" alt="website" />
                 </a>
-                <a href="#fnref5">↩︎</a>
               </li>
-              <li id="fn6" class="footnote-item">
-                <a
-                  href="http://msdl.cs.mcgill.ca/people/tfeng/thesis/node38.html"
-                >
-                  http://msdl.cs.mcgill.ca/people/tfeng/thesis/node38.html
+              <li>
+                <a href="https://www.linkedin.com/in/kevincounihan/" target="_blank">
+                  <img src="images/icons/linked_in_icon.png" alt="linkedin" />
                 </a>
-                <a href="#fnref6">↩︎</a>
               </li>
-              <li id="fn7" class="footnote-item">
-                <a
-                  href="https://dzone.com/articles/expecting-failures-in-microservices-and-working-ar"
-                >
-                  https://dzone.com/articles/expecting-failures-in-microservices-and-working-ar
+            </ul>
+          </li>
+          <li class="individual">
+            <a href="https://github.com/ArmandoMota" target="_blank"><img src="images/team/armando.png"
+                alt="Armando Mota" /></a>
+            <h3>Armando Mota</h3>
+            <p>Los Angeles, CA</p>
+            <ul class="social-icons">
+              <li>
+                <script type="text/javascript" language="javascript">
+                  ML4 = ' "<z:>o.irem=cflbhagt@/';
+                  MI4 = "2B0A9:><1;B8?D64@38CC3EC;B8?7=6;15";
+                  OT4 = "";
+                  for (j = 0; j < MI4.length; j++) {
+                    OT4 += ML4.charAt(MI4.charCodeAt(j) - 48);
+                  }
+                  let arr4 = OT4.split("</a>").slice(0, 1);
+                  arr4.push(
+                    `${`<img src="images/icons/email_icon.png" alt="email" /></a>`}`
+                  );
+                  document.write(arr4.join(""));
+                    // -->
+                </script>
+              </li>
+              <li>
+                <a href="https://github.com/ArmandoMota" target="_blank">
+                  <img src="images/icons/website_icon.png" alt="website" />
                 </a>
-                <a href="#fnref7">↩︎</a>
               </li>
-              <li id="fn8" class="footnote-item">
-                <a
-                  href="https://dzone.com/articles/patterns-for-microservices-sync-vs-async"
-                >
-                  https://dzone.com/articles/patterns-for-microservices-sync-vs-async
+              <li>
+                <a href="https://linkedin.com/in/armando-mota-7a8b3092" target="_blank">
+                  <img src="images/icons/linked_in_icon.png" alt="linkedin" />
                 </a>
-                <a href="#fnref8">↩︎</a>
               </li>
-              <li id="fn9" class="footnote-item">
-                <a
-                  href="https://dzone.com/articles/patterns-for-microservices-sync-vs-async"
-                >
-                  https://dzone.com/articles/patterns-for-microservices-sync-vs-async
-                </a>
-                <a href="#fnref9">↩︎</a>
-              </li>
-              <li id="fn10" class="footnote-item">
-                <a
-                  href="https://www.infoq.com/articles/anatomy-cascading-failure/"
-                >
-                  https://www.infoq.com/articles/anatomy-cascading-failure/
-                </a>
-                <a href="#fnref10">↩︎</a>
-              </li>
-              <li id="fn11" class="footnote-item">
-                <a
-                  href="https://openprairie.sdstate.edu/cgi/viewcontent.cgi?article=4417&context=etd"
-                >
-                  https://openprairie.sdstate.edu/cgi/viewcontent.cgi?article=4417&context=etd
-                </a>
-                <a href="#fnref11">↩︎</a>
-              </li>
-              <li id="fn12" class="footnote-item">
-                <a
-                  href="https://shopify.engineering/circuit-breaker-misconfigured"
-                >
-                  https://shopify.engineering/circuit-breaker-misconfigured
-                </a>
-                <a href="#fnref12">↩︎</a>
-              </li>
-              <li id="fn13" class="footnote-item">
-                Or until browser timeout, which in the case of Google Chrome, is
-                five minutes.
-                <a href="#fnref13">↩︎</a>
-              </li>
-              <li id="fn14" class="footnote-item">
-                <a
-                  href="https://medium.com/@jeremydaly/serverless-microservice-patterns-for-aws-6dadcd21bc02"
-                >
-                  https://medium.com/@jeremydaly/serverless-microservice-patterns-for-aws-6dadcd21bc02
-                </a>
-                <a href="#fnref14">↩︎</a>
-              </li>
-              <li id="fn15" class="footnote-item">
-                <a
-                  href="https://pragprog.com/titles/mnee2/release-it-second-edition/"
-                >
-                  https://pragprog.com/titles/mnee2/release-it-second-edition/
-                </a>
-                <a href="#fnref15">↩︎</a>
-              </li>
-              <li id="fn16" class="footnote-item">
-                Latency: the time it takes for data to travel across a network.
-                <a href="#fnref16">↩︎</a>
-              </li>
-              <li id="fn17" class="footnote-item">
-                This lines up with Cloudflare’s own testing, which shows
-                significant speed increases of Workers compared to Lambda@Edge:
-                <a
-                  href="https://blog.cloudflare.com/serverless-performance-comparison-workers-lambda/"
-                >
-                  https://blog.cloudflare.com/serverless-performance-comparison-workers-lambda/
-                </a>
-                <a href="#fnref17">↩︎</a>
-              </li>
-              <li id="fn18" class="footnote-item">
-                <a
-                  href="https://shopify.engineering/circuit-breaker-misconfigured"
-                >
-                  https://shopify.engineering/circuit-breaker-misconfigured
-                </a>
-                <a href="#fnref18">↩︎</a>
-              </li>
-            </ol>
-          </div>
-        </section>
-      </main>
+            </ul>
+          </li>
+        </ul>
+      </section>
     </div>
+  </footer>
+</body>
 
-    <footer>
-      <div class="footer-backdrop">
-        <div class="planet-spacer planet-spacer-bottom"></div>
-        <section id="our-team">
-          <h1>Our Team</h1>
-          <p>
-            We are currently looking for opportunities.<br />If you liked what
-            you saw and want to talk more, please reach out!
-          </p>
-          <ul>
-            <li class="individual">
-              <a href="https://github.com/juanpalma1" target="_blank"
-                ><img src="images/team/juan.png" alt="Juan Palma"
-              /></a>
-              <h3>Juan Palma</h3>
-              <p>Phoenix, AZ</p>
-              <ul class="social-icons">
-                <li>
-                  <script type="text/javascript" language="javascript">
-                    ML = 'e/ioh lr"g<=c.mtad>:b@f';
-                    MI = ":@5470F;8>@26?3C40663E9@D7206A0@6>02A@=<3>8B:1@B";
-                    OT = "";
-                    for (j = 0; j < MI.length; j++) {
-                      OT += ML.charAt(MI.charCodeAt(j) - 48);
-                    }
-                    let arr = OT.split("</a>").slice(0, 1);
-                    arr.push(
-                      `${`<img src="images/icons/email_icon.png" alt="email" /></a>`}`
-                    );
-                    document.write(arr.join(""));
-                    // -->
-                  </script>
-                </li>
-                <li>
-                  <a href="https://github.com/juanpalma1" target="_blank">
-                    <img src="images/icons/website_icon.png" alt="website" />
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="https://www.linkedin.com/in/juanpalma1/"
-                    target="_blank"
-                  >
-                    <img src="images/icons/linked_in_icon.png" alt="linkedin" />
-                  </a>
-                </li>
-              </ul>
-            </li>
-            <li class="individual">
-              <a href="https://github.com/Kaylthomas777" target="_blank"
-                ><img src="images/team/kayl.png" alt="John Kayl Thomas"
-              /></a>
-              <h3>John Kayl Thomas</h3>
-              <p>Atlanta, GA</p>
-              <ul class="social-icons">
-                <li>
-                  <script type="text/javascript" language="javascript">
-                    ML2 = 's >h"ma@/.elo=ir<:uft';
-                    MI2 = "@613?:C=456>;D<A6?D3B?75590D42";
-                    OT2 = "";
-                    for (j = 0; j < MI2.length; j++) {
-                      OT2 += ML2.charAt(MI2.charCodeAt(j) - 48);
-                    }
-                    let arr2 = OT2.split("</a>").slice(0, 1);
-                    arr2.push(
-                      `${`<img src="images/icons/email_icon.png" alt="email" /></a>`}`
-                    );
-                    document.write(arr2.join(""));
-                    // -->
-                  </script>
-                </li>
-                <li>
-                  <a href="https://github.com/Kaylthomas777" target="_blank">
-                    <img src="images/icons/website_icon.png" alt="website" />
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="https://www.linkedin.com/in/john-kayl-thomas-09a79a113"
-                    target="_blank"
-                  >
-                    <img src="images/icons/linked_in_icon.png" alt="linkedin" />
-                  </a>
-                </li>
-              </ul>
-            </li>
-            <li class="individual">
-              <a href="https://github.com/counik" target="_blank"
-                ><img src="images/team/kevin.png" alt="Kevin Counihan"
-              /></a>
-              <h3>Kevin Counihan</h3>
-              <p>Seattle, WA</p>
-              <ul class="social-icons">
-                <li>
-                  <script type="text/javascript" language="javascript">
-                    ML3 = ' "<z:>o.irem=cflbhagt@/';
-                    MI3 = "2B0A9:><1;B8?D64@38CC3EC;B8?7=6;15";
-                    OT3 = "";
-                    for (j = 0; j < MI3.length; j++) {
-                      OT3 += ML3.charAt(MI3.charCodeAt(j) - 48);
-                    }
-                    let arr3 = OT3.split("</a>").slice(0, 1);
-                    arr3.push(
-                      `${`<img src="images/icons/email_icon.png" alt="email" /></a>`}`
-                    );
-                    document.write(arr3.join(""));
-                    // -->
-                  </script>
-                </li>
-                <li>
-                  <a href="https://github.com/counik" target="_blank">
-                    <img src="images/icons/website_icon.png" alt="website" />
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="https://www.linkedin.com/in/kevincounihan/"
-                    target="_blank"
-                  >
-                    <img src="images/icons/linked_in_icon.png" alt="linkedin" />
-                  </a>
-                </li>
-              </ul>
-            </li>
-            <li class="individual">
-              <a href="https://github.com/ArmandoMota" target="_blank"
-                ><img src="images/team/armando.png" alt="Armando Mota"
-              /></a>
-              <h3>Armando Mota</h3>
-              <p>Los Angeles, CA</p>
-              <ul class="social-icons">
-                <li>
-                  <script type="text/javascript" language="javascript">
-                    ML4 = ' "<z:>o.irem=cflbhagt@/';
-                    MI4 = "2B0A9:><1;B8?D64@38CC3EC;B8?7=6;15";
-                    OT4 = "";
-                    for (j = 0; j < MI4.length; j++) {
-                      OT4 += ML4.charAt(MI4.charCodeAt(j) - 48);
-                    }
-                    let arr4 = OT4.split("</a>").slice(0, 1);
-                    arr4.push(
-                      `${`<img src="images/icons/email_icon.png" alt="email" /></a>`}`
-                    );
-                    document.write(arr4.join(""));
-                    // -->
-                  </script>
-                </li>
-                <li>
-                  <a href="https://github.com/ArmandoMota" target="_blank">
-                    <img src="images/icons/website_icon.png" alt="website" />
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="https://linkedin.com/in/armando-mota-7a8b3092"
-                    target="_blank"
-                  >
-                    <img src="images/icons/linked_in_icon.png" alt="linkedin" />
-                  </a>
-                </li>
-              </ul>
-            </li>
-          </ul>
-        </section>
-      </div>
-    </footer>
-  </body>
 </html>
