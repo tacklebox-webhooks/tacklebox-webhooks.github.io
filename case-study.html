@@ -780,7 +780,7 @@
           </p>
 
           <p>
-            Webhook data seems, at first glance, inherently unstructured.  Webhooks have a wide range of real-world applications, and each application dictates what information is passed back and forth between webhook provider and webhook consumer.  An open-source webhook service needs to be flexible enough to handle many of those applications, so having a database that could stretch to meet those needs seemed important.
+            Webhook data seems, at first glance, inherently unstructured.  Webhooks have a wide range of real-world applications, and each application dictates the kind of information passed back and forth between webhook provider and webhook consumer.  An open-source webhook service needs to be flexible enough to handle many of those applications, so having a database that could adapt to meet those needs seemed important.
           </p>
 
           <p>
@@ -795,7 +795,7 @@
             </li>
             <li>
               <p>
-                It's designed to be highly available, and that property could be an asset during times when new events are coming in thick and fast and/or large numbers of completed messages are being written to the database.
+                It's designed to be highly available, and that property could be an asset during times when a large volume of events are coming in.
               </p>
             </li>
             <li>
@@ -815,11 +815,11 @@
           </p>
 
           <div class="img-wrapper">
-            <img src="images/diagrams/tackleBoxERD.png" />
+            <img src="images/diagrams/tackleboxERD.png" />
           </div>
 
           <p>
-            Most of the features we'd be trading off by going with Postgres instead of DynamoDB were ones our use case didn't really demand - specifically built for high availability, schemaless, and able to support tables of virtually any size and very high read/write traffic.  The one thing we didn't want to lose was the fact that DynamoDB is fully managed, which was key to our project goal of making Tacklebox easy to deploy and manage.
+            Most of the features we'd be trading off by going with PostgreSQL instead of DynamoDB were ones our use case didn't really demand - specifically built for high availability, schemaless, and able to support tables of virtually any size and very high read/write traffic.  The one thing we didn't want to lose was the fact that DynamoDB is fully managed, which was key to our project goal of making Tacklebox easy to deploy and manage.
           </p>
 
           <p>
