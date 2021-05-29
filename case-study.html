@@ -130,7 +130,7 @@
         </p>
 
         <div class="img-wrapper">
-          <img src="images/diagrams/githubExample.png" alt="What are webhooks" />
+          <img src="images/newDiagrams/consumerFlow.png" alt="Consumer Webhook Flow" />
         </div>
 
         <p>
@@ -150,7 +150,7 @@
           third one where there's an update.<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup>
         </p>
         <div class="img-wrapper">
-          <img src="images/diagrams/polling.png" alt="What are webhooks" />
+          <img src="images/newDiagrams/polling.png" alt="General Polling Workflow" />
         </div>
 
         <p>
@@ -163,7 +163,7 @@
         </p>
 
         <div class="img-wrapper">
-          <img src="images/diagrams/webhooks.png" alt="What are webhooks" />
+          <img src="images/newDiagrams/webhooks.png" alt="General Webhook Workflow" />
         </div>
 
         <p>
@@ -181,10 +181,6 @@
           GitHub's shoes.
         </p>
 
-        <div class="img-wrapper">
-          <img src="images/diagrams/webhookProviderExample.png" alt="What are webhooks" />
-        </div>
-
         <p>
           Following the same example, if we're GitHub, and a consumer is
           interested in receiving a webhook every time a branch is created,
@@ -200,6 +196,14 @@
           type, which in this case, for simplicity's sake, is just the
           consumer from step one.
         </p>
+
+        <div class="img-wrapper">
+          <img src="images/newDiagrams/providerFlow1.png" alt="Provider Webhook Flow 1" />
+        </div>
+
+        <div class="img-wrapper">
+          <img src="images/newDiagrams/providerFlow2.png" alt="Provider Webhook Flow 2" />
+        </div>
 
         <p>
           To show you how webhooks look like in real applications, here's a
@@ -247,7 +251,7 @@
         </p>
 
         <div class="img-wrapper">
-          <img src="images/diagrams/whoUsesWebhooks.png" alt="who uses webhooks" />
+          <img src="images/newDiagrams/webhookCompanies.png" alt="Companies That Provide Webhooks" />
         </div>
 
         <h3 id="Pros-and-Cons-of-building-webhooks">
@@ -303,7 +307,7 @@
         </p>
 
         <div class="img-wrapper">
-          <img src="images/diagrams/considerations.png" alt="Considerations when building webhooks" />
+          <img src="images/newDiagrams/questionCategories.png" alt="Considerations when building webhooks" />
         </div>
 
         <h3 id="Building-webhooks-for-a-single-application">
@@ -320,7 +324,7 @@
         </p>
 
         <div class="img-wrapper">
-          <img src="images/diagrams/considerationsOne.png" alt="Considerations when building webhooks" />
+          <img src="images/newDiagrams/singleApp.png" alt="Single App Webhook Considerations" />
         </div>
 
         <h3 id="Building-webhooks-for-multiple-applications">
@@ -333,7 +337,7 @@
         </p>
 
         <div class="img-wrapper">
-          <img src="images/diagrams/considerationsMulti.png" alt="Considerations when building webhooks" />
+          <img src="images/newDiagrams/multipleApps.png" alt="Multi App Webhook Considerations" />
         </div>
 
         <p>
@@ -368,7 +372,7 @@
         </p>
 
         <div class="img-wrapper">
-          <img src="images/diagrams/considerationsExtracted.png" alt="Asynchronous Communication" />
+          <img src="images/newDiagrams/serviceExtraction.png" alt="Extracted Webhook Service" />
         </div>
 
         <h2 id="ExistingSolutions">4. Existing Solutions</h2>
@@ -397,7 +401,7 @@
         </p>
 
         <div class="img-wrapper">
-          <img src="images/diagrams/square.png" alt="In-House solutions" />
+          <img src="images/newDiagrams/square.png" alt="Square Webhook Implementation" />
         </div>
 
         <p>
@@ -412,7 +416,7 @@
         </p>
 
         <div class="img-wrapper">
-          <img src="images/diagrams/wiseEngineering.png" alt="In-House solutions" />
+          <img src="images/newDiagrams/wiseEngineering.png" alt="Wise Engineering Webhook Implementation" />
         </div>
 
         <h3 id="Commercial-and-Open-Source">
@@ -459,7 +463,7 @@
         </p>
 
         <div class="img-wrapper">
-          <img src="images/diagrams/commercialvDIY.png" alt="Commercial vs. DIY" />
+          <img src="images/newDiagrams/comparisonTable.png" alt="Commercial vs. DIY vs. Tacklebox" />
         </div>
 
         <h3 id="Tacklebox-use-case">4.4 Tacklebox use case</h3>
@@ -530,7 +534,7 @@
           framework standard and DRY.
         </small>
         <div class="img-wrapper">
-          <img src="images/diagrams/clientLibraries.png" />
+          <img src="images/newDiagrams/clientLibraries.png" />
         </div>
 
         <h3 id="Tacklebox-Demo">5.4 Tacklebox Demo</h3>
@@ -690,12 +694,15 @@
           </li>
         </ul>
 
-
         <div class="img-wrapper">
-          <img src="images/diagrams/messageLifeCycle.png" />
+          <img src="images/newDiagrams/eventLifecycleOverArchitecture.png" alt="Event Message Lifecycle" />
         </div>
 
         <h3 id="TackleboxArchitecture">6.3 Tacklebox Architecture</h3>
+
+        <div class="img-wrapper">
+          <img src="images/newDiagrams/finalArchitecture.png" alt="Final Tacklebox Architecture" />
+        </div>
 
         <p>
           In our architecture, notification intake is handled by a pair of services: API Gateway and Lambda Functions.
@@ -723,9 +730,13 @@
           infrastructure. In these cases, the intake lambda, upon receiving a request from API Gateway, interacts with
           the database directly.
         </p>
-        <!-- Insert diagram of non-SNS operations -->
+
         <div class="img-wrapper">
-          <img src="images/diagrams/tackleBoxArchitecture.png" />
+          <img src="images/newDiagrams/addUserOverArchitecture.png" alt="Add User Workflow" />
+        </div>
+
+        <div class="img-wrapper">
+          <img src="images/newDiagrams/addSubscriptionOverArchitecture.png" alt="Add Subscription Workflow" />
         </div>
 
         <h3 id="Database">6.3.2 Database Choice</h3>
@@ -785,7 +796,7 @@
         </p>
 
         <div class="img-wrapper">
-          <img src="images/diagrams/tackleboxERD.png" />
+          <img src="images/newDiagrams/erd.png" alt="Tacklebox ERD" />
         </div>
 
         <p>
@@ -809,14 +820,14 @@
 
         <h3 id="Challenges">6.4 Challenges</h3>
 
-        <h3 id="Challenges">6.4.1 How we dealt with wasted uptime</h3>
+        <h4 id="Challenges">6.4.1 How we dealt with wasted uptime</h4>
 
         <p>
           Our initial implementation of Tacklebox used a single application server.
         </p>
 
         <div class="img-wrapper">
-          <img src="images/diagrams/whyServerless.png" />
+          <img src="images/newDiagrams/serverImplementation.png" alt="Basic Server Implementation" />
         </div>
 
         <p>
@@ -828,7 +839,7 @@
         </p>
 
         <div class="img-wrapper">
-          <img src="images/diagrams/lambdas.png" />
+          <img src="images/newDiagrams/lambdaImplementation.png" alt="Lambda Implementation" />
         </div>
 
         <p>
@@ -861,11 +872,7 @@
           <li>Respond back to the event producer</li>
         </ul>
 
-        <div class="img-wrapper">
-          <img src="images/diagrams/manyJobs.png" />
-        </div>
-
-        <h3 id="Challenges">6.4.2 How we handled message fanout</h3>
+        <h4 id="Challenges">6.4.2 How we handled message fanout</h4>
 
         <p>
           With this implementation, the message fanout process in particular
@@ -875,13 +882,13 @@
         </p>
 
         <div class="img-wrapper">
-          <img src="images/diagrams/fanOut.png" />
+          <img src="images/newDiagrams/lambdaFanout.png" alt="Lambda Message Fanout" />
         </div>
 
         <p>
           The lambda not only has to send the messages, but also has to wait
           for a response from every one before it can finish its work by
-          writing the results to the message history. Because webhooks are
+          writing the results to the database. Because webhooks are
           typically application or user-specific, the number of consumers
           needing to be notified when a given event occurs is typically low,
           however even with tens of consumers the chance that one of the
@@ -904,7 +911,7 @@
         </p>
 
         <div class="img-wrapper">
-          <img src="images/diagrams/retries.png" />
+          <img src="images/newGifs/messageRetries.gif" alt="Retrying Failed Messages" />
         </div>
 
         <p>
@@ -914,7 +921,9 @@
           either get a response from the consumer or you don't (i.e. a
           timeout). At minimum, we need to know that a consumer's endpoint
           received the message, so we consider timeouts within a reasonable
-          amount of time to be failures. When you do receive an explicit
+          amount of time to be failures.
+        </p>
+          <!-- amount of time to be failures. When you do receive an explicit
           response from a consumer, though, a few questions arise:
         </p>
 
@@ -937,22 +946,18 @@
               the message, and we'd have no way to tell.
             </p>
           </li>
-        </ul>
+        </ul> -->
 
+        <!-- <p>
+          From a webhook provider's perspective, the question for any given -->
         <p>
-          From a webhook provider's perspective, the question for any given
-          status code is not only does this indicate the consumer received the
-          message, but also does it make sense to try sending the message
+          When you do receive an explicit response and are considering the status code, you must determine whether it indicates the consumer received the
+          message and whether it makes sense to try sending the message
           again. Repeatedly sending messages to endpoints that are
-          misconfigured by the consumer, for example, may not make sense. If
-          you consider a certain status code a failure, you are indirectly
-          saying that you will retry when you encounter it. Existing webhook
+          misconfigured by the consumer, for example, may not make sense. Existing webhook
           implementations approach this in a wide variety of ways, from
           strictly requiring a 200 response to considering anything other than
-          a 5xx response a success. We chose the latter approach as we thought
-          it was reasonable to view the core responsibility of a webhook
-          service as getting messages to their specified endpoints, not
-          ensuring those endpoints correctly process the message.
+          a 5xx response a success. We chose the latter approach.
         </p>
 
         <p>
@@ -968,7 +973,7 @@
         </p>
 
         <div class="img-wrapper">
-          <img src="images/diagrams/initialApproach.png" />
+          <img src="images/newGifs/doubleLambdaFanout.gif" alt="Double Lambda Fanout" />
         </div>
 
         <p>
@@ -990,23 +995,21 @@
           which simplifies debugging.
         </p>
 
+        <div class="img-wrapper">
+          <img src="images/newDiagrams/sqsFanout.png" alt="SQS Message Fanout" />
+        </div>
+
         <p>
           Amazon’s Simple Queue Service, or SQS for short, does exactly this.
           SQS gives us a reliable place to store both our initial and retry
           messages, which is great because our intake lambdas can now just
           focus on creating messages for an event. SQS doesn’t send messages
-          to consumers itself, so we keep our messenger lambdas in-place and
-          continue to use them to send messages. The messenger lambdas check
-          SQS for new messages, and pull them off as soon as they appear. To
+          to consumers itself, so we use our messenger lambdas to pull messages off as soon as they appear and send them to the consumer. To
           prevent our messenger lambdas from waiting on retries, we have them
           immediately put failed messages back into the queue. Those failed
           messages are then picked off of the queue by a different lambda
           invocation at a later time.
         </p>
-
-        <div class="img-wrapper">
-          <img src="images/diagrams/sqs.png" />
-        </div>
 
         <p>
           By adding SQS we increased the complexity of our implementation, but
@@ -1023,6 +1026,11 @@
           intermittent, and all of those polling requests in between events
           can add up.
         </p>
+
+        <div class="img-wrapper">
+          <img src="images/newGifs/lasers.gif" alt="SQS Lamba Polling" />
+        </div>
+
         <p>
           Under the hood it gets even more interesting, because when using
           lambdas with SQS, Amazon requires that a minimum of 5 parallel
@@ -1035,17 +1043,17 @@
           sending process.
         </p>
 
-        <div class="img-wrapper">
-          <img src="images/diagrams/lasers.png" />
-        </div>
-
         <p>
           We were able to remove polling from the message sending process by
           using Amazon’s Simple Notification Service, or SNS. SNS is a
           messaging service that, when given an event, sends a message to
           every subscriber to that event. It also automatically handles
           retries. In other words, it does the same job that the combination
-          of SQS and messenger lambda previously did for us. Rather than use
+          of SQS and messenger lambda previously did for us.
+        </p>
+        
+        <p>
+          Rather than use
           polling, SNS uses a pub/sub model where new messages are published
           to topics, and anyone who is subscribed to that topic automatically
           receives a message. In webhook parlance, every consumer that’s
@@ -1053,7 +1061,7 @@
         </p>
 
         <div class="img-wrapper">
-          <img src="images/diagrams/sns.png" />
+          <img src="images/newDiagrams/snsFanout.png" alt="SNS Message Fanout" />
         </div>
 
         <p>
@@ -1082,10 +1090,6 @@
               need subscription data in our main database for querying
               purposes. This means that we now have to keep track of
               subscriptions in two places and make sure they remain identical.
-              For example, if a consumer chooses to change which event types
-              they are subscribed to, or if a provider decides to add a new
-              event type to their service, we have to make those changes in
-              both SNS and the main database.
             </p>
           </li>
         </ul>
@@ -1098,7 +1102,7 @@
           out of the box.
         </p>
 
-        <h3 id="Challenges">6.4.3 How we persisted message history</h3>
+        <h4 id="Challenges">6.4.3 How we persisted message history</h4>
 
         <p>
           SNS doesn’t have a built-in way to write message data to our
@@ -1107,10 +1111,6 @@
           delivers a message or makes every effort to, its job is done.
         </p>
 
-        <div class="img-wrapper">
-          <img src="images/diagrams/sns2.png" />
-        </div>
-
         <p>
           Our entire event/message lifecycle currently ends the moment SNS
           sends a message to a consumer and receives a response. The only
@@ -1118,11 +1118,13 @@
           original event itself, but no message data has been saved. That
           means no record of who was sent a message and when, what the payload
           was, what response SNS received back, etc. So we needed to find a
-          way to get message data from SNS into our message history after the
+          way to get message data from SNS into our database after the
           message send process completed.
         </p>
 
-        <!-- insert image of post process? -->
+        <div class="img-wrapper">
+          <img src="images/newDiagrams/snsMissingDbLink.png" alt="Missing Link Between SNS and DB" />
+        </div>
 
         <p>
           Our first thought was to see if we could tack on some post-process
@@ -1130,12 +1132,15 @@
           receives a response back from a consumer. SNS doesn’t have a
           built-in way to do this, but it does allow lambda triggers to be set
           to run whenever a message is published. Inserting lambdas here
-          though, would add more complexity because the lambda would again be
-          responsible for sending the message to the consumer, and at that
+          though, would again make lambdas responsible for sending messages to consumers, and at that
           point we’re essentially back at our previous SQS implementation.
           Instead, we found a way to use a service that SNS was already
           integrated with.
         </p>
+
+        <div class="img-wrapper">
+          <img src="images/newDiagrams/cloudWatch.png" alt="CloudWatch Logs" />
+        </div>
 
         <p>
           SNS stores logging data in Amazon’s CloudWatch Logs service, which
@@ -1144,23 +1149,19 @@
           to log every time it received a response back from a consumer. Using
           CloudWatch Logs, we now had our persistent message store, but it
           wasn’t in the same place as the rest of our data, so we needed to
-          find a way to get it from CloudWatch Logs into our message history.
+          find a way to get it from CloudWatch Logs into our main database.
         </p>
 
         <div class="img-wrapper">
-          <img src="images/diagrams/sns3.png" />
+          <img src="images/newDiagrams/finalArchitecture2.png" alt="CloudWatch Logs with Lambda" />
         </div>
 
         <p>
           CloudWatch Logs can be set up to asynchronously invoke a Lambda
           function, so we set CloudWatch Logs to invoke the lambda when it
           received a new SNS log, and once invoked, the lambda transfers the
-          message data in the log to the main message history.
+          message data in the log to the database.
         </p>
-
-        <div class="img-wrapper">
-          <img src="images/diagrams/sns4.png" />
-        </div>
 
         <p>
           In light of these added steps and services, SNS definitely added
@@ -1210,7 +1211,7 @@
         </p>
 
         <div class="img-wrapper">
-          <img src="images/diagrams/proxy.png" />
+          <img src="images/newDiagrams/proxyServer.png" alt="Proxy Server Implementation" />
         </div>
 
         <p>
