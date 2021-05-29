@@ -333,7 +333,7 @@
           about 4 different areas or categories that may present a significant
           amount of challenges.
         </p>
-        <div class="img-wrapper">
+        <div id="question-categories" class="img-wrapper">
           <img src="images/newDiagrams/questionCategories.png" alt="Considerations when building webhooks" />
         </div>
 
@@ -528,7 +528,7 @@
           And that’s where Tacklebox comes into play.
         </p>
 
-        <div class="img-wrapper">
+        <div id="medium-pic" class="img-wrapper">
           <img src="images/newDiagrams/comparisonTable.png" alt="Commercial vs. DIY vs. Tacklebox" />
         </div>
 
@@ -884,9 +884,9 @@
           didn't really take advantage of DynamoDB's strengths, so we chose RDS w/ PostgreSQL.
         </p>
 
-        <h3 id="Challenges">6.4 Challenges</h3>
+        <h3 id="Challenges">6.4 How we dealt with wasted uptime</h3>
 
-        <h4 id="Challenges">6.4.1 How we dealt with wasted uptime</h4>
+        <h4 id="server-implementation">Initial Implementation</h4>
 
         <p>
           Our initial implementation of Tacklebox used a single application server.
@@ -903,6 +903,8 @@
           architecture, we were leaving a decent amount of compute power unused. To address this inefficiency, we
           decided to use AWS Lambda Functions.
         </p>
+
+        <h4 id="server-implementation">Lambda Implementation</h4>
 
         <div class="img-wrapper">
           <img src="images/newDiagrams/lambdaImplementation.png" alt="Lambda Implementation" />
@@ -938,7 +940,9 @@
           <li>Respond back to the event producer</li>
         </ul>
 
-        <h4 id="Challenges">6.4.2 How we handled message fanout</h4>
+        <h3 id="Challenges">6.5 How we handled message fanout</h3>
+
+        <h4 id="server-implementation">Overloaded Lambdas</h4>
 
         <p>
           With this implementation, the message fanout process in particular
@@ -979,6 +983,8 @@
         <div class="img-wrapper">
           <img src="images/newGifs/messageRetries.gif" alt="Retrying Failed Messages" />
         </div>
+
+        <h4 id="server-implementation">Endpoint Failure</h4>
 
         <p>
           A quick note about endpoint failure and what that means in the
@@ -1026,6 +1032,8 @@
           a 5xx response a success. We chose the latter approach.
         </p>
 
+        <h4 id="server-implementation">Split-Lambda Implementation</h4>
+
         <p>
           In order to reduce the number of messages our lambdas had to send,
           we could have done a couple of things. We could have added a second
@@ -1061,6 +1069,8 @@
           which simplifies debugging.
         </p>
 
+        <h4 id="server-implementation">SQS Implementation</h4>
+
         <div class="img-wrapper">
           <img src="images/newDiagrams/sqsFanout.png" alt="SQS Message Fanout" />
         </div>
@@ -1082,6 +1092,8 @@
           each piece does fewer things and we sufficiently separated our
           concerns among services suited for their individual jobs.
         </p>
+
+        <h4 id="server-implementation">Eliminating Polling</h4>
 
         <p>
           We thought that this was a perfectly reasonable implementation,
@@ -1108,6 +1120,8 @@
           implementation more efficient and reduce latency in the message
           sending process.
         </p>
+
+        <h4 id="server-implementation">SNS Implementation</h4>
 
         <p>
           We were able to remove polling from the message sending process by
@@ -1138,27 +1152,16 @@
           who needs to be notified.
         </p>
 
+        <h4 id="server-implementation">Choosing SNS</h4>
+
         <p>
           Switching from SQS to SNS simplifies our architecture and increases
-          our efficiency, however there are some tradeoffs with this approach:
-        </p>
-
-        <ul>
-          <li>
-            <p>
-              SNS has a max retry delay of 1 hr, compared to SQS’ 12 hrs, so
-              it’s got less flexibility to implement large retry windows
-            </p>
-          </li>
-          <li>
-            <p>
-              Even though SNS keeps track of subscriptions for us, we still
+          our efficiency, however there are some tradeoffs with this approach.  SNS has a max retry delay of 1 hr, compared to SQS’ 12 hrs, so
+              it’s got less flexibility to implement large retry windows.  And even though SNS keeps track of subscriptions for us, we still
               need subscription data in our main database for querying
               purposes. This means that we now have to keep track of
               subscriptions in two places and make sure they remain identical.
-            </p>
-          </li>
-        </ul>
+        </p>
 
         <p>
           Both SQS and SNS approaches meet our project goals and both have
@@ -1168,7 +1171,9 @@
           out of the box.
         </p>
 
-        <h4 id="Challenges">6.4.3 How we persisted message history</h4>
+        <h3 id="message-history">6.6 How we persisted message history</h3>
+
+        <h4 id="server-implementation">Missing Database Link</h4>
 
         <p>
           SNS doesn’t have a built-in way to write message data to our
@@ -1188,6 +1193,8 @@
           message send process completed.
         </p>
 
+        <h4 id="server-implementation">Adding Compute after SNS</h4>
+
         <div class="img-wrapper">
           <img src="images/newDiagrams/snsMissingDbLink.png" alt="Missing Link Between SNS and DB" />
         </div>
@@ -1204,6 +1211,8 @@
           integrated with.
         </p>
 
+        <h4 id="server-implementation">CloudWatch Logs</h4>
+
         <div class="img-wrapper">
           <img src="images/newDiagrams/cloudWatch.png" alt="CloudWatch Logs" />
         </div>
@@ -1217,6 +1226,8 @@
           wasn’t in the same place as the rest of our data, so we needed to
           find a way to get it from CloudWatch Logs into our main database.
         </p>
+
+        <h4 id="server-implementation">CloudWatch Logs Lambda Trigger</h4>
 
         <div class="img-wrapper">
           <img src="images/newDiagrams/finalArchitecture2.png" alt="CloudWatch Logs with Lambda" />
@@ -1249,24 +1260,11 @@
 
         <p>
           Tacklebox currently does two things by default that, while useful,
-          are not features all providers might want:
+          are not features all providers might want.  It includes AWS metadata in messages sent to consumers that
+          isn’t necessarily relevant to Tacklebox, and it requires consumers to confirm their endpoint, meaning they
+          have to verify they are in control of their endpoint before our
+          service will send any webhook notifications to them.
         </p>
-
-        <ul>
-          <li>
-            <p>
-              It requires consumers to confirm their endpoint, meaning they
-              have to verify they are in control of their endpoint before our
-              service will send any webhook notifications to them.
-            </p>
-          </li>
-          <li>
-            <p>
-              It includes AWS metadata in messages sent to consumers that
-              isn’t necessarily relevant to Tacklebox
-            </p>
-          </li>
-        </ul>
 
         <p>
           We could make both of these optional by putting some logic in
