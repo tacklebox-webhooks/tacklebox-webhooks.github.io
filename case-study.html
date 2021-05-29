@@ -54,23 +54,23 @@
           <a href="#Introduction"> 1. Introduction</a>
         </li>
         <li>
-          <a href="#Intro to Webhooks"> 2. Intro to Webhooks</a>
+          <a href="#IntroToWebhooks"> 2. Intro to Webhooks</a>
         </li>
         <li>
-          <a href="#Building Webhooks Is Not Trivial">
+          <a href="#BuildingWebhooks">
             3. Building Webhooks Is Not Trivial</a>
         </li>
         <li>
-          <a href="#Existing Solutions"> 4. Existing Solutions</a>
+          <a href="#ExistingSolutions"> 4. Existing Solutions</a>
         </li>
         <li>
-          <a href="#How to use Tacklebox"> 5. How to use Tacklebox</a>
+          <a href="#UsingTacklebox"> 5. How to Use Tacklebox</a>
         </li>
         <li>
-          <a href="#How we built Tacklebox"> 6. How we built Tacklebox</a>
+          <a href="#BuildingTacklebox"> 6. How We Built Tacklebox</a>
         </li>
         <li>
-          <a href="#Future work"> 7. Future work</a>
+          <a href="#FutureWork"> 7. Future Work</a>
         </li>
         <li>
           <a href="#References"> 8. References</a>
@@ -130,9 +130,11 @@
             <li>mention some future ideas</li>
           </ul>
         </p>
-        
-        <h2 id="Intro to Webhooks">2. Intro to Webhooks</h2>
-        <h3 id="What are webhooks">2.1 What are webhooks?</h3>
+    
+        <h2 id="IntroToWebhooks">2. Intro to Webhooks</h2>
+
+        <h3 id="What-are-webhooks">2.1 What are webhooks?</h3>
+
         <p>
           To understand what webhooks are, let’s begin with an example using a
           tool we all know: GitHub. Imagine you:
@@ -155,7 +157,7 @@
           </ol>
         </p>
         <div class="img-wrapper">
-          <img src="images/diagrams/githubExample.png" alt="What are webhooks" />
+          <img src="images/newDiagrams/consumerFlow.png" alt="Consumer Webhook Flow" />
         </div>
         <p>
           So the question then becomes, how can you automate what you want to
@@ -168,6 +170,8 @@
           provides the data of interest (which in this case, it's GitHub) is
           called the provider.<sup class="footnote-ref"><a href="#fn1"
           id="fnref1">[1]</a></sup>
+        </p>
+        <p>
           With polling, you basically send and HTTP request to GitHub every so
           often to see if there's any updates. In this case, you happen to
           send a couple requests first with no updates from GitHub, and then a
@@ -175,7 +179,7 @@
           id="fnref2">[2]</a></sup>
         </p>
         <div class="img-wrapper">
-          <img src="images/diagrams/polling.png" alt="What are webhooks" />
+          <img src="images/newDiagrams/polling.png" alt="General Polling Workflow" />
         </div>
         <p>
           With webhooks, however, instead of having GitHub wait for incoming
@@ -186,7 +190,7 @@
           <sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup>
         </p>
         <div class="img-wrapper">
-          <img src="images/diagrams/webhooks.png" alt="What are webhooks" />
+          <img src="images/newDiagrams/webhooks.png" alt="General Webhook Workflow" />
         </div>
         <p>
           In this particular case, a branch was created, so GitHub sends an
@@ -201,9 +205,19 @@
           in the example was GitHub. In other words, let's put ourselves in
           GitHub's shoes.
         </p>
+
         <div class="img-wrapper">
           <img src="images/diagrams/webhookProviderExample.png" alt="What are webhooks" />
         </div>
+        
+        <div class="img-wrapper">
+          <img src="images/newDiagrams/providerFlow1.png" alt="Provider Webhook Flow 1" />
+        </div>
+
+        <div class="img-wrapper">
+          <img src="images/newDiagrams/providerFlow2.png" alt="Provider Webhook Flow 2" />
+        </div>
+
         <p>
           Following the same example, if we're GitHub, and a consumer is
           interested in receiving a webhook every time a branch is created,
@@ -251,7 +265,9 @@
         <div class="img-wrapper">
           <img src="images/diagrams/githubExample3.png" alt="What are webhooks" />
         </div>
-        <h3 id="Who uses webhooks">2.2 Who uses webhooks?</h3>
+
+        <h3 id="Who-uses-webhooks">2.2 Who uses webhooks?</h3>
+
         <p>
           So far, when talking about webhooks, we've only talked about GitHub.
           However, it turns out that GitHub is not the only company that
@@ -269,14 +285,16 @@
           <sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup>
         </p>
         <div class="img-wrapper">
-          <img src="images/diagrams/whoUsesWebhooks.png" alt="who uses webhooks" />
+          <img src="images/newDiagrams/webhookCompanies.png" alt="Companies That Provide Webhooks" />
         </div>
-        <h3 id="Pros and Cons of building webhooks">
+
+        <h3 id="Pros-and-Cons-of-building-webhooks">
+
           2.3 Pros and Cons of building webhooks
         </h3>
         <p>
           Now that we have some context around webhooks, we can start talking
-          about things to consider when building them. As a provider, webhooks
+          about things to consider when building them. As a provider, webhooks 
           offer a few benefits. For example:
           <ul>
             <li>You can provide a better experience to your users that
@@ -304,10 +322,12 @@
           in the next section.<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup>
         </p>
 
-        <h2 id="Building Webhooks Is Not Trivial">
-          3. Building Webhooks Is Not Trivial
+        <h2 id="BuildingWebhooks">
+          3. Building webhooks is not trivial
         </h2>
-        <h3 id="Considerations when building webhooks">
+
+        <h3 id="Considerations-when-building-webhooks">
+
           3.1 Considerations when building webhooks
         </h3>
         <p>
@@ -318,8 +338,9 @@
           amount of challenges.
         </p>
         <div class="img-wrapper">
-          <img src="images/diagrams/considerations.png" alt="Considerations when building webhooks" />
+          <img src="images/newDiagrams/questionCategories.png" alt="Considerations when building webhooks" />
         </div>
+
         <p>
           The first area that comes to mind when thinking about building webhooks
           is failed messages or endpoint failure. For example:
@@ -356,7 +377,9 @@
             <li>And if you do, how would you implement that?</li>
           </ul>
         </p>
-        <h3 id="Building webhooks for a single application">
+
+        <h3 id="Building-webhooks-for-a-single-application">
+
           3.2 Building webhooks for a single application
         </h3>
         <p>
@@ -367,9 +390,11 @@
           <sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup>
         </p>
         <div class="img-wrapper">
-          <img src="images/diagrams/considerationsOne.png" alt="Considerations when building webhooks" />
+          <img src="images/newDiagrams/singleApp.png" alt="Single App Webhook Considerations" />
         </div>
-        <h3 id="Building webhooks for multiple applications">
+
+        <h3 id="Building-webhooks-for-multiple-applications">
+
           3.3 Building webhooks for multiple applications
         </h3>
         <p>
@@ -377,7 +402,7 @@
           webhooks in more than one app, it would look something like this.
         </p>
         <div class="img-wrapper">
-          <img src="images/diagrams/considerationsMulti.png" alt="Considerations when building webhooks" />
+          <img src="images/newDiagrams/multipleApps.png" alt="Multi App Webhook Considerations" />
         </div>
         <p>
           Now, you have all the concerns from before times the number of apps.
@@ -391,7 +416,9 @@
               you enforce control over your data?</li>
           </ul>
         </p>
-        <h3 id="Extracting webhooks into a service">
+
+        <h3 id="Extracting-webhooks-into-a-service">
+
           3.4 Extracting webhooks into a service
         </h3>
         <p>
@@ -400,7 +427,7 @@
           <sup class="footnote-ref"><a href="#fn6" id="fnref6">[6]</a></sup>
         </p>
         <div class="img-wrapper">
-          <img src="images/diagrams/considerationsExtracted.png" alt="Asynchronous Communication" />
+          <img src="images/newDiagrams/serviceExtraction.png" alt="Extracted Webhook Service" />
         </div>
         <p>
           Now, all these concerns are abstracted away by this service, and
@@ -418,7 +445,7 @@
           </ul>
         </p>
 
-        <h2 id="Existing Solutions">4. Existing Solutions</h2>
+        <h2 id="ExistingSolutions">4. Existing Solutions</h2>
 
         <p>
           So if you’re thinking about implementing a webhooks solution
@@ -429,7 +456,7 @@
           <sup class="footnote-ref"><a href="#fn7" id="fnref7">[7]</a></sup>
         </p>
 
-        <h3 id="In-House solutions">4.1 In-House solutions</h3>
+        <h3 id="In-HouseSolutions">4.1 In-House Solutions</h3>
 
         <p>
           We took particular inspiration from how Square went about
@@ -444,7 +471,7 @@
         </p>
 
         <div class="img-wrapper">
-          <img src="images/diagrams/square.png" alt="In-House solutions" />
+          <img src="images/newDiagrams/square.png" alt="Square Webhook Implementation" />
         </div>
 
         <p>
@@ -459,15 +486,15 @@
         </p>
 
         <div class="img-wrapper">
-          <img src="images/diagrams/wiseEngineering.png" alt="In-House solutions" />
+          <img src="images/newDiagrams/wiseEngineering.png" alt="Wise Engineering Webhook Implementation" />
         </div>
 
-        <h3 id="Commercial and Open Source">
+        <h3 id="Commercial-and-Open-Source">
           4.2 Commercial and Open Source
         </h3>
 
         <p>
-          So yea, as we mentioned earlier, trying to build webhooks and
+          So yeah, as we mentioned earlier, trying to build webhooks and
           integrate them even in just one app can be very complex, so as you
           think about trying to expand that out to multiple different apps in
           your ecosystem that can be a very difficult and time consuming thing
@@ -486,7 +513,7 @@
               id="fnref8">[8]</a></sup>
         </p>
 
-        <h3 id="Commercial vs. DIY">4.3 Commercial vs. DIY</h3>
+        <h3 id="Commercial-vs-DIY">4.3 Commercial vs. DIY</h3>
 
         <p>
           The commercial solutions handle the data storage, message sending
@@ -506,10 +533,10 @@
         </p>
 
         <div class="img-wrapper">
-          <img src="images/diagrams/commercialvDIY.png" alt="Commercial vs. DIY" />
+          <img src="images/newDiagrams/comparisonTable.png" alt="Commercial vs. DIY vs. Tacklebox" />
         </div>
 
-        <h3 id="Tacklebox use case">4.4 Tacklebox use case</h3>
+        <h3 id="Tacklebox-use-case">4.4 Tacklebox use case</h3>
 
         <p>
           So who is Tacklebox geared toward? A good way to find out is to ask
@@ -521,9 +548,9 @@
           Tacklebox would likely be a good fit for you.
         </p>
 
-        <h2 id="How to use Tacklebox">5. How to use Tacklebox</h2>
+        <h2 id="UsingTacklebox">5. How to use Tacklebox</h2>
 
-        <h3 id="Project Goals">5.1 Project Goals</h3>
+        <h3 id="Project-Goals">5.1 Project Goals</h3>
 
         <p>
           Make it easy to provide webhooks across multiple applications. Make
@@ -569,7 +596,7 @@
           <img src="images/diagrams/uiDash.png" />
         </div>
 
-        <h3 id="Client libraries">5.3 Client libraries</h3>
+        <h3 id="Client-libraries">5.3 Client libraries</h3>
 
         <small>
           To make our framework even easier to manage across your apps, we
@@ -577,10 +604,10 @@
           framework standard and DRY.
         </small>
         <div class="img-wrapper">
-          <img src="images/diagrams/clientLibraries.png" />
+          <img src="images/newDiagrams/clientLibraries.png" />
         </div>
 
-        <h3 id="Tacklebox Demo">5.4 Tacklebox Demo</h3>
+        <h3 id="Tacklebox-Demo">5.4 Tacklebox Demo</h3>
         <p>
           Now we are going to show a brief demo of Tacklebox in action. So
           imagine that you’re a software engineer at a consumer electronics
@@ -680,14 +707,14 @@
           <img src="images/gifs/destroy.gif" />
         </div>
 
-        <h2 id="How we built Tacklebox">6. How we built Tacklebox</h2>
+        <h2 id="BuildingTacklebox">6. How we built Tacklebox</h2>
         <p>
           In this section, we will explore how we built Tacklebox, and some of the implementation decisions we made
           along the way.
         </p>
-        <h2 id="Webhook feature requirements">
+        <h3 id="Webhook-feature-requirements">
           6.1 Webhook feature requirements
-        </h2>
+        </h3>
 
         <p>
           Before we can talk about the Tacklebox architecture, it’s important to understand the feature requirements for
@@ -704,7 +731,7 @@
           Tacklebox. Without this, it is not a webhook service.
         </p>
 
-        <h2 id="Event / Message lifecycle">6.2 Event / Message lifecycle</h2>
+        <h3 id="Event-Message-lifecycle">6.2 Event / Message Life Cycle</h3>
 
         <p>
           The core functionality of a webhook service is sending messages to endpoints when events occur. That process
@@ -737,12 +764,15 @@
           </li>
         </ul>
 
-
         <div class="img-wrapper">
-          <img src="images/diagrams/messageLifeCycle.png" />
+          <img src="images/newDiagrams/eventLifecycleOverArchitecture.png" alt="Event Message Lifecycle" />
         </div>
 
-        <h2 id="Tacklebox Architecture">6.3 Tacklebox Architecture</h2>
+        <h3 id="TackleboxArchitecture">6.3 Tacklebox Architecture</h3>
+
+        <div class="img-wrapper">
+          <img src="images/newDiagrams/finalArchitecture.png" alt="Final Tacklebox Architecture" />
+        </div>
 
         <p>
           In our architecture, notification intake is handled by a pair of services: API Gateway and Lambda Functions.
@@ -772,7 +802,11 @@
         </p>
 
         <div class="img-wrapper">
-          <img src="images/diagrams/tackleBoxArchitecture.png" />
+          <img src="images/newDiagrams/addUserOverArchitecture.png" alt="Add User Workflow" />
+        </div>
+
+        <div class="img-wrapper">
+          <img src="images/newDiagrams/addSubscriptionOverArchitecture.png" alt="Add Subscription Workflow" />
         </div>
 
         <h3 id="Database">6.3.2 Database Choice</h3>
@@ -832,7 +866,7 @@
         </p>
 
         <div class="img-wrapper">
-          <img src="images/diagrams/tackleboxERD.png" />
+          <img src="images/newDiagrams/erd.png" alt="Tacklebox ERD" />
         </div>
 
         <p>
@@ -854,62 +888,61 @@
           didn't really take advantage of DynamoDB's strengths, so we chose RDS w/ PostgreSQL.
         </p>
 
-        <h2 id="Challenges">6.4 Challenges</h2>
+        <h3 id="Challenges">6.4 Challenges</h3>
 
-        <h2 id="Challenges">6.4.1 How we dealt with wasted uptime</h2>
+        <h4 id="Challenges">6.4.1 How we dealt with wasted uptime</h4>
 
         <p>
-          Our initial implementation of Tacklebox used a single application
-          server. It could have worked for our use-case, but we saw an
-          opportunity to optimize our infrastructure. Webhooks usage patterns
-          are often unpredictable and can have moments of high-use as well as
-          periods of minimal usage. As a result, with this single app server
-          architecture, we may have had a lot of unused compute resources. To
-          address this, we decided to use AWS Lambda Functions. - Focus less
-          on fact that implementation works, more on the fact that the
-          architecture works. Less about our personal implementation and more
-          about how architecture in general satisfies requirements.
+          Our initial implementation of Tacklebox used a single application server.
         </p>
 
         <div class="img-wrapper">
-          <img src="images/diagrams/whyServerless.png" />
+          <img src="images/newDiagrams/serverImplementation.png" alt="Basic Server Implementation" />
         </div>
 
         <p>
-          Lambda functions, which are AWS’s “Function as a Service” offering,
-          allow us to only run code when needed. This also means that you only
-          pay for compute that you actually need. Lambdas, of course, come
-          with tradeoffs: Cold start times can increase latency - cold start
-          time refers to the time it takes to load the function into memory
-          before it can be invoked. Stateless, so accessing persistent data
-          requires a call to another service Function execution time has a
-          limit
+          This approach worked for our use-case, but we saw an opportunity to optimize our infrastructure. Webhooks
+          usage patterns are often unpredictable and
+          can have moments of high-use as well as periods of minimal usage. As a result, with this single app server
+          architecture, we were leaving a decent amount of compute power unused. To address this inefficiency, we
+          decided to use AWS Lambda Functions.
         </p>
 
         <div class="img-wrapper">
-          <img src="images/diagrams/lambdas.png" />
+          <img src="images/newDiagrams/lambdaImplementation.png" alt="Lambda Implementation" />
         </div>
 
         <p>
-          We were ok with these tradeoffs, so we decided to use lambdas. Going
-          with lambdas, though, meant that each lambda would have to do all of
-          the following tasks every time it runs: They would need to: Intake
-          the new event and persist it to db Gather subscriptions and create
-          messages for each consumer Send messages to all consumers and wait
-          for their responses Write responses to db Respond back to the event
-          producer after all of these tasks are done This is a lot of
-          responsibility (and potentially a lot of execution time) for a
-          single function. So while we believed lambdas improved our
-          architecture, they also added some additional challenges we wanted
-          to address. To explain these remaining challenges, and how they
-          influenced our architecture.
+          Lambda functions, which are a “Function as a Service” offering from AWS, allow us to only run code when
+          needed.
+          This also means that you only pay for the compute that you actually need. As with any service, lambdas come
+          with tradeoffs:
         </p>
 
-        <div class="img-wrapper">
-          <img src="images/diagrams/manyJobs.png" />
-        </div>
+        <ul>
+          <li>First of all, cold start times can increase latency (cold start time refers to the time that it takes to
+            load the function into memory before it can be invoked)</li>
+          <!-- [https://lumigo.io/blog/this-is-all-you-need-to-know-about-lambda-cold-starts/] -->
+          <li>Lambdas are stateless, so accessing persistent data requires a call to another service</li>
+          <!-- [https://aws.amazon.com/lambda/faqs/#AWS_Lambda_functions] -->
+          <li>Lambdas have an execution time limit - currently this is set to 15 minutes.</li>
+          <!-- [https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-limits.html] -->
+        </ul>
 
-        <h2 id="Challenges">6.4.2 How we handled message fanout</h2>
+        <p>
+          We found these tradeoffs acceptable for Tacklebox. Going with lambdas, though, meant that each lambda would
+          have to do all of the following tasks every time it runs:
+        </p>
+
+        <ul>
+          <li>Intake a new event and persist it to the database</li>
+          <li>Gather subscriptions and create messages for each subscriber</li>
+          <li>Send messages to all subscribers and wait for their responses</li>
+          <li>Write responses to the database</li>
+          <li>Respond back to the event producer</li>
+        </ul>
+
+        <h4 id="Challenges">6.4.2 How we handled message fanout</h4>
 
         <p>
           With this implementation, the message fanout process in particular
@@ -919,13 +952,13 @@
         </p>
 
         <div class="img-wrapper">
-          <img src="images/diagrams/fanOut.png" />
+          <img src="images/newDiagrams/lambdaFanout.png" alt="Lambda Message Fanout" />
         </div>
 
         <p>
           The lambda not only has to send the messages, but also has to wait
           for a response from every one before it can finish its work by
-          writing the results to the message history. Because webhooks are
+          writing the results to the database. Because webhooks are
           typically application or user-specific, the number of consumers
           needing to be notified when a given event occurs is typically low,
           however even with tens of consumers the chance that one of the
@@ -948,7 +981,7 @@
         </p>
 
         <div class="img-wrapper">
-          <img src="images/diagrams/retries.png" />
+          <img src="images/newGifs/messageRetries.gif" alt="Retrying Failed Messages" />
         </div>
 
         <p>
@@ -958,7 +991,9 @@
           either get a response from the consumer or you don't (i.e. a
           timeout). At minimum, we need to know that a consumer's endpoint
           received the message, so we consider timeouts within a reasonable
-          amount of time to be failures. When you do receive an explicit
+          amount of time to be failures.
+        </p>
+          <!-- amount of time to be failures. When you do receive an explicit
           response from a consumer, though, a few questions arise:
         </p>
 
@@ -981,22 +1016,18 @@
               the message, and we'd have no way to tell.
             </p>
           </li>
-        </ul>
+        </ul> -->
 
+        <!-- <p>
+          From a webhook provider's perspective, the question for any given -->
         <p>
-          From a webhook provider's perspective, the question for any given
-          status code is not only does this indicate the consumer received the
-          message, but also does it make sense to try sending the message
+          When you do receive an explicit response and are considering the status code, you must determine whether it indicates the consumer received the
+          message and whether it makes sense to try sending the message
           again. Repeatedly sending messages to endpoints that are
-          misconfigured by the consumer, for example, may not make sense. If
-          you consider a certain status code a failure, you are indirectly
-          saying that you will retry when you encounter it. Existing webhook
+          misconfigured by the consumer, for example, may not make sense. Existing webhook
           implementations approach this in a wide variety of ways, from
           strictly requiring a 200 response to considering anything other than
-          a 5xx response a success. We chose the latter approach as we thought
-          it was reasonable to view the core responsibility of a webhook
-          service as getting messages to their specified endpoints, not
-          ensuring those endpoints correctly process the message.
+          a 5xx response a success. We chose the latter approach.
         </p>
 
         <p>
@@ -1012,7 +1043,7 @@
         </p>
 
         <div class="img-wrapper">
-          <img src="images/diagrams/initialApproach.png" />
+          <img src="images/newGifs/doubleLambdaFanout.gif" alt="Double Lambda Fanout" />
         </div>
 
         <p>
@@ -1034,23 +1065,21 @@
           which simplifies debugging.
         </p>
 
+        <div class="img-wrapper">
+          <img src="images/newDiagrams/sqsFanout.png" alt="SQS Message Fanout" />
+        </div>
+
         <p>
           Amazon’s Simple Queue Service, or SQS for short, does exactly this.
           SQS gives us a reliable place to store both our initial and retry
           messages, which is great because our intake lambdas can now just
           focus on creating messages for an event. SQS doesn’t send messages
-          to consumers itself, so we keep our messenger lambdas in-place and
-          continue to use them to send messages. The messenger lambdas check
-          SQS for new messages, and pull them off as soon as they appear. To
+          to consumers itself, so we use our messenger lambdas to pull messages off as soon as they appear and send them to the consumer. To
           prevent our messenger lambdas from waiting on retries, we have them
           immediately put failed messages back into the queue. Those failed
           messages are then picked off of the queue by a different lambda
           invocation at a later time.
         </p>
-
-        <div class="img-wrapper">
-          <img src="images/diagrams/sqs.png" />
-        </div>
 
         <p>
           By adding SQS we increased the complexity of our implementation, but
@@ -1067,6 +1096,11 @@
           intermittent, and all of those polling requests in between events
           can add up.
         </p>
+
+        <div class="img-wrapper">
+          <img src="images/newGifs/lasers.gif" alt="SQS Lamba Polling" />
+        </div>
+
         <p>
           Under the hood it gets even more interesting, because when using
           lambdas with SQS, Amazon requires that a minimum of 5 parallel
@@ -1079,17 +1113,17 @@
           sending process.
         </p>
 
-        <div class="img-wrapper">
-          <img src="images/diagrams/lasers.png" />
-        </div>
-
         <p>
           We were able to remove polling from the message sending process by
           using Amazon’s Simple Notification Service, or SNS. SNS is a
           messaging service that, when given an event, sends a message to
           every subscriber to that event. It also automatically handles
           retries. In other words, it does the same job that the combination
-          of SQS and messenger lambda previously did for us. Rather than use
+          of SQS and messenger lambda previously did for us.
+        </p>
+        
+        <p>
+          Rather than use
           polling, SNS uses a pub/sub model where new messages are published
           to topics, and anyone who is subscribed to that topic automatically
           receives a message. In webhook parlance, every consumer that’s
@@ -1097,7 +1131,7 @@
         </p>
 
         <div class="img-wrapper">
-          <img src="images/diagrams/sns.png" />
+          <img src="images/newDiagrams/snsFanout.png" alt="SNS Message Fanout" />
         </div>
 
         <p>
@@ -1126,10 +1160,6 @@
               need subscription data in our main database for querying
               purposes. This means that we now have to keep track of
               subscriptions in two places and make sure they remain identical.
-              For example, if a consumer chooses to change which event types
-              they are subscribed to, or if a provider decides to add a new
-              event type to their service, we have to make those changes in
-              both SNS and the main database.
             </p>
           </li>
         </ul>
@@ -1142,7 +1172,7 @@
           out of the box.
         </p>
 
-        <h2 id="Challenges">6.4.3 How we persisted message history</h2>
+        <h4 id="Challenges">6.4.3 How we persisted message history</h4>
 
         <p>
           SNS doesn’t have a built-in way to write message data to our
@@ -1151,10 +1181,6 @@
           delivers a message or makes every effort to, its job is done.
         </p>
 
-        <div class="img-wrapper">
-          <img src="images/diagrams/sns2.png" />
-        </div>
-
         <p>
           Our entire event/message lifecycle currently ends the moment SNS
           sends a message to a consumer and receives a response. The only
@@ -1162,11 +1188,13 @@
           original event itself, but no message data has been saved. That
           means no record of who was sent a message and when, what the payload
           was, what response SNS received back, etc. So we needed to find a
-          way to get message data from SNS into our message history after the
+          way to get message data from SNS into our database after the
           message send process completed.
         </p>
 
-        <!-- insert image of post process? -->
+        <div class="img-wrapper">
+          <img src="images/newDiagrams/snsMissingDbLink.png" alt="Missing Link Between SNS and DB" />
+        </div>
 
         <p>
           Our first thought was to see if we could tack on some post-process
@@ -1174,12 +1202,15 @@
           receives a response back from a consumer. SNS doesn’t have a
           built-in way to do this, but it does allow lambda triggers to be set
           to run whenever a message is published. Inserting lambdas here
-          though, would add more complexity because the lambda would again be
-          responsible for sending the message to the consumer, and at that
+          though, would again make lambdas responsible for sending messages to consumers, and at that
           point we’re essentially back at our previous SQS implementation.
           Instead, we found a way to use a service that SNS was already
           integrated with.
         </p>
+
+        <div class="img-wrapper">
+          <img src="images/newDiagrams/cloudWatch.png" alt="CloudWatch Logs" />
+        </div>
 
         <p>
           SNS stores logging data in Amazon’s CloudWatch Logs service, which
@@ -1188,23 +1219,19 @@
           to log every time it received a response back from a consumer. Using
           CloudWatch Logs, we now had our persistent message store, but it
           wasn’t in the same place as the rest of our data, so we needed to
-          find a way to get it from CloudWatch Logs into our message history.
+          find a way to get it from CloudWatch Logs into our main database.
         </p>
 
         <div class="img-wrapper">
-          <img src="images/diagrams/sns3.png" />
+          <img src="images/newDiagrams/finalArchitecture2.png" alt="CloudWatch Logs with Lambda" />
         </div>
 
         <p>
           CloudWatch Logs can be set up to asynchronously invoke a Lambda
           function, so we set CloudWatch Logs to invoke the lambda when it
           received a new SNS log, and once invoked, the lambda transfers the
-          message data in the log to the main message history.
+          message data in the log to the database.
         </p>
-
-        <div class="img-wrapper">
-          <img src="images/diagrams/sns4.png" />
-        </div>
 
         <p>
           In light of these added steps and services, SNS definitely added
@@ -1214,7 +1241,7 @@
           additional nice-to-haves out of the box.
         </p>
 
-        <h2 id="Future work">7. Future work</h2>
+        <h2 id="FutureWork">7. Future Work</h2>
 
         <p>
           And that's Tacklebox! We've got a few ideas that we'd love to work
@@ -1222,7 +1249,7 @@
           service:
         </p>
 
-        <h3 id="Proxy Server">7.1 Proxy Server</h3>
+        <h3 id="ProxyServer">7.1 Proxy Server</h3>
 
         <p>
           Tacklebox currently does two things by default that, while useful,
@@ -1254,7 +1281,7 @@
         </p>
 
         <div class="img-wrapper">
-          <img src="images/diagrams/proxy.png" />
+          <img src="images/newDiagrams/proxyServer.png" alt="Proxy Server Implementation" />
         </div>
 
         <p>
@@ -1264,7 +1291,7 @@
           percentage of our users would probably use.
         </p>
 
-        <h3 id="Other Ideas">7.2 Other Ideas</h3>
+        <h3 id="OtherIdeas">7.2 Other Ideas</h3>
 
         <p>Another few things we’d like to add are:</p>
 
