@@ -966,6 +966,10 @@
           <!-- Insert citation for DDIA pg. 278 here -->
         </p>
 
+        <div class="img-wrapper">
+          <img src="images/newGifs/messageRetries.gif" alt="Retrying Failed Messages" />
+        </div>
+
         <p>
           When a message fails to be delivered successfully, the burden of
           resending still lies with the same lambda. It can't save the results
@@ -979,10 +983,6 @@
           function running for minutes at a time just waiting to run the next
           retry was contrary to that decision.
         </p>
-
-        <div class="img-wrapper">
-          <img src="images/newGifs/messageRetries.gif" alt="Retrying Failed Messages" />
-        </div>
 
         <h4 id="server-implementation">Endpoint Failure</h4>
 
@@ -1071,12 +1071,15 @@
 
         <h4 id="server-implementation">SQS Implementation</h4>
 
+        <p>
+          Amazon’s Simple Queue Service, or SQS for short, does exactly this.
+        </p>
+        
         <div class="img-wrapper">
           <img src="images/newDiagrams/sqsFanout.png" alt="SQS Message Fanout" />
         </div>
 
         <p>
-          Amazon’s Simple Queue Service, or SQS for short, does exactly this.
           SQS gives us a reliable place to store both our initial and retry
           messages, which is great because our intake lambdas can now just
           focus on creating messages for an event. SQS doesn’t send messages
@@ -1195,14 +1198,18 @@
 
         <h4 id="server-implementation">Adding Compute after SNS</h4>
 
+        <p>
+          Our first thought was to see if we could tack on some post-process
+          to SNS, like a function that it executes immediately after it
+          receives a response back from a consumer.
+        </p>
+
         <div class="img-wrapper">
           <img src="images/newDiagrams/snsMissingDbLink.png" alt="Missing Link Between SNS and DB" />
         </div>
 
         <p>
-          Our first thought was to see if we could tack on some post-process
-          to SNS, like a function that it executes immediately after it
-          receives a response back from a consumer. SNS doesn’t have a
+          SNS doesn’t have a
           built-in way to do this, but it does allow lambda triggers to be set
           to run whenever a message is published. Inserting lambdas here
           though, would again make lambdas responsible for sending messages to consumers, and at that
@@ -1213,15 +1220,19 @@
 
         <h4 id="server-implementation">CloudWatch Logs</h4>
 
-        <div class="img-wrapper">
-          <img src="images/newDiagrams/cloudWatch.png" alt="CloudWatch Logs" />
-        </div>
-
         <p>
           SNS stores logging data in Amazon’s CloudWatch Logs service, which
           is commonly used for debugging and a variety of other tasks. SNS can
           be configured to log specific events, and in this case we wanted it
-          to log every time it received a response back from a consumer. Using
+          to log every time it received a response back from a consumer.
+        </p>
+
+        <div class="img-wrapper">
+          <img src="images/newDiagrams/cloudWatch.png" alt="CloudWatch Logs" />
+        </div>
+        
+        <p>
+          Using
           CloudWatch Logs, we now had our persistent message store, but it
           wasn’t in the same place as the rest of our data, so we needed to
           find a way to get it from CloudWatch Logs into our main database.
@@ -1229,16 +1240,16 @@
 
         <h4 id="server-implementation">CloudWatch Logs Lambda Trigger</h4>
 
-        <div class="img-wrapper">
-          <img src="images/newDiagrams/finalArchitecture2.png" alt="CloudWatch Logs with Lambda" />
-        </div>
-
         <p>
           CloudWatch Logs can be set up to asynchronously invoke a Lambda
           function, so we set CloudWatch Logs to invoke the lambda when it
           received a new SNS log, and once invoked, the lambda transfers the
           message data in the log to the database.
         </p>
+
+        <div class="img-wrapper">
+          <img src="images/newDiagrams/finalArchitecture2.png" alt="CloudWatch Logs with Lambda" />
+        </div>
 
         <p>
           In light of these added steps and services, SNS definitely added
