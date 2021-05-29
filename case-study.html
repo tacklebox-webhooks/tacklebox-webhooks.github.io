@@ -57,8 +57,8 @@
           <a href="#Intro to Webhooks"> 2. Intro to Webhooks</a>
         </li>
         <li>
-          <a href="#Building webhooks is not trivial">
-            3. Building webhooks is not trivial</a>
+          <a href="#Building Webhooks Is Not Trivial">
+            3. Building Webhooks Is Not Trivial</a>
         </li>
         <li>
           <a href="#Existing Solutions"> 4. Existing Solutions</a>
@@ -81,198 +81,232 @@
     <main>
       <section id="case-study">
         <h1>Case Study</h1>
-
         <h2 id="Introduction">1. Introduction</h2>
-
         <p>
-          APIs, or Application Programming Interfaces, offer a way for computers
-          to communicate with each other. APIs that are designed with web 
-          technologies and that work similarly to the web itself are called
-          Web APIs.
+          An event-driven architecture is a programming paradigm that involves
+          producing, detecting, consuming, and reacting to events.
         </p>
-          
         <p>
-          Web APIs can provide tools and technologies that may come in handy
-          at some point in time. One such tool is known as webhooks.
+          Webhooks represent an event-driven approach to web development.
+          Data about events is sent to web applications, and these apps can
+          react to these events accordingly.
         </p>
-          
         <p>
           Tacklebox is an open-source serverless framework that offers webhooks
           as a service. Now, don't worry if that seems like a mouthful, because
           it is, so we'll try to unpack the meaning behind that phrase throughout
           this case study.
         </p>
-          
         <p>
-          Throughout this case study, we are going to introduce the concept of
-          webhooks, specify the benefits they provide, explain why building webhooks
-          well is hard, explore some already-implemented solutions, talk about what
-          Tacklebox is all about, get into the nitty-gritty stuff of how we actually
-          got to the final implementation of Tacklebox, and last but not least, mention
-          some future ideas.
+          Tacklebox as a project includes:
+          <ul>
+            <li>a <a href="https://github.com/tacklebox-webhooks/cli">CLI tool</a></li>
+            <li>a management UI</li>
+            <li>
+              4 client libraries
+              (<a href="https://github.com/tacklebox-webhooks/javascript">JavaScript</a>,
+              <a href="https://github.com/tacklebox-webhooks/ruby">Ruby</a>,
+              <a href="https://github.com/tacklebox-webhooks/python">Python</a> and
+              <a href="https://github.com/tacklebox-webhooks/golang">Go</a>)
+            </li>
+            <li>
+              a webhooks service which comprises:
+              <ul>
+                <li>a RESTful API</li>
+                <li>AWS infrastructure</li>
+              </ul>
+            </li>
+          </ul>
         </p>
-
+        <p>
+          Throughout this case study, we are going to:
+          <ul>
+            <li>introduce the concept of webhooks</li>
+            <li>specify the benefits webhooks provide</li>
+            <li>explain why building webhooks well is hard</li>
+            <li>explore some already-implemented solutions</li>
+            <li>talk about what Tacklebox is all about</li>
+            <li>talk about how we got to the final implementation of Tacklebox</li>
+            <li>mention some future ideas</li>
+          </ul>
+        </p>
+        
         <h2 id="Intro to Webhooks">2. Intro to Webhooks</h2>
-
         <h3 id="What are webhooks">2.1 What are webhooks?</h3>
-
         <p>
           To understand what webhooks are, let’s begin with an example using a
-          tool we all know: GitHub. ​ Imagine you: - are part of a team - have
-          one repo for the project the team will work on - want to do
-          something programmatically when a branch is created by a teammate,
-          like for example, post a message on Slack or something like that. ​
-          The flow would look something like this: first, one of your
-          teammates creates a new branch locally then, the change is pushed to
-          the repo next, the branch is actually created on the repo and
-          finally you want to do something programmatically as a result of
-          this branch creation.
+          tool we all know: GitHub. Imagine you:
+          <ul>
+            <li>are part of a team.</li>
+            <li>have one repo for the project the team will work on.</li>
+            <li>want to do something programmatically when a branch is created by
+              a teammate, like for example, post a message on Slack or something
+              like that.</li>
+          </ul>
         </p>
-
+        <p>
+          The flow would look something like this:
+          <ol>
+            <li>One of your teammates creates a new branch locally.</li>
+            <li>The change is pushed to the repo.</li>
+            <li>The branch is actually created on the repo.</li>
+            <li>You want to do something programmatically as a result of this
+              branch creation.</li>
+          </ol>
+        </p>
         <div class="img-wrapper">
           <img src="images/diagrams/githubExample.png" alt="What are webhooks" />
         </div>
-
         <p>
           So the question then becomes, how can you automate what you want to
           do once the event happens, which in this case, is a branch being
           created? You basically have two options: Polling and Webhooks.
         </p>
-
         <p>
           In the context of Web APIs, the party interested in data (which in
           this case, it's you) is called the consumer, and the party that
           provides the data of interest (which in this case, it's GitHub) is
-          called the provider.<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>
+          called the provider.<sup class="footnote-ref"><a href="#fn1"
+          id="fnref1">[1]</a></sup>
           With polling, you basically send and HTTP request to GitHub every so
           often to see if there's any updates. In this case, you happen to
           send a couple requests first with no updates from GitHub, and then a
-          third one where there's an update.<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup>
+          third one where there's an update.<sup class="footnote-ref"><a href="#fn2"
+          id="fnref2">[2]</a></sup>
         </p>
         <div class="img-wrapper">
           <img src="images/diagrams/polling.png" alt="What are webhooks" />
         </div>
-
         <p>
           With webhooks, however, instead of having GitHub wait for incoming
           requests in order to handle them, now GitHub proactively sends an
           HTTP request to you every time an event you care about occurs. To be
-          more specific, GitHub sends an HTTP request to a URL that you
-          register with them every time something of interest happens.<sup class="footnote-ref"><a href="#fn3"
-              id="fnref3">[3]</a></sup>
+          more specific, GitHub sends an HTTP request every time something of
+          interest happens to a URL that you register with them.
+          <sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup>
         </p>
-
         <div class="img-wrapper">
           <img src="images/diagrams/webhooks.png" alt="What are webhooks" />
         </div>
-
         <p>
           In this particular case, a branch was created, so GitHub sends an
           HTTP request to your endpoint, and you then acknowledge the request.
           In other words, a webhook is nothing more than an HTTP request sent
           when an event happens.
         </p>
-
         <p>
           Up to this point, we have only talked about webhooks from the
           perspective of the consumer. Now, let's switch gears a little bit to
-          talk about webhooks, but from the perspective of the provider, which
+          talk about webhooks but from the perspective of the provider, which
           in the example was GitHub. In other words, let's put ourselves in
           GitHub's shoes.
         </p>
-
         <div class="img-wrapper">
           <img src="images/diagrams/webhookProviderExample.png" alt="What are webhooks" />
         </div>
-
         <p>
           Following the same example, if we're GitHub, and a consumer is
           interested in receiving a webhook every time a branch is created,
-          the workflow would look something like this: first, you receive a
-          subscription request with a URL to send webhooks to, which would be
-          the URL on the right of the slide. This subscription request also
-          specifies the event type you'll look out for to send these webhooks,
-          which in this case is a branch creation. then, you'll persist the
-          subscription after that, a branch is created at some point in time
-          then, you check to see who is subscribed to that event type since
-          there may be more interested parties. and lastly, you send a webhook
-          to the URL of each consumer subscribed to that particular event
-          type, which in this case, for simplicity's sake, is just the
-          consumer from step one.
+          the workflow would look something like this:
+          <ol>
+            <li>
+              You receive a subscription request with a URL to send webhooks to, which
+              would be the URL on the right of the diagram above (https://sendrequestshere.io).
+              This subscription request also specifies the event type that the consumer
+              cares about, which in this case is a branch creation.
+            </li>
+            <li>You persist the subscription</li>
+            <li>A branch is created at some point in time</li>
+            <li>
+              You check to see who is subscribed to that event type since
+              there may be more interested parties.
+            <li>
+              You send a webhook to the URL of each consumer subscribed to that
+              particular event type, which in this case, for simplicity's sake, is
+              just the consumer from step one.
+            </li>
+          </ol>
         </p>
-
         <p>
           To show you how webhooks look like in real applications, here's a
           screenshot of the UI GitHub offers for webhooks. Up to the right,
           you can see an "add" button which would be used to request a
           subscription.
         </p>
-
         <div class="img-wrapper">
           <img src="images/diagrams/githubExample1.png" alt="What are webhooks" />
         </div>
-
         <p>
           After clicking that button, you get to the page where you specify
           the URL where you want to receive webhooks, the event type you're
           interested in, among other things.
         </p>
-
         <div class="img-wrapper">
           <img src="images/diagrams/githubExample2.png" alt="What are webhooks" />
         </div>
-
         <p>
           And once you register a URL to receive webhooks, you can see all the
-          webhooks that GitHub has sent you, their headers, their payload,
-          etc.
+          webhooks that GitHub has sent you, their headers, their payload, etc.
         </p>
-
         <div class="img-wrapper">
           <img src="images/diagrams/githubExample3.png" alt="What are webhooks" />
         </div>
-
         <h3 id="Who uses webhooks">2.2 Who uses webhooks?</h3>
-
         <p>
           So far, when talking about webhooks, we've only talked about GitHub.
           However, it turns out that GitHub is not the only company that
-          offers webhooks. Some examples of companies that offer webhooks are:
-          Stripe, which can send you a webhook when for example a payment is
-          processed Twitter can send you a webhook when for example you
-          receive a direct message Intuit, the company that owns products like
-          TurboTax and QuickBooks, can send you a webhook for example when a
-          budget is created and I mean, I can keep going. The point is,
-          webhooks are everywhere.<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup>
+          offers webhooks. Some examples of companies that also offer webhooks are:
+          <ul>
+            <li>Stripe, which can send you a webhook when for example a payment
+              is processed.</li>
+            <li>Twitter, which can send you a webhook when for example you
+              receive a direct message.</li>
+            <li>Intuit, the company that owns products like TurboTax and QuickBooks,
+              which can send you a webhook when for example a budget is created.</li>
+          </ul>
+        <p>
+          And we can keep going. The point is, webhooks are everywhere.
+          <sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup>
         </p>
-
         <div class="img-wrapper">
           <img src="images/diagrams/whoUsesWebhooks.png" alt="who uses webhooks" />
         </div>
-
         <h3 id="Pros and Cons of building webhooks">
           2.3 Pros and Cons of building webhooks
         </h3>
-
         <p>
           Now that we have some context around webhooks, we can start talking
           about things to consider when building them. As a provider, webhooks
-          offer a few benefits: For example, you can provide a better
-          experience to your users that want or need webhooks. And also, you
-          can lower the amount of requests your infrastructure needs to handle
-          over time. ​ However, webhooks are not perfect: If you want a very
-          simple webhooks implementation, it may not take you much. However,
-          if you want a robust implementation, you have to spend a lot of time
-          and effort building it. And the reason you have to spend a lot of
-          time and effort building webhooks well is because building webhooks
-          well is not easy. We're going to talk about why building webhooks
-          well is not easy in the next section.<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup>
+          offer a few benefits. For example:
+          <ul>
+            <li>You can provide a better experience to your users that
+              want or need webhooks.</li>
+            <li>You can lower the amount of requests your infrastructure needs
+              to handle over time.</li>
+          </ul>
+        </p>
+        <p>
+          However, webhooks are not perfect:
+          <ul>
+            <li>
+              If you want a very simple webhooks implementation, it may not
+              take you too long. However, if you want a robust implementation,
+              you have to spend a lot of time and effort building it.
+            </li>
+            <li>
+              And the reason you have to spend a lot of time and effort building
+              webhooks well is because building webhooks well is not easy.
+            </li>
+          </ul>
+        </p>
+        <p>
+          We're going to talk about why building webhooks well is not easy
+          in the next section.<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup>
         </p>
 
-        <h2 id="Building webhooks is not trivial">
-          3. Building webhooks is not trivial
+        <h2 id="Building Webhooks Is Not Trivial">
+          3. Building Webhooks Is Not Trivial
         </h2>
-
         <h3 id="Considerations when building webhooks">
           3.1 Considerations when building webhooks
         </h3>
@@ -281,95 +315,108 @@
           implementing webhooks well is not as trivial as it may seem at first
           glance. Since we can go down a rabbit hole here, we decided to talk
           about 4 different areas or categories that may present a significant
-          amount of challenges. The first area that comes to mind when
-          thinking about building webhooks is failed messages. For example: -
-          What happens if a consumer URL endpoint fails or is unreachable? -
-          Do you try to send the message again? - And if you do, how often and
-          how many times do you retry before you stop? ​ The second area that
-          comes to mind is security and authentication. For instance: - Do you
-          want to make sure the appropriate consumer controls an endpoint
-          before you send messages to it? - How do you allow consumers to
-          verify the integrity of messages? - How about allowing them to
-          verify the origin of messages? The third area revolves around
-          monitoring. For example: - How do you identify frequently failing
-          endpoints? - How do you monitor historical usage patterns? And last
-          but not least we have the area of allowing your consumers to trigger
-          events manually for testing or other purposes. In other words,
-          consumer experience. For instance: - Do you want to allow your
-          consumers to manually trigger events for testing and other purposes?
-          - For example, aside from testing, do you want to allow them to
-          resend a message manually? - And if you do, how would you implement
-          that?
+          amount of challenges.
         </p>
-
         <div class="img-wrapper">
           <img src="images/diagrams/considerations.png" alt="Considerations when building webhooks" />
         </div>
-
+        <p>
+          The first area that comes to mind when thinking about building webhooks
+          is failed messages or endpoint failure. For example:
+          <ul>
+            <li>What happens if a consumer URL endpoint fails or is unreachable?</li>
+            <li>Do you try to send the message again?</li>
+            <li>And if you do, how often and how many times do you retry before
+              you stop?</li>
+          </ul>
+        </p>
+        <p>
+          The second area that comes to mind is security and authentication. For instance:
+          <ul>
+            <li>Do you want to make sure the appropriate consumer controls an endpoint
+              before you send messages to it?</li>
+            <li>How do you allow consumers to verify the integrity of messages?</li>
+            <li>How about allowing them to verify the origin of messages?</li>
+          </ul>
+        </p>
+        <p>
+          The third area revolves around monitoring. For example:
+          <ul>
+            <li>How do you identify frequently failing endpoints?</li>
+            <li>How do you monitor historical usage patterns?</li>
+          </ul>
+        </p>
+        <p>
+          And last but not least, we have the area of consumer experience. For instance:
+          <ul>
+            <li>Do you want to allow your consumers to manually trigger events for
+              testing and other purposes?</li>
+            <li>For example, aside from testing, do you want to allow them to resend
+            a message manually?</li>
+            <li>And if you do, how would you implement that?</li>
+          </ul>
+        </p>
         <h3 id="Building webhooks for a single application">
           3.2 Building webhooks for a single application
         </h3>
-
         <p>
           In the simplest scenario, building webhooks in one app would look
-          something like this. For simplicity, we have two consumers, but
-          there could be more. All the questions and areas of concern we have
-          would fall into this new webhook implementation we would build in
-          this single app.
+          something like this. For simplicity, you have two consumers, but
+          there could be more. All these concerns you have would fall into this
+          new webhook implementation in this single app.
           <sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup>
         </p>
-
         <div class="img-wrapper">
           <img src="images/diagrams/considerationsOne.png" alt="Considerations when building webhooks" />
         </div>
-
         <h3 id="Building webhooks for multiple applications">
           3.3 Building webhooks for multiple applications
         </h3>
-
         <p>
-          But what if you need webhooks in more than one app? If you need
+          But what if you need webhooks in more than one app? If you implement
           webhooks in more than one app, it would look something like this.
         </p>
-
         <div class="img-wrapper">
           <img src="images/diagrams/considerationsMulti.png" alt="Considerations when building webhooks" />
         </div>
-
         <p>
           Now, you have all the concerns from before times the number of apps.
-          ​And on top of that, more questions come up in this scenario. For
-          example: - How do you avoid redundant work while implementing and
-          maintaining webhooks across all your apps? - How do you make sure
-          that webhooks are consistent across all your apps? - And lastly, is
-          governance or compliance critical to your apps? and if so, how do
-          you enforce control over your data?
+          And on top of that, more questions come up in this scenario. For
+          example:
+          <ul>
+            <li>How do you avoid redundant work while implementing and
+              maintaining webhooks across all your apps?</li>
+            <li>How do you make sure that webhooks are consistent across all your apps?</li>
+            <li>Is governance or compliance critical to your apps? And if so, how do
+              you enforce control over your data?</li>
+          </ul>
         </p>
-
         <h3 id="Extracting webhooks into a service">
           3.4 Extracting webhooks into a service
         </h3>
-
         <p>
           At this point, the need for building a robust webhooks
-          implementation as its own service becomes clear.<sup class="footnote-ref"><a href="#fn6"
-              id="fnref6">[6]</a></sup>
-          Now, all these concerns are abstracted away by this service, and
-          this would give us many benefits. For example: - first, we would
-          have a single place to maintain code and add features - also, we
-          would have a single place to monitor the service performance and
-          other metrics - aside from that, we would have one place where to
-          manage related infrastructure - also, we could have consistency
-          across all the apps - aside from that, now the apps don’t have to be
-          aware of who is consuming their webhooks, allowing more focus on
-          business logic - and last but not least, now we would have
-          centralized control over data in order to enforce governance or
-          compliance if those are important for our apps
+          implementation as its own service becomes clear.
+          <sup class="footnote-ref"><a href="#fn6" id="fnref6">[6]</a></sup>
         </p>
-
         <div class="img-wrapper">
           <img src="images/diagrams/considerationsExtracted.png" alt="Asynchronous Communication" />
         </div>
+        <p>
+          Now, all these concerns are abstracted away by this service, and
+          this would give you many benefits. For example:
+          <ul>
+            <li>You would have a single place to maintain code and add features</li>
+            <li>You would have a single place to monitor the service performance
+              and other metrics</li>
+            <li>You would have one place where to manage related infrastructure</li>
+            <li>You could have consistency across all the apps</li>
+            <li>Now the apps don’t have to be aware of who is consuming their webhooks,
+              allowing more focus on business logic</li>
+            <li>Now we would have centralized control over data in order to enforce
+            governance or compliance if those are important for your apps</li>
+          </ul>
+        </p>
 
         <h2 id="Existing Solutions">4. Existing Solutions</h2>
 

@@ -500,10 +500,15 @@ h3 {
   margin-bottom: 0;
 }
 
+#case-study ol {
+  padding-left: 2rem;
+}
+
 #case-study li {
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   line-height: 1.6rem;
   list-style: disc;
+  padding-bottom: 5px;
   /* margin-left: 2rem; */
 }
 
