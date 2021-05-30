@@ -88,8 +88,9 @@
         </p>
         <p>
           Webhooks represent an event-driven approach to web development.
-          Data about events is sent to web applications, and these apps can
-          react to these events accordingly.
+          Data about events is sent to web applications, and these web apps
+          can react to these events accordingly.<sup class="footnote-ref"><a
+          href="#fn1" id="fnref1">[1]</a></sup>
         </p>
         <p>
           Tacklebox is an open-source serverless framework that offers webhooks
@@ -156,15 +157,15 @@
           In the context of Web APIs, the party interested in data (which in
           this case, it's you) is called the consumer, and the party that
           provides the data of interest (which in this case, it's GitHub) is
-          called the provider.<sup class="footnote-ref"><a href="#fn1"
-          id="fnref1">[1]</a></sup>
+          called the provider.<sup class="footnote-ref"><a href="#fn2"
+          id="fnref2">[2]</a></sup>
         </p>
         <p>
           With polling, you basically send and HTTP request to GitHub every so
           often to see if there's any updates. In this case, you happen to
           send a couple requests first with no updates from GitHub, and then a
-          third one where there's an update.<sup class="footnote-ref"><a href="#fn2"
-          id="fnref2">[2]</a></sup>
+          third one where there's an update.<sup class="footnote-ref"><a href="#fn3"
+          id="fnref3">[3]</a></sup>
         </p>
         <div class="img-wrapper">
           <img src="images/newDiagrams/polling.png" alt="General Polling Workflow" />
@@ -175,7 +176,7 @@
           HTTP request to you every time an event you care about occurs. To be
           more specific, GitHub sends an HTTP request every time something of
           interest happens to a URL that you register with them.
-          <sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup>
+          <sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup>
         </p>
         <div class="img-wrapper">
           <img src="images/newDiagrams/webhooks.png" alt="General Webhook Workflow" />
@@ -258,15 +259,17 @@
           offers webhooks. Some examples of companies that also offer webhooks are:
           <ul>
             <li>Stripe, which can send you a webhook when for example a payment
-              is processed.</li>
+              is processed.<sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]
+              </a></sup></li>
             <li>Twitter, which can send you a webhook when for example you
-              receive a direct message.</li>
+              receive a direct message.<sup class="footnote-ref"><a href="#fn6"
+              id="fnref6">[6]</a></sup></li>
             <li>Intuit, the company that owns products like TurboTax and QuickBooks,
-              which can send you a webhook when for example a budget is created.</li>
+              which can send you a webhook when for example a budget is created.
+              <sup class="footnote-ref"><a href="#fn7" id="fnref7">[7]</a></sup></li>
           </ul>
         <p>
           And we can keep going. The point is, webhooks are everywhere.
-          <sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup>
         </p>
         <div class="img-wrapper">
           <img src="images/newDiagrams/webhookCompanies.png" alt="Companies That Provide Webhooks" />
@@ -303,7 +306,7 @@
         </p>
         <p>
           We're going to talk about why building webhooks well is not easy
-          in the next section.<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup>
+          in the next section.
         </p>
 
         <h2 id="BuildingWebhooks">
@@ -371,7 +374,6 @@
           something like this. For simplicity, you have two consumers, but
           there could be more. All these concerns you have would fall into this
           new webhook implementation in this single app.
-          <sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup>
         </p>
         <div class="img-wrapper">
           <img src="images/newDiagrams/singleApp.png" alt="Single App Webhook Considerations" />
@@ -408,7 +410,6 @@
         <p>
           At this point, the need for building a robust webhooks
           implementation as its own service becomes clear.
-          <sup class="footnote-ref"><a href="#fn6" id="fnref6">[6]</a></sup>
         </p>
         <div class="img-wrapper">
           <img src="images/newDiagrams/serviceExtraction.png" alt="Extracted Webhook Service" />
@@ -437,7 +438,7 @@
           Thankfully as we saw earlier, many companies have already
           implemented their own in-house solution and posted their learnings
           online so there are quite a few blueprints out there.
-          <sup class="footnote-ref"><a href="#fn7" id="fnref7">[7]</a></sup>
+          <sup class="footnote-ref"><a href="#fn8" id="fnref8">[8]</a></sup>
         </p>
 
         <h3 id="In-HouseSolutions">4.1 In-House Solutions</h3>
@@ -1312,44 +1313,44 @@
         <div class="footnotes">
           <ol class="footnotes-list">
             <li id="fn1" class="footnote-item">
-              <a href="https://martinfowler.com/bliki/MonolithFirst.html">
-                https://martinfowler.com/bliki/MonolithFirst.html
+              <a href="https://api-university.com/books/webhooks/">
+                Biehl, M. (2017). Webhooks: Events for RESTful APIs. API-University Press.
               </a>
               <a href="#fnref1">↩︎</a>
             </li>
             <li id="fn2" class="footnote-item">
-              <a href="https://martinfowler.com/articles/break-monolith-into-microservices.html">
-                https://martinfowler.com/articles/break-monolith-into-microservices.html
+              <a href="https://launchschool.com/books/working_with_apis/read/defining_api#provider_and_consumer">
+                https://launchschool.com/books/working_with_apis/read/defining_api#provider_and_consumer
               </a>
               <a href="#fnref2">↩︎</a>
             </li>
             <li id="fn3" class="footnote-item">
-              <a href="https://martinfowler.com/articles/microservices.html">
-                https://martinfowler.com/articles/microservices.html
+              <a href="https://docs.github.com/en/rest/reference/repos#list-branches">
+                https://docs.github.com/en/rest/reference/repos#list-branches
               </a>
               <a href="#fnref3">↩︎</a>
             </li>
             <li id="fn4" class="footnote-item">
-              <a href="https://martinfowler.com/articles/microservices.html">
-                https://martinfowler.com/articles/microservices.html
+              <a href="https://docs.github.com/en/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#create">
+                https://docs.github.com/en/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#create
               </a>
               <a href="#fnref4">↩︎</a>
             </li>
             <li id="fn5" class="footnote-item">
-              <a href="http://msdl.cs.mcgill.ca/people/tfeng/thesis/node38.html">
-                http://msdl.cs.mcgill.ca/people/tfeng/thesis/node38.html
+              <a href="https://stripe.com/docs/webhooks">
+                https://stripe.com/docs/webhooks
               </a>
               <a href="#fnref5">↩︎</a>
             </li>
             <li id="fn6" class="footnote-item">
-              <a href="http://msdl.cs.mcgill.ca/people/tfeng/thesis/node38.html">
-                http://msdl.cs.mcgill.ca/people/tfeng/thesis/node38.html
+              <a href="https://developer.twitter.com/en/docs/twitter-api/enterprise/account-activity-api/guides/getting-started-with-webhooks">
+                https://developer.twitter.com/en/docs/twitter-api/enterprise/account-activity-api/guides/getting-started-with-webhooks
               </a>
               <a href="#fnref6">↩︎</a>
             </li>
             <li id="fn7" class="footnote-item">
-              <a href="https://dzone.com/articles/expecting-failures-in-microservices-and-working-ar">
-                https://dzone.com/articles/expecting-failures-in-microservices-and-working-ar
+              <a href="https://developer.intuit.com/app/developer/qbo/docs/develop/webhooks">
+                https://developer.intuit.com/app/developer/qbo/docs/develop/webhooks
               </a>
               <a href="#fnref7">↩︎</a>
             </li>
