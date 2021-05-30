@@ -126,14 +126,10 @@
 
         <p>
           To understand what webhooks are, let’s begin with an example using a
-          tool we all know: GitHub. Imagine you:
-          <ul>
-            <li>are part of a team.</li>
-            <li>have one repo for the project the team will work on.</li>
-            <li>want to do something programmatically when a branch is created by
-              a teammate, like for example, post a message on Slack or something
-              like that.</li>
-          </ul>
+          tool we all know: GitHub. Imagine that you are part of a team, that you
+          have one repo for the project the team will work on, and that you want
+          to do something programmatically when a branch is created by a teammate,
+          like for example, post a message on Slack or something like that.
         </p>
         <p>
           The flow would look something like this:
@@ -194,15 +190,6 @@
           in the example was GitHub. In other words, let's put ourselves in
           GitHub's shoes.
         </p>
-        
-        <div class="img-wrapper">
-          <img src="images/newDiagrams/providerFlow1.png" alt="Provider Webhook Flow 1" />
-        </div>
-
-        <div class="img-wrapper">
-          <img src="images/newDiagrams/providerFlow2.png" alt="Provider Webhook Flow 2" />
-        </div>
-
         <p>
           Following the same example, if we're GitHub, and a consumer is
           interested in receiving a webhook every time a branch is created,
@@ -210,11 +197,15 @@
           <ol>
             <li>
               You receive a subscription request with a URL to send webhooks to, which
-              would be the URL on the right of the diagram above (https://sendrequestshere.io).
+              would be the URL on the right of the diagram below (https://sendrequestshere.io).
               This subscription request also specifies the event type that the consumer
               cares about, which in this case is a branch creation.
             </li>
             <li>You persist the subscription</li>
+        <div class="img-wrapper">
+          <img src="images/newDiagrams/providerFlow1.png" alt="Provider Webhook Flow 1" />
+        </div>
+
             <li>A branch is created at some point in time</li>
             <li>
               You check to see who is subscribed to that event type since
@@ -224,6 +215,10 @@
               particular event type, which in this case, for simplicity's sake, is
               just the consumer from step one.
             </li>
+
+        <div class="img-wrapper">
+          <img src="images/newDiagrams/providerFlow2.png" alt="Provider Webhook Flow 2" />
+        </div>
           </ol>
         </p>
         <p>
@@ -324,10 +319,10 @@
           about 4 different areas or categories that may present a significant
           amount of challenges.
         </p>
-        <div class="img-wrapper">
-          <img src="images/newDiagrams/questionCategories.png" alt="Considerations when building webhooks" />
-        </div>
+        <h4 id="First-consideration">
 
+          3.1.1 Endpoint Failure
+        </h4>
         <p>
           The first area that comes to mind when thinking about building webhooks
           is failed messages or endpoint failure. For example:
@@ -338,6 +333,10 @@
               you stop?</li>
           </ul>
         </p>
+        <h4 id="Second-consideration">
+
+          3.1.2 Security and Authentication
+        </h4>
         <p>
           The second area that comes to mind is security and authentication. For instance:
           <ul>
@@ -347,6 +346,10 @@
             <li>How about allowing them to verify the origin of messages?</li>
           </ul>
         </p>
+        <h4 id="Third-consideration">
+
+          3.1.3 Monitoring
+        </h4>
         <p>
           The third area revolves around monitoring. For example:
           <ul>
@@ -354,6 +357,10 @@
             <li>How do you monitor historical usage patterns?</li>
           </ul>
         </p>
+        <h4 id="Fourth-consideration">
+
+          3.1.4 Consumer Experience
+        </h4>
         <p>
           And last but not least, we have the area of consumer experience. For instance:
           <ul>
@@ -374,6 +381,10 @@
           something like this. For simplicity, you have two consumers, but
           there could be more. All these concerns you have would fall into this
           new webhook implementation in this single app.
+        </p>
+        <p>
+          The numbered red circles inside the app represent the four areas of
+          concern mentioned before.
         </p>
         <div class="img-wrapper">
           <img src="images/newDiagrams/singleApp.png" alt="Single App Webhook Considerations" />
