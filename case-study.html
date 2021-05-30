@@ -444,9 +444,9 @@
         <h2 id="ExistingSolutions">4. Existing Solutions</h2>
 
         <p>
-          So if you’re thinking about implementing a webhooks solution
+          If you’re thinking about implementing a webhooks solution
           yourself, the question that naturally arises is “how do I do that?”.
-          Thankfully as we saw earlier, many companies have already
+          As we saw earlier, many companies have already
           implemented their own in-house solution and posted their learnings
           online so there are quite a few blueprints out there.
           <sup class="footnote-ref"><a href="#fn8" id="fnref8">[8]</a></sup>
@@ -473,12 +473,7 @@
         <p>
           We also liked Wise Engineering’s webhook service implementation.
           They utilized the SNS (Simple Notification Service) AWS service to
-          handle consumer subscriptions. This meant that in regards to: •
-          Figuring out which subscriptions need to be notified when an event
-          happens • Sending messages to subscribing endpoints when the event
-          is triggered • Handling the retrying logic for failed messages. All
-          of these operations were extracted from the main app logic and were
-          handled by a single service (SNS).<sup class="footnote-ref"><a href="#fn8" id="fnref8">[8]</a></sup>
+          handle consumer subscriptions.  Specifically, SNS handled figuring out which subscriptions needed to be notified when an event happened, sending those notifications to subscribing endpoints, and handling the retry logic for failed messages. Because SNS handles those operations, they could be extracted from the main app logic.<sup class="footnote-ref"><a href="#fn8" id="fnref8">[8]</a></sup>
         </p>
 
         <div class="img-wrapper">
@@ -490,11 +485,15 @@
         </h3>
 
         <p>
-          So yeah, as we mentioned earlier, trying to build webhooks and
+          As mentioned above, trying to build webhooks and
           integrate them even in just one app can be very complex, so as you
           think about trying to expand that out to multiple different apps in
           your ecosystem that can be a very difficult and time consuming thing
-          to do. Let’s say for instance that you decide that you don’t want to
+          to do.
+        </p>
+
+        <p>
+          Let’s say for instance that you decide that you don’t want to
           do that because of the complexity and you’d rather off load that to
           a 3rd party provider. Generally, you would have two options, either
           a commercial solution or an open source solution. Unfortunately,
@@ -502,6 +501,9 @@
           as a service so that bring us back to considering building a
           solution in-house instead. If you decide to go the commercial route,
           there are a couple of companies that offer Webhooks as a Service.
+        </p>
+
+        <p>
           The general workflow when using the commercial solutions would be as
           follows: - You, the provider, communicate with their service via API
           calls to set up subscriptions, create event types, send messages
@@ -536,11 +538,26 @@
 
         <p>
           So who is Tacklebox geared toward? A good way to find out is to ask
-          yourself these 4 questions. 1.) Do you want to be able to easily
-          integrate this feature across multiple applications? 2.) Do you want
-          to have control over your data? 3.) Are you a small to medium size
-          application. 4.) Is your applications core competency anything but
-          webhooks? If you answered yes to all of the above questions, then
+          yourself these 4 questions.
+        </p>
+
+        <ul>
+          <li>
+            Do you want to be able to easily integrate this feature across multiple applications?
+          </li>
+          <li>
+            Do you want to have control over your data?
+          </li>
+          <li>
+            Are you a small to medium size application.
+          </li>
+          <li>
+            Is your applications core competency anything but webhooks?
+          </li>
+        </ul>
+          
+        <p>
+          If you answered yes to all of the above questions, then
           Tacklebox would likely be a good fit for you.
         </p>
 
@@ -549,35 +566,56 @@
         <h3 id="Project-Goals">5.1 Project Goals</h3>
 
         <p>
-          Make it easy to provide webhooks across multiple applications. Make
-          it easy to deploy and manage its infrastructure Make it easy to
-          integrate with an application.
+          Tacklebox had three main goals from the outset:
         </p>
 
-        <h3 id="Deployment">5.1 Deployment</h3>
+        <ul>
+          <li>
+            Make it easy to provide webhooks across multiple applications.
+          </li>
+          <li>
+            Make it easy to deploy and manage its infrastructure
+          </li>
+          <li>
+            Make it easy to integrate with an application
+          </li>
+        </ul>
+
+        <h3 id="Deployment">5.2 Deployment</h3>
 
         <p>
-          To realize the goal of easy deployment, we created our framework in
-          such a way that deployment is abstracted to one simple command.
-          “Tacklebox deploy”. This process usually takes upwards of 20 minutes
-          but is sped up for demo purposes. As you can see here, the output of
-          the deployment has two parts: first, the API Host, which is the Base
-          URL you'll use to communicate with the Tacklebox API; and second,
-          the API Key, which is the key the Tacklebox API uses to authenticate
-          you. These two pieces of information are all you need to use our
-          client libraries, and you don't have to leave your CLI to retrieve
-          them.
+          To realize the goal of easy deployment, we created our service in
+          such a way that deployment is abstracted to one simple command: "tacklebox deploy".
         </p>
 
         <div class="img-wrapper">
           <img src="images/gifs/deploy.gif" alt="Deployment" />
         </div>
 
-        <h3 id="UI">5.2 UI</h3>
+        <p>
+          At a high level, this process involves pulling in the code necessary to create a CloudFormation template, spinning up AWS infrastructure based on that template, setting AWS permissions so every infrastructure piece is able to properly communicate with the others, building the UI, and pre-populating the Tacklebox database with necessary tables.  This command abstracts away quite a few steps that a webhook provider would typically have to do on their own, and the scope of the process is reflected in the amount of time it takes to complete, which is typically around 20 minutes (it's been sped up in the gif above for demonstration purposes).
+        </p>
+
+        <p>
+          When this command is finished, Tacklebox is ready to use.  The output of the deployment has two parts: first, the API Host, which is the Base
+          URL you'll use to communicate with the Tacklebox API; and second, the API Key, which is the key the Tacklebox API uses to authenticate you. These two pieces of information are all you need to make calls to the Tacklebox API or use our client libraries, and you don't have to leave your CLI to retrieve them.
+        </p>
+
+        
+
+        <h3 id="UI">5.3 UI</h3>
 
         <p>
           After running tacklebox deploy, you can run the management UI on
-          your local server with one command: tacklebox ui. This management UI
+          your local server with one command: tacklebox ui.
+        </p>
+
+        <div class="img-wrapper">
+          <img src="images/gifs/ui.gif" alt="DeployUI" />
+        </div>
+
+        <p>
+          This management UI
           ties back to making it easy to provide webhooks across multiple
           applications. Instead of having to make API calls to figure out the
           KPIs of your webhooks feature for one of your apps, you can just
@@ -585,120 +623,90 @@
         </p>
 
         <div class="img-wrapper">
-          <img src="images/gifs/ui.gif" alt="DeployUI" />
-        </div>
-
-        <div class="img-wrapper">
           <img src="images/diagrams/uiDash.png" />
         </div>
 
-        <h3 id="Client-libraries">5.3 Client libraries</h3>
+        <h3 id="Client-libraries">5.4 Client libraries</h3>
 
-        <small>
+        <p>
           To make our framework even easier to manage across your apps, we
-          provided client libraries in 4 languages to make using the Tacklebox
-          framework standard and DRY.
-        </small>
+          provided client libraries in 4 languages: Ruby, GoLang, JavaScript, and Python.  As mentioned above, in order to use them you only need to have your API Host URL and API Key.
+        </p>
+
         <div class="img-wrapper">
           <img src="images/newDiagrams/clientLibraries.png" />
         </div>
 
-        <h3 id="Tacklebox-Demo">5.4 Tacklebox Demo</h3>
+        <h3 id="Tacklebox-Demo">5.5 Tacklebox Demo</h3>
         <p>
-          Now we are going to show a brief demo of Tacklebox in action. So
-          imagine that you’re a software engineer at a consumer electronics
+          Imagine that you’re a software engineer at a consumer electronics
           company and you’re tasked with enabling automatic notifications from
-          the purchase order app to several other supply chain apps.
+          your purchase order app to several other supply chain apps.  You'd like to use Tacklebox to notify the supply chain apps when certain events in the purchase order app occur.  In other words, the purchase order app is going to be providing webhooks via Tacklebox.
         </p>
 
-        <small>
-          The initial workflow when using Tacklebox is to register a service
-          by providing the name of it in a JSON body. The service in this case
-          is going to be our orderApp. This is the app that is going to be
-          providing webhooks.
-        </small>
+        <p>
+          First you would create a new service in Tacklebox that represents the app that will be providing webhooks, which in this case is the purchase order app.  We're choosing to do this with direct API calls in this and the following steps, however as mentioned above you can also use one of our client libraries programatically.
+        </p>
         <div class="img-wrapper">
           <img src="images/diagrams/shouldBeDemoGif.png" />
         </div>
 
-        <small>
-          Now that we have created a service, we can use its ID in the path
-          parameters to register an event type that users can subscribe to. In
-          this case, we want notifications to be sent whenever a purchase
-          order is created. So we’ll call the event type order created.
-        </small>
+        <p>
+          After creating a service, you'd then add event types to that service, which represent certain events that can occur in that service.  In this case, we want notifications to be sent whenever a purchase order is created, so we create an "order created" event type.
+        </p>
         <div class="img-wrapper">
           <img src="images/diagrams/shouldBeDemoGif.png" />
         </div>
 
-        <small>
-          Next you can create users in order to group their endpoints in one
-          place and ensure that they only receive messages intended for them.
-          Something to note here as well, is that Users a.k.a, entities that
-          are interested in being notified of an event occurrence, can be
-          thought of in a few different ways depending on the use case. In our
-          example, the users are other supply chain apps like our InvoiceApp
-          that want to be notified that a purchase order was created. For
-          Github, their users are repositories. For a todo app, the user could
-          be the actual user who signed up. Just something to keep in mind
-          here.
-        </small>
+        <p>
+          Now that your service has event types, you'd need to create users, which in this case represent the other supply chain apps that want to be notified when a purchase order is created.  Users represent apps or entities that will be consuming webhooks.  As such, they can be utilized in a few different ways depending on your use case.  For Github, users are repositories. For a todo app, users might be the owner of a todo list.
+        </p>
         <div class="img-wrapper">
           <img src="images/diagrams/shouldBeDemoGif.png" />
         </div>
 
-        <small>
-          In the same way that we used the service ID to create event types,
-          we can use the user ID to register endpoints. After providing the
-          user ID in the path parameters, we also include the url and
-          eventTypes that this endpoint will be subscribed to. In this case,
-          the InvoiceApp only cares about being notified when a purchase order
-          is generated so that is the only event Type that we list here.
-        </small>
+        <p>
+          At this point you've got a service, its event types, and a few users.  You would now need to add subscriptions, which represent a url and the event types it should receive notifications about.  Users must have at least one subscription to receive webhook notifications, however they are not restricted to one subscription and can have many for different purposes.  In this case the InvoiceApp only cares about being notified when a purchase order
+          is generated, so that is the only event type that we list here.
+        </p>
+        
+        </p>
         <div class="img-wrapper">
           <img src="images/diagrams/shouldBeDemoGif.png" />
         </div>
 
-        <small>
-          So after the initial setup, we can view our management dashboard for
-          the service we just registered. Currently we are viewing the
-          dashboard for the OrderApp and there’s only one user and one
-          endpoint. From here, we are able to view more granular details about
-          user, event type, and endpoints that were just created.
-        </small>
+        <p>
+          We can check our UI to see what we've created so far. As shown below, we've currently got once service (OrderApp), one user, and one subscription.
+        </p>
         <div class="img-wrapper">
           <img src="images/diagrams/shouldBeDashGif.png" />
         </div>
 
-        <small>
-          So here on the left we have our purchase order app and on the right
-          we have an endpoint that our user registered for notifications. So
-          let’s say a purchase order for 5 computers is created, this triggers
-          a message to be sent to the subscribing endpoints which can then
-          view the webhook content and take action accordingly.
-        </small>
+        <p>
+          Now that you've got all of your setup done, your purchase order app is ready to start sending webhook notifications (and its users are ready to start consuming them).  When a purchase order for 5 computers is created, this triggers a message to be sent to the subscribing endpoints which can then view the webhook content and take action accordingly.
+        </p>
         <div class="img-wrapper">
           <img src="images/diagrams/shouldBeEventTriggerGif.png" />
         </div>
 
-        <small>
-          So going back to our management dashboard after the triggered event,
-          we see the corresponding data has updated accordingly with one event
+        <p>
+          Moving back to our management dashboard after the triggered event,
+          we can see the corresponding data has updated accordingly with one event
           being triggered and one message being sent. From here, we are also
           able to view more granular details about the recently triggered
           event as well as the corresponding message that was sent.
-        </small>
+        </p>
         <div class="img-wrapper">
           <img src="images/diagrams/shouldBeDashGif.png" />
         </div>
 
-        <h3 id="Teardown">5.5 Teardown</h3>
+        <h3 id="Teardown">5.6 Teardown</h3>
 
-        <small>
-          If you decide that you no longer need the webhooks feature then you
-          can simple remove the infrastructure with one simple command,
-          “tacklebox destroy”.
-        </small>
+        <p>
+          If you decide that you no longer need Tacklebox, you
+          can simply remove it with one simple command,
+          “tacklebox destroy”.  Because Tacklebox allows you to provide webhooks for multiple applications at once, it is important to note that the tacklebox destroy command tears down the infrastructure for the entire webhook service, not just a single app.
+        </p>
         <div class="img-wrapper">
           <img src="images/gifs/destroy.gif" />
         </div>
