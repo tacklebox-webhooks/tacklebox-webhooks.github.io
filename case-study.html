@@ -39,7 +39,7 @@
         <li><a href="case-study.html" class="active">Case Study</a></li>
         <li><a href="team.html">Our Team</a></li>
         <li class="flex-float-right">
-          <a href="https://github.com/tacklebox-webhooks" target="_blank">
+          <a href="https://github.com/tacklebox-webhooks/cli" target="_blank">
             <img src="images/logos/github-mark-light.png" alt="Tacklebox GitHub" class="github" />
           </a>
         </li>
@@ -333,7 +333,7 @@
           about 4 different areas or categories that may present a significant
           amount of challenges.
         </p>
-        <div id="question-categories" class="img-wrapper">
+        <div class="img-wrapper">
           <img src="images/newDiagrams/questionCategories.png" alt="Considerations when building webhooks" />
         </div>
 
@@ -528,7 +528,7 @@
           And that’s where Tacklebox comes into play.
         </p>
 
-        <div id="medium-pic" class="img-wrapper">
+        <div class="img-wrapper">
           <img src="images/newDiagrams/comparisonTable.png" alt="Commercial vs. DIY vs. Tacklebox" />
         </div>
 
@@ -884,9 +884,9 @@
           didn't really take advantage of DynamoDB's strengths, so we chose RDS w/ PostgreSQL.
         </p>
 
-        <h3 id="Challenges">6.4 How we dealt with wasted uptime</h3>
+        <h3 id="Challenges">6.4 Challenges</h3>
 
-        <h4 id="server-implementation">Initial Implementation</h4>
+        <h4 id="Challenges">6.4.1 How we dealt with wasted uptime</h4>
 
         <p>
           Our initial implementation of Tacklebox used a single application server.
@@ -903,8 +903,6 @@
           architecture, we were leaving a decent amount of compute power unused. To address this inefficiency, we
           decided to use AWS Lambda Functions.
         </p>
-
-        <h4 id="server-implementation">Lambda Implementation</h4>
 
         <div class="img-wrapper">
           <img src="images/newDiagrams/lambdaImplementation.png" alt="Lambda Implementation" />
@@ -940,9 +938,7 @@
           <li>Respond back to the event producer</li>
         </ul>
 
-        <h3 id="Challenges">6.5 How we handled message fanout</h3>
-
-        <h4 id="server-implementation">Overloaded Lambdas</h4>
+        <h4 id="Challenges">6.4.2 How we handled message fanout</h4>
 
         <p>
           With this implementation, the message fanout process in particular
@@ -966,10 +962,6 @@
           <!-- Insert citation for DDIA pg. 278 here -->
         </p>
 
-        <div class="img-wrapper">
-          <img src="images/newGifs/messageRetries.gif" alt="Retrying Failed Messages" />
-        </div>
-
         <p>
           When a message fails to be delivered successfully, the burden of
           resending still lies with the same lambda. It can't save the results
@@ -984,7 +976,9 @@
           retry was contrary to that decision.
         </p>
 
-        <h4 id="server-implementation">Endpoint Failure</h4>
+        <div class="img-wrapper">
+          <img src="images/newGifs/messageRetries.gif" alt="Retrying Failed Messages" />
+        </div>
 
         <p>
           A quick note about endpoint failure and what that means in the
@@ -1032,8 +1026,6 @@
           a 5xx response a success. We chose the latter approach.
         </p>
 
-        <h4 id="server-implementation">Split-Lambda Implementation</h4>
-
         <p>
           In order to reduce the number of messages our lambdas had to send,
           we could have done a couple of things. We could have added a second
@@ -1069,17 +1061,12 @@
           which simplifies debugging.
         </p>
 
-        <h4 id="server-implementation">SQS Implementation</h4>
-
-        <p>
-          Amazon’s Simple Queue Service, or SQS for short, does exactly this.
-        </p>
-        
         <div class="img-wrapper">
           <img src="images/newDiagrams/sqsFanout.png" alt="SQS Message Fanout" />
         </div>
 
         <p>
+          Amazon’s Simple Queue Service, or SQS for short, does exactly this.
           SQS gives us a reliable place to store both our initial and retry
           messages, which is great because our intake lambdas can now just
           focus on creating messages for an event. SQS doesn’t send messages
@@ -1095,8 +1082,6 @@
           each piece does fewer things and we sufficiently separated our
           concerns among services suited for their individual jobs.
         </p>
-
-        <h4 id="server-implementation">Eliminating Polling</h4>
 
         <p>
           We thought that this was a perfectly reasonable implementation,
@@ -1123,8 +1108,6 @@
           implementation more efficient and reduce latency in the message
           sending process.
         </p>
-
-        <h4 id="server-implementation">SNS Implementation</h4>
 
         <p>
           We were able to remove polling from the message sending process by
@@ -1155,16 +1138,27 @@
           who needs to be notified.
         </p>
 
-        <h4 id="server-implementation">Choosing SNS</h4>
-
         <p>
           Switching from SQS to SNS simplifies our architecture and increases
-          our efficiency, however there are some tradeoffs with this approach.  SNS has a max retry delay of 1 hr, compared to SQS’ 12 hrs, so
-              it’s got less flexibility to implement large retry windows.  And even though SNS keeps track of subscriptions for us, we still
+          our efficiency, however there are some tradeoffs with this approach:
+        </p>
+
+        <ul>
+          <li>
+            <p>
+              SNS has a max retry delay of 1 hr, compared to SQS’ 12 hrs, so
+              it’s got less flexibility to implement large retry windows
+            </p>
+          </li>
+          <li>
+            <p>
+              Even though SNS keeps track of subscriptions for us, we still
               need subscription data in our main database for querying
               purposes. This means that we now have to keep track of
               subscriptions in two places and make sure they remain identical.
-        </p>
+            </p>
+          </li>
+        </ul>
 
         <p>
           Both SQS and SNS approaches meet our project goals and both have
@@ -1174,9 +1168,7 @@
           out of the box.
         </p>
 
-        <h3 id="message-history">6.6 How we persisted message history</h3>
-
-        <h4 id="server-implementation">Missing Database Link</h4>
+        <h4 id="Challenges">6.4.3 How we persisted message history</h4>
 
         <p>
           SNS doesn’t have a built-in way to write message data to our
@@ -1196,20 +1188,14 @@
           message send process completed.
         </p>
 
-        <h4 id="server-implementation">Adding Compute after SNS</h4>
-
-        <p>
-          Our first thought was to see if we could tack on some post-process
-          to SNS, like a function that it executes immediately after it
-          receives a response back from a consumer.
-        </p>
-
         <div class="img-wrapper">
           <img src="images/newDiagrams/snsMissingDbLink.png" alt="Missing Link Between SNS and DB" />
         </div>
 
         <p>
-          SNS doesn’t have a
+          Our first thought was to see if we could tack on some post-process
+          to SNS, like a function that it executes immediately after it
+          receives a response back from a consumer. SNS doesn’t have a
           built-in way to do this, but it does allow lambda triggers to be set
           to run whenever a message is published. Inserting lambdas here
           though, would again make lambdas responsible for sending messages to consumers, and at that
@@ -1218,27 +1204,23 @@
           integrated with.
         </p>
 
-        <h4 id="server-implementation">CloudWatch Logs</h4>
+        <div class="img-wrapper">
+          <img src="images/newDiagrams/cloudWatch.png" alt="CloudWatch Logs" />
+        </div>
 
         <p>
           SNS stores logging data in Amazon’s CloudWatch Logs service, which
           is commonly used for debugging and a variety of other tasks. SNS can
           be configured to log specific events, and in this case we wanted it
-          to log every time it received a response back from a consumer.
-        </p>
-
-        <div class="img-wrapper">
-          <img src="images/newDiagrams/cloudWatch.png" alt="CloudWatch Logs" />
-        </div>
-        
-        <p>
-          Using
+          to log every time it received a response back from a consumer. Using
           CloudWatch Logs, we now had our persistent message store, but it
           wasn’t in the same place as the rest of our data, so we needed to
           find a way to get it from CloudWatch Logs into our main database.
         </p>
 
-        <h4 id="server-implementation">CloudWatch Logs Lambda Trigger</h4>
+        <div class="img-wrapper">
+          <img src="images/newDiagrams/finalArchitecture2.png" alt="CloudWatch Logs with Lambda" />
+        </div>
 
         <p>
           CloudWatch Logs can be set up to asynchronously invoke a Lambda
@@ -1246,10 +1228,6 @@
           received a new SNS log, and once invoked, the lambda transfers the
           message data in the log to the database.
         </p>
-
-        <div class="img-wrapper">
-          <img src="images/newDiagrams/finalArchitecture2.png" alt="CloudWatch Logs with Lambda" />
-        </div>
 
         <p>
           In light of these added steps and services, SNS definitely added
@@ -1271,11 +1249,24 @@
 
         <p>
           Tacklebox currently does two things by default that, while useful,
-          are not features all providers might want.  It includes AWS metadata in messages sent to consumers that
-          isn’t necessarily relevant to Tacklebox, and it requires consumers to confirm their endpoint, meaning they
-          have to verify they are in control of their endpoint before our
-          service will send any webhook notifications to them.
+          are not features all providers might want:
         </p>
+
+        <ul>
+          <li>
+            <p>
+              It requires consumers to confirm their endpoint, meaning they
+              have to verify they are in control of their endpoint before our
+              service will send any webhook notifications to them.
+            </p>
+          </li>
+          <li>
+            <p>
+              It includes AWS metadata in messages sent to consumers that
+              isn’t necessarily relevant to Tacklebox
+            </p>
+          </li>
+        </ul>
 
         <p>
           We could make both of these optional by putting some logic in
