@@ -708,9 +708,7 @@
           In this section, we will explore how we built Tacklebox, and some of the implementation decisions we made
           along the way.
         </p>
-        <h3 id="Webhook-feature-requirements">
-          6.1 Webhook feature requirements
-        </h3>
+        <h3 id="Webhook-feature-requirements">6.1 Webhook feature requirements</h3>
 
         <p>
           Before we can talk about the Tacklebox architecture, it’s important to understand the feature requirements for
@@ -727,7 +725,26 @@
           Tacklebox. Without this, it is not a webhook service.
         </p>
 
-        <h3 id="Event-Message-lifecycle">6.2 Event / Message Life Cycle</h3>
+        <h3 id="tacklebox-architecture">6.2 Tacklebox Architecture</h3>
+
+        <h4>Architecture Overview</h4>
+
+        <div class="img-wrapper">
+          <img src="images/newDiagrams/finalArchitecture.png" alt="Final Tacklebox Architecture" />
+        </div>
+
+        <p>
+          In our architecture, notification intake is handled by a pair of services: API Gateway and Lambda Functions.
+          API Gateway serves as the entry point into Tacklebox, and passes incoming notifications to an intake Lambda.
+          The next two steps in the life cycle, gathering consumers and sending messages, are handled by the Simple
+          Notification Service.
+        </p>
+        <p>
+          The last step, saving messages to the database, is taken care of by a combination of a log service, CloudWatch
+          Logs, and a lambda that transfers message information from the logs to our database.
+        </p>
+
+        <h4>Event/Message Lifecycle</h4>
 
         <p>
           The core functionality of a webhook service is sending messages to endpoints when events occur. That process
@@ -764,22 +781,8 @@
           <img src="images/newDiagrams/eventLifecycleOverArchitecture.png" alt="Event Message Lifecycle" />
         </div>
 
-        <h3 id="TackleboxArchitecture">6.3 Tacklebox Architecture</h3>
+        <h4>CRUD Operations</h4>
 
-        <div class="img-wrapper">
-          <img src="images/newDiagrams/finalArchitecture.png" alt="Final Tacklebox Architecture" />
-        </div>
-
-        <p>
-          In our architecture, notification intake is handled by a pair of services: API Gateway and Lambda Functions.
-          API Gateway serves as the entry point into Tacklebox, and passes incoming notifications to an intake Lambda.
-          The next two steps in the life cycle, gathering consumers and sending messages, are handled by the Simple
-          Notification Service.
-        </p>
-        <p>
-          The last step, saving messages to the database, is taken care of by a combination of a log service, CloudWatch
-          Logs, and a lambda that transfers message information from the logs to our database.
-        </p>
         <p>
           Even though we are going to be focusing almost exclusively on the event/message lifecycle as we discuss our
           architecture moving forward, our architecture also tracks additional entities in the database, such as
@@ -805,7 +808,7 @@
           <img src="images/newDiagrams/addSubscriptionOverArchitecture.png" alt="Add Subscription Workflow" />
         </div>
 
-        <h3 id="Database">6.3.2 Database Choice</h3>
+        <h4>Database Choice</h4>
 
         <p>
           Before we move into the next section to talk about the evolution of our architecture and the challenges we
@@ -884,9 +887,9 @@
           didn't really take advantage of DynamoDB's strengths, so we chose RDS w/ PostgreSQL.
         </p>
 
-        <h3 id="Challenges">6.4 Challenges</h3>
+        <h3 id="Challenges">6.4 How we dealt with wasted uptime</h3>
 
-        <h4 id="Challenges">6.4.1 How we dealt with wasted uptime</h4>
+        <h4>Initial Implementation</h4>
 
         <p>
           Our initial implementation of Tacklebox used a single application server.
@@ -898,10 +901,14 @@
 
         <p>
           This approach worked for our use-case, but we saw an opportunity to optimize our infrastructure. Webhooks
-          usage patterns are often unpredictable and
-          can have moments of high-use as well as periods of minimal usage. As a result, with this single app server
-          architecture, we were leaving a decent amount of compute power unused. To address this inefficiency, we
-          decided to use AWS Lambda Functions.
+          usage patterns are often unpredictable and can have moments of high-use as well as periods of minimal usage. As a result, with this single app server architecture, we were leaving a decent amount of compute power unused.  To address this inefficiency, we decided to use AWS Lambda Functions.
+        </p>
+
+        <h4>Lambda Implementation</h4>
+
+        <p>
+          Lambda functions, which are a “Function as a Service” offering from AWS, allow us to only run code when
+          needed.  This also means that you only pay for the compute that you actually need. 
         </p>
 
         <div class="img-wrapper">
@@ -909,10 +916,7 @@
         </div>
 
         <p>
-          Lambda functions, which are a “Function as a Service” offering from AWS, allow us to only run code when
-          needed.
-          This also means that you only pay for the compute that you actually need. As with any service, lambdas come
-          with tradeoffs:
+          As with any service, lambdas come with tradeoffs:
         </p>
 
         <ul>
@@ -938,7 +942,9 @@
           <li>Respond back to the event producer</li>
         </ul>
 
-        <h4 id="Challenges">6.4.2 How we handled message fanout</h4>
+        <h3 id="Message Fanout">6.4 How we handled message fanout</h3>
+
+        <h4>Message Fanout Process</h4>
 
         <p>
           With this implementation, the message fanout process in particular
@@ -962,6 +968,8 @@
           <!-- Insert citation for DDIA pg. 278 here -->
         </p>
 
+        <h4>Message Retries</h4>
+
         <p>
           When a message fails to be delivered successfully, the burden of
           resending still lies with the same lambda. It can't save the results
@@ -979,6 +987,8 @@
         <div class="img-wrapper">
           <img src="images/newGifs/messageRetries.gif" alt="Retrying Failed Messages" />
         </div>
+
+        <h4>Endpoint Failure</h4>
 
         <p>
           A quick note about endpoint failure and what that means in the
@@ -1026,6 +1036,8 @@
           a 5xx response a success. We chose the latter approach.
         </p>
 
+        <h4>Split-Lambda Implementation</h4>
+
         <p>
           In order to reduce the number of messages our lambdas had to send,
           we could have done a couple of things. We could have added a second
@@ -1061,36 +1073,28 @@
           which simplifies debugging.
         </p>
 
+        <h4>SQS Implementation</h4>
+
+        <p>
+          Amazon’s Simple Queue Service, or SQS for short, does exactly this.
+        </p>
+
         <div class="img-wrapper">
           <img src="images/newDiagrams/sqsFanout.png" alt="SQS Message Fanout" />
         </div>
 
         <p>
-          Amazon’s Simple Queue Service, or SQS for short, does exactly this.
-          SQS gives us a reliable place to store both our initial and retry
-          messages, which is great because our intake lambdas can now just
-          focus on creating messages for an event. SQS doesn’t send messages
-          to consumers itself, so we use our messenger lambdas to pull messages off as soon as they appear and send them to the consumer. To
-          prevent our messenger lambdas from waiting on retries, we have them
-          immediately put failed messages back into the queue. Those failed
-          messages are then picked off of the queue by a different lambda
-          invocation at a later time.
+          SQS gives us a reliable place to store both our initial and retry messages, which allows our intake lambdas to just focus on creating messages for an event. SQS doesn’t send messages to consumers itself, so we use our messenger lambdas to pull messages off as soon as they appear and send them to the consumer.  To prevent our messenger lambdas from waiting on retries, we have them immediately put failed messages back into the queue. Those failed messages are then picked off of the queue by a different lambda invocation at a later time.
         </p>
 
         <p>
-          By adding SQS we increased the complexity of our implementation, but
-          each piece does fewer things and we sufficiently separated our
-          concerns among services suited for their individual jobs.
+          By adding SQS we increased the complexity of our implementation, but each piece does fewer things and we sufficiently separated our concerns among services suited for their individual jobs.
         </p>
 
+        <h4>Eliminating Polling</h4>
+
         <p>
-          We thought that this was a perfectly reasonable implementation,
-          however we wondered if we could eliminate, ironically enough for a
-          webhook service, the polling in our architecture. Our messenger
-          lambdas use polling to constantly check SQS to see if new messages
-          have been added. As we’ve mentioned, webhook events can be
-          intermittent, and all of those polling requests in between events
-          can add up.
+          We thought that this was a perfectly reasonable implementation, however we wondered if we could eliminate, ironically enough for a webhook service, the polling in our architecture. Our messenger lambdas use polling to constantly check SQS to see if new messages have been added. As we’ve mentioned, webhook events can be intermittent, and all of those polling requests in between events can add up.
         </p>
 
         <div class="img-wrapper">
@@ -1109,6 +1113,8 @@
           sending process.
         </p>
 
+        <h4>SNS Implementation</h4>
+
         <p>
           We were able to remove polling from the message sending process by
           using Amazon’s Simple Notification Service, or SNS. SNS is a
@@ -1117,6 +1123,10 @@
           retries. In other words, it does the same job that the combination
           of SQS and messenger lambda previously did for us.
         </p>
+
+        <div class="img-wrapper">
+          <img src="images/newDiagrams/snsFanout.png" alt="SNS Message Fanout" />
+        </div>
         
         <p>
           Rather than use
@@ -1126,10 +1136,6 @@
           listening for that event type receives a message.
         </p>
 
-        <div class="img-wrapper">
-          <img src="images/newDiagrams/snsFanout.png" alt="SNS Message Fanout" />
-        </div>
-
         <p>
           It’s important to note that SNS itself stores subscription data, so
           that’s one more job SNS handles for us that our lambdas were
@@ -1137,6 +1143,8 @@
           consumer subscriptions when an event comes in - SNS already knows
           who needs to be notified.
         </p>
+
+        <h4>Comparing SQS and SNS</h4>
 
         <p>
           Switching from SQS to SNS simplifies our architecture and increases
@@ -1168,7 +1176,9 @@
           out of the box.
         </p>
 
-        <h4 id="Challenges">6.4.3 How we persisted message history</h4>
+        <h3 id="Persisting Message History">6.5 How we persisted message history</h3>
+
+        <h4>SNS to Database Integration</h4>
 
         <p>
           SNS doesn’t have a built-in way to write message data to our
@@ -1176,6 +1186,10 @@
           out messages to consumers, and as far as it’s concerned, once it
           delivers a message or makes every effort to, its job is done.
         </p>
+
+        <div class="img-wrapper">
+          <img src="images/newDiagrams/snsMissingDbLink.png" alt="Missing Link Between SNS and DB" />
+        </div>
 
         <p>
           Our entire event/message lifecycle currently ends the moment SNS
@@ -1188,9 +1202,7 @@
           message send process completed.
         </p>
 
-        <div class="img-wrapper">
-          <img src="images/newDiagrams/snsMissingDbLink.png" alt="Missing Link Between SNS and DB" />
-        </div>
+        <h4>SNS Post-Process</h4>
 
         <p>
           Our first thought was to see if we could tack on some post-process
@@ -1204,23 +1216,22 @@
           integrated with.
         </p>
 
+        <h4>CloudWatch Logs</h4>
+
+        <p>
+          SNS stores logging data in Amazon’s CloudWatch Logs service, which
+          is commonly used for debugging and a variety of other tasks.
+        </p>
+
         <div class="img-wrapper">
           <img src="images/newDiagrams/cloudWatch.png" alt="CloudWatch Logs" />
         </div>
 
         <p>
-          SNS stores logging data in Amazon’s CloudWatch Logs service, which
-          is commonly used for debugging and a variety of other tasks. SNS can
-          be configured to log specific events, and in this case we wanted it
-          to log every time it received a response back from a consumer. Using
-          CloudWatch Logs, we now had our persistent message store, but it
-          wasn’t in the same place as the rest of our data, so we needed to
-          find a way to get it from CloudWatch Logs into our main database.
+          SNS can be configured to log specific events, and in this case we wanted it to log every time it received a response back from a consumer. Using CloudWatch Logs, we now had our persistent message store, but it wasn’t in the same place as the rest of our data, so we needed to find a way to get it from CloudWatch Logs into our main database.
         </p>
 
-        <div class="img-wrapper">
-          <img src="images/newDiagrams/finalArchitecture2.png" alt="CloudWatch Logs with Lambda" />
-        </div>
+        <h4>CloudWatch Logs Lambda Trigger</h4>
 
         <p>
           CloudWatch Logs can be set up to asynchronously invoke a Lambda
@@ -1228,6 +1239,10 @@
           received a new SNS log, and once invoked, the lambda transfers the
           message data in the log to the database.
         </p>
+
+        <div class="img-wrapper">
+          <img src="images/newDiagrams/finalArchitecture2.png" alt="CloudWatch Logs with Lambda" />
+        </div>
 
         <p>
           In light of these added steps and services, SNS definitely added
