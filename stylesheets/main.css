@@ -121,6 +121,11 @@ p > code {
   width: 100%;
 }
 
+.shadow-screenshot {
+  border-radius: 5px;
+  box-shadow: 0 0 7px grey;
+}
+
 .button {
   padding: 12px 25px;
   background: #fdfdf9;
