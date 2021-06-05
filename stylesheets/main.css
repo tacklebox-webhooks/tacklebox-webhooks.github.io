@@ -1235,6 +1235,10 @@ pre {
   font-size: 0.9em;
 }
 
+#case-study .language-list p:hover {
+  cursor: pointer;
+}
+
 #case-study .language-list p.selected {
   color: #3c688d;
 }
