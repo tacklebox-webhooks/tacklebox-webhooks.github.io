@@ -6,6 +6,7 @@
   <title>Tacklebox | Webhooks as a Service</title>
 
   <link rel="stylesheet" href="stylesheets/reset.css" />
+  <link href="stylesheets/prism.css" rel="stylesheet" />
   <link rel="stylesheet" href="stylesheets/main.css" />
 
   <link rel="apple-touch-icon" sizes="180x180" href="images/icons/favicons/graphic-red.png" />
@@ -16,6 +17,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" />
   <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:ital,wght@0,400;0,700;0,900;1,400&display=swap"
     rel="stylesheet" />
+  
 
   <script type="text/javascript" src="javascripts/sidebar.js"></script>
   <meta property="og:image" content="/images/logos/graphic-red.png" />
@@ -80,6 +82,26 @@
 
     <main>
       <section id="case-study">
+        <ul class="language-list">
+          <li><p class="selected">JavaScript</p></li>
+          <li><p>Ruby</p></li>
+          <li><p>GoLang</p></li>
+          <li><p>Python</p></li>
+          <li><p>curl</p></li>
+        </ul>
+        <pre class="language-js line-numbers">
+          <code>
+            const Tacklebox = require('tacklebox-lib');
+
+            const apiKey = "ibY83fHnC99OlAN4YGoTE7TuBDB7xRjD7B0dYi0k";
+            const baseUrl = "https://ukfl963bh1.execute-api.us-west-1.amazonaws.com/v1/";
+            const tb = new Tacklebox(apiKey, baseUrl);
+
+            (async () => {
+              const newService = await tb.service.create({ name: "new_service_name" });
+            })();
+          </code>
+        </pre>
         <h1>Case Study</h1>
         <h2 id="Introduction">1. Introduction</h2>
         <p>
@@ -660,9 +682,6 @@
         <p>
           First you would create a new service in Tacklebox that represents the app that will be providing webhooks, which in this case is the purchase order app.  We're choosing to do this with direct API calls in this and the following steps, however as mentioned above you can also use one of our client libraries programatically.
         </p>
-        <div class="img-wrapper">
-          <img src="images/diagrams/shouldBeDemoGif.png" />
-        </div>
 
         <p>
           After creating a service, you'd then add event types to that service, which represent certain events that can occur in that service.  In this case, we want notifications to be sent whenever a purchase order is created, so we create an "order created" event type.
@@ -1622,6 +1641,7 @@
       </section>
     </div>
   </footer>
+  <script src="javascripts/prism.js"></script>
 </body>
 
 </html>

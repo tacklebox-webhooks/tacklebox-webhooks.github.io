@@ -1186,3 +1186,40 @@ hr.minor {
 footer h3 {
   font-size: 1.5rem;
 }
+
+/* Code Blocks */
+
+pre {
+  border-bottom-right-radius: 7px;
+  border-bottom-left-radius: 7px;
+  margin-top: 0;
+}
+
+#case-study .language-list {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 0 18px;
+  background-color: #242424;
+  border-top-left-radius: 7px;
+  border-top-right-radius: 7px;
+}
+
+#case-study .language-list li {
+  display: inline-block;
+  margin: 0 10px;
+  padding: 0;
+}
+
+#case-study .language-list p {
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  color: #cacaca;
+  font-family: Monospace sans-serif;
+  font-size: 0.9em;
+}
+
+#case-study .language-list .selected {
+  /* color: #3c688d; */
+  color: #3c688d;
+}
