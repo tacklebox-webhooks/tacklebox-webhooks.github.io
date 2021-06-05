@@ -6,7 +6,7 @@
   <title>Tacklebox | Webhooks as a Service</title>
 
   <link rel="stylesheet" href="stylesheets/reset.css" />
-  <link href="stylesheets/prism.css" rel="stylesheet" />
+  <link rel="stylesheet" href="stylesheets/prism.css" />
   <link rel="stylesheet" href="stylesheets/main.css" />
 
   <link rel="apple-touch-icon" sizes="180x180" href="images/icons/favicons/graphic-red.png" />
@@ -17,9 +17,11 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" />
   <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:ital,wght@0,400;0,700;0,900;1,400&display=swap"
     rel="stylesheet" />
-  
 
   <script type="text/javascript" src="javascripts/sidebar.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script type="text/javascript" src="javascripts/prismCustom.js"></script>
+  <script src="javascripts/prism.js"></script>
   <meta property="og:image" content="/images/logos/graphic-red.png" />
   <meta property="og:title" content="Tacklebox" />
   <meta property="og:description" content="An open-source serverless framework that offers webhooks as a
@@ -82,27 +84,41 @@
 
     <main>
       <section id="case-study">
-        <ul class="language-list">
-          <li><p class="selected">JavaScript</p></li>
-          <li><p>Ruby</p></li>
-          <li><p>GoLang</p></li>
-          <li><p>Python</p></li>
-          <li><p>curl</p></li>
-        </ul>
-        <pre class="language-js line-numbers">
-          <code>
-            const Tacklebox = require('tacklebox-lib');
-
-            const apiKey = "ibY83fHnC99OlAN4YGoTE7TuBDB7xRjD7B0dYi0k";
-            const baseUrl = "https://ukfl963bh1.execute-api.us-west-1.amazonaws.com/v1/";
-            const tb = new Tacklebox(apiKey, baseUrl);
-
-            (async () => {
-              const newService = await tb.service.create({ name: "new_service_name" });
-            })();
-          </code>
-        </pre>
         <h1>Case Study</h1>
+
+        <div class="code-block">
+          <ul class="language-list">
+            <li><p class="selected language-option" name="js">JavaScript</p></li>
+            <li><p class="language-option" name="ruby">Ruby</p></li>
+            <li><p class="language-option" name="go">Go</p></li>
+            <li><p class="language-option" name="python">Python</p></li>
+            <li><p class="language-option" name="curl">curl</p></li>
+          </ul>
+          <pre name="js" class="language-js line-numbers selected">
+            <code>
+              const Tacklebox = require('tacklebox-lib');
+
+              const apiKey = "ibY83fHnC99OlAN4YGoTE7TuBDB7xRjD7B0dYi0k";
+              const baseUrl = "https://ukfl963bh1.execute-api.us-west-1.amazonaws.com/v1/";
+              const tb = new Tacklebox(apiKey, baseUrl);
+
+              (async () => {
+                const newService = await tb.service.create({ name: "new_service_name" });
+              })();
+            </code>
+          </pre>
+          <pre name="curl" class="language-bash line-numbers">
+            <code >
+              curl -X POST https://ukfl963bh1.execute-api.us-west-1.amazonaws.com/v1/services \
+                -H "Content-Type: application/json" \
+                -H "x-api-key: ibY83fHnC99OlAN4YGoTE7TuBDB7xRjD7B0dYi0k" \
+                -d '{
+                  "name": "new_service_name"
+                }'
+            </code>
+          </pre>
+        </div>
+
         <h2 id="Introduction">1. Introduction</h2>
         <p>
           An event-driven architecture is a programming paradigm that involves
@@ -122,25 +138,6 @@
         </p>
         <p>
           Tacklebox includes four components:
-<!--           
-          <ul>
-            <li>a <a href="https://github.com/tacklebox-webhooks/cli">CLI tool</a></li>
-            <li>a management UI</li>
-            <li>
-              4 client libraries
-              (<a href="https://github.com/tacklebox-webhooks/javascript">JavaScript</a>,
-              <a href="https://github.com/tacklebox-webhooks/ruby">Ruby</a>,
-              <a href="https://github.com/tacklebox-webhooks/python">Python</a> and
-              <a href="https://github.com/tacklebox-webhooks/golang">Go</a>)
-            </li>
-            <li>
-              a webhooks service which comprises:
-              <ul>
-                <li>a RESTful API</li>
-                <li>AWS infrastructure</li>
-              </ul>
-            </li>
-          </ul> -->
         </p>
 
         <div id="tacklebox-components" class="img-wrapper">
@@ -665,7 +662,7 @@
 
         <p>
           To make our framework even easier to manage across your apps, we
-          provided client libraries in 4 languages: Ruby, GoLang, JavaScript, and Python.  As mentioned above, in order to use them you only need to have your API Host URL and API Key.
+          provided client libraries in 4 languages: Ruby, Go, JavaScript, and Python.  As mentioned above, in order to use them you only need to have your API Host URL and API Key.
         </p>
 
         <div class="img-wrapper">
@@ -1641,7 +1638,6 @@
       </section>
     </div>
   </footer>
-  <script src="javascripts/prism.js"></script>
 </body>
 
 </html>

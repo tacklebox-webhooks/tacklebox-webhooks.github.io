@@ -3,7 +3,7 @@
 ------------------------------------ */
 
 body {
-  background-color: #fdfdf9;
+  background-color: white;
   color: #355c7d;
   font-family: 'Red Hat Display', sans-serif;
 }
@@ -59,7 +59,7 @@ code {
 
 p > code {
   color: #f67280;
-  background: #fdfdf9;
+  background: white;
   padding: 0 0.2rem;
   border-radius: 4px;
 }
@@ -128,7 +128,7 @@ p > code {
 
 .button {
   padding: 12px 25px;
-  background: #fdfdf9;
+  background: white;
   color: #35363a;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -140,13 +140,13 @@ p > code {
 .button-primary {
   background: #f67280;
   border-color: #f67280;
-  color: #fdfdf9;
+  color: white;
   box-shadow: 0 0 4px #f67280;
 }
 
 .button.button-primary:hover {
   background: #c06c84;
-  color: #fdfdf9;
+  color: white;
   border-color: #c06c84;
   box-shadow: 0 0 4px #c06c84;
 }
@@ -158,7 +158,7 @@ p > code {
 }
 
 .button.button-link:hover {
-  background: #fdfdf9;
+  background: white;
 }
 
 .button-wide {
@@ -166,19 +166,19 @@ p > code {
 }
 
 .button:hover {
-  background: #fdfdf9;
+  background: white;
 }
 
 blockquote {
   border-left: 0.3rem solid #f67280;
-  background: #fdfdf9;
+  background: white;
   color: #393551;
   margin: 1rem 0;
   padding: 1.5rem 1rem;
 }
 
 blockquote:before {
-  color: #fdfdf9;
+  color: white;
   font-size: 4rem;
   line-height: 0.1rem;
   margin-right: 0.25rem;
@@ -244,7 +244,7 @@ img {
 }
 
 header p {
-  color: #fdfdf9;
+  color: white;
   font-weight: normal;
   font-size: 24px;
   position: initial;
@@ -269,7 +269,7 @@ nav ul li {
 }
 
 nav ul li a {
-  color: #fdfdf9;
+  color: white;
   text-decoration: none;
   font-size: 19px;
   display: flex;
@@ -583,7 +583,7 @@ li.footnote-item {
 footer,
 .team-wrapper {
   background: linear-gradient(180deg, #3d698f, #355c7d);
-  color: #fdfdf9;
+  color: white;
 }
 
 .footer-backdrop,
@@ -600,12 +600,12 @@ footer,
 }
 
 #our-team {
-  color: #fdfdf9;
+  color: white;
   padding-bottom: 25px;
 }
 
 #our-team p {
-  color: #fdfdf9;
+  color: white;
 }
 
 #our-team h1 {
@@ -1189,6 +1189,11 @@ footer h3 {
 
 /* Code Blocks */
 
+.code-block {
+  width: 80%;
+  margin: 0 auto;
+}
+
 pre {
   border-bottom-right-radius: 7px;
   border-bottom-left-radius: 7px;
@@ -1198,7 +1203,7 @@ pre {
 #case-study .language-list {
   list-style: none;
   margin: 0;
-  padding: 0 0 0 18px;
+  padding: 5px 0 5px 18px;
   background-color: #242424;
   border-top-left-radius: 7px;
   border-top-right-radius: 7px;
@@ -1215,11 +1220,28 @@ pre {
   margin: 0;
   padding: 0;
   color: #cacaca;
-  font-family: Monospace sans-serif;
   font-size: 0.9em;
 }
 
-#case-study .language-list .selected {
-  /* color: #3c688d; */
+#case-study .language-list p.selected {
   color: #3c688d;
 }
+
+#case-study .code-block pre {
+  display: none;
+}
+
+#case-study .code-block pre.selected {
+  display: block;
+}
+
+/* #case-study pre[name="ruby"],
+#case-study pre[name="go"],
+#case-study pre[name="python"],
+#case-study pre[name="curl"] {
+  display: none;
+} */
+
+/* #case-study pre[name="js"] {
+  display: none;
+} */
