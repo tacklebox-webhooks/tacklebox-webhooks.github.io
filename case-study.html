@@ -163,12 +163,14 @@
           On Github, you can get started with a couple steps:
         <ol>
           <li>
-            Navigate to the “Webhooks” settings page of your repository. In the top right, the "Add webhook" button is
-            used to add a new webhook subscription.
+            <p>
+              Navigate to the “Webhooks” settings page of your repository. In the top right, the "Add webhook" button is used to add a new webhook subscription.
+            </p>
           </li>
           <li>
-            Specify a URL endpoint where you want to receive webhook notifications. Select event types you care about,
-            and other optional configuration settings, then click “Add webhook”.
+            <p>
+              Specify a URL endpoint where you want to receive webhook notifications. Select event types you care about, and other optional configuration settings, then click “Add webhook”.
+            </p>
           </li>
         </ol>
         </p>
@@ -190,13 +192,17 @@
           From Github’s perspective as a webhook provider, the previous example would look something like:
         <ol>
           <li>
-            A new branch is created
+            <p>A new branch is created</p>
           </li>
           <li>
-            Github queries the database to retrieve a list of endpoints subscribed to the “branch_created” event type
+            <p>
+              Github queries the database to retrieve a list of endpoints subscribed to the “branch_created” event type
+            </p>
           </li>
           <li>
-            Github sends a webhook notification to each endpoint in the list
+            <p>
+              Github sends a webhook notification to each endpoint in the list
+            </p>
           </li>
         </ol>
         </p>
@@ -1070,12 +1076,23 @@
         </p>
 
         <ul>
-          <li>First of all, cold start times can increase latency (cold start time refers to the time that it takes to
-            load the function into memory before it can be invoked)</li>
+          <li>
+            <p>
+              First of all, cold start times can increase latency (cold start time refers to the time that it takes to load the function into memory before it can be invoked)
+            </p>
+          </li>
           <!-- [https://lumigo.io/blog/this-is-all-you-need-to-know-about-lambda-cold-starts/] -->
-          <li>Lambdas are stateless, so accessing persistent data requires a call to another service</li>
+          <li>
+            <p>
+              Lambdas are stateless, so accessing persistent data requires a call to another service
+            </p>
+          </li>
           <!-- [https://aws.amazon.com/lambda/faqs/#AWS_Lambda_functions] -->
-          <li>Lambdas have an execution time limit - currently this is set to 15 minutes.</li>
+          <li>
+            <p>
+              Lambdas have an execution time limit - currently this is set to 15 minutes.
+            </p>
+          </li>
           <!-- [https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-limits.html] -->
         </ul>
 
@@ -1085,11 +1102,19 @@
         </p>
 
         <ul>
-          <li>Intake a new event and persist it to the database</li>
-          <li>Gather subscriptions and create messages for each subscriber</li>
-          <li>Send messages to all subscribers and wait for their responses</li>
-          <li>Write responses to the database</li>
-          <li>Respond back to the event producer</li>
+          <li><p>Intake a new event and persist it to the database</p></li>
+          <li>
+            <p>
+              Gather subscriptions and create messages for each subscriber
+            </p>
+          </li>
+          <li>
+            <p>
+              Send messages to all subscribers and wait for their responses
+            </p>
+          </li>
+          <li><p>Write responses to the database</p></li>
+          <li><p>Respond back to the event producer</p></li>
         </ul>
 
         <h3 id="Message Fanout">6.4 How we handled message fanout</h3>

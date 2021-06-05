@@ -54,7 +54,9 @@ h4 {
 }
 
 code {
+  color: #f67280;
   font-family: 'Fira Code', monospace;
+  font-size: 1.3rem;
 }
 
 p > code {
@@ -475,7 +477,6 @@ h3 {
   margin: 50px auto;
   width: 100%;
   max-width: 1000px;
-  /* max-height: 500px; */
 }
 
 #question-categories.img-wrapper {
@@ -700,11 +701,11 @@ small {
     responsive design (width)
 ------------------------------------ */
 
-@media (max-width: 1400px) {
+/* @media (max-width: 1400px) {
   .sidebar {
     margin-left: 0;
   }
-}
+} */
 
 /* @media (min-width: 1101px) {
   .study-wrapper {
@@ -1201,12 +1202,6 @@ pre {
   font-size: 1.5rem;
 }
 
-code {
-  color: #f67280;
-  font-family: Monospace;
-  font-size: 1.5rem;
-}
-
 .code-block pre {
   border-bottom-right-radius: 7px;
   border-bottom-left-radius: 7px;
@@ -1251,14 +1246,3 @@ code {
 #case-study .code-block pre.selected {
   display: block;
 }
-
-/* #case-study pre[name="ruby"],
-#case-study pre[name="go"],
-#case-study pre[name="python"],
-#case-study pre[name="curl"] {
-  display: none;
-} */
-
-/* #case-study pre[name="js"] {
-  display: none;
-} */
