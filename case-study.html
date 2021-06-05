@@ -85,50 +85,6 @@
     <main>
       <section id="case-study">
         <h1>Case Study</h1>
-
-        <div class="code-block">
-          <ul class="language-list">
-            <li>
-              <p class="selected language-option" name="js">JavaScript</p>
-            </li>
-            <li>
-              <p class="language-option" name="ruby">Ruby</p>
-            </li>
-            <li>
-              <p class="language-option" name="go">Go</p>
-            </li>
-            <li>
-              <p class="language-option" name="python">Python</p>
-            </li>
-            <li>
-              <p class="language-option" name="curl">curl</p>
-            </li>
-          </ul>
-          <pre name="js" class="language-js line-numbers selected">
-            <code>
-              const Tacklebox = require('tacklebox-lib');
-
-              const apiKey = "ibY83fHnC99OlAN4YGoTE7TuBDB7xRjD7B0dYi0k";
-              const baseUrl = "https://ukfl963bh1.execute-api.us-west-1.amazonaws.com/v1/";
-              const tb = new Tacklebox(apiKey, baseUrl);
-
-              (async () => {
-              const newService = await tb.service.create({ name: "new_service_name" });
-              })();
-            </code>
-          </pre>
-          <pre name="curl" class="language-bash line-numbers">
-            <code>
-              curl -X POST https://ukfl963bh1.execute-api.us-west-1.amazonaws.com/v1/services \
-              -H "Content-Type: application/json" \
-              -H "x-api-key: ibY83fHnC99OlAN4YGoTE7TuBDB7xRjD7B0dYi0k" \
-              -d '{
-              "name": "new_service_name"
-              }'
-            </code>
-          </pre>
-        </div>
-
         <h2 id="Overview">1. Overview</h2>
         <p>
           Tacklebox is an open-source serverless framework offering webhooks-as-a-service. In addition to the core
@@ -445,9 +401,8 @@
         <p>
           Before you start setting up Tacklebox, you’ll need to make sure that you have an AWS account and three npm
           packages installed: aws-cdk, aws-cli, and tacklebox-webhooks, which is our CLI tool. Once you do, creating the
-          AWS infrastructure that comprises the webhook service is done with one command:
+          AWS infrastructure that comprises the webhook service is done with one command: <code>tacklebox deploy</code>.
         </p>
-        <pre>tacklebox deploy</pre>
 
         <p>
           In addition to provisioning the necessary AWS services, this command also pre-populates the Tacklebox database
@@ -468,7 +423,11 @@
           discuss each in detail in the following sections, however it’s important to note how they all relate to each
           other first.
         </p>
-        <p>IMAGE OF ENTITIES</p>
+        
+        <div class="img-wrapper">
+          <img src="images/newDiagrams/entities.png" alt="Entities" />
+        </div>
+
         <p>
           Services are Tacklebox’s top-level entity, and they represent the applications for which we’re providing
           webhooks. Each service has its own set of users, event types, subscriptions, events, and messages. Within a
@@ -483,7 +442,51 @@
           is the API Host mentioned previously), or you can use one of our client libraries in the language of your
           choice.
         </p>
-        <p>CODE SNIPPET</p>
+        
+        <div class="code-block">
+          <ul class="language-list">
+            <li>
+              <p class="selected language-option" name="js">JavaScript</p>
+            </li>
+            <li>
+              <p class="language-option" name="ruby">Ruby</p>
+            </li>
+            <li>
+              <p class="language-option" name="go">Go</p>
+            </li>
+            <li>
+              <p class="language-option" name="python">Python</p>
+            </li>
+            <li>
+              <p class="language-option" name="curl">curl</p>
+            </li>
+          </ul>
+          <pre name="js" class="language-js line-numbers selected">
+            <code>
+              const Tacklebox = require('tacklebox-lib');
+
+              const apiKey = "ibY83fHnC99OlAN4YGoTE7TuBDB7xRjD7B0dYi0k";
+              const baseUrl = "https://ukfl963bh1.execute-api.us-west-1.amazonaws.com/v1/";
+              const tb = new Tacklebox(apiKey, baseUrl);
+
+              (async () => {
+                const serviceData = { name: "new_service_name" };
+                const newService = await tb.service.create(serviceData);
+              })();
+            </code>
+          </pre>
+          <pre name="curl" class="language-bash line-numbers">
+            <code>
+              curl -X POST https://ukfl963bh1.execute-api.us-west-1.amazonaws.com/v1/services \
+                -H "Content-Type: application/json" \
+                -H "x-api-key: ibY83fHnC99OlAN4YGoTE7TuBDB7xRjD7B0dYi0k" \
+                -d '{
+                "name": "new_service_name"
+                }'
+            </code>
+          </pre>
+        </div>
+
         <p>
           Because services represent applications, and applications are typically static and are only set up once during
           initial implementation, it might make more sense to manually send an HTTP request to add a service. As we’ll
@@ -503,7 +506,52 @@
           the setup phase you’ll want to add all of the event types your consumers might potentially want to subscribe
           to.
         </p>
-        <p>Code snippet showing adding a few event types
+        
+        <div class="code-block">
+          <ul class="language-list">
+            <li>
+              <p class="selected language-option" name="js">JavaScript</p>
+            </li>
+            <li>
+              <p class="language-option" name="ruby">Ruby</p>
+            </li>
+            <li>
+              <p class="language-option" name="go">Go</p>
+            </li>
+            <li>
+              <p class="language-option" name="python">Python</p>
+            </li>
+            <li>
+              <p class="language-option" name="curl">curl</p>
+            </li>
+          </ul>
+          <pre name="js" class="language-js line-numbers selected">
+            <code>
+              const Tacklebox = require('tacklebox-lib');
+
+              const apiKey = "ibY83fHnC99OlAN4YGoTE7TuBDB7xRjD7B0dYi0k";
+              const baseUrl = "https://ukfl963bh1.execute-api.us-west-1.amazonaws.com/v1/";
+              const tb = new Tacklebox(apiKey, baseUrl);
+              const serviceId = "be43fe8d-d06a-46f7-bb8b-a75693e3810a";
+
+              (async () => {
+                const eventTypeData = { name: "todo_created" };
+                const newEventType = await tb.eventType.create(serviceId, eventTypeData);
+              })();
+            </code>
+          </pre>
+          <pre name="curl" class="language-bash line-numbers">
+            <code>
+              curl -X POST https://ukfl963bh1.execute-api.us-west-1.amazonaws.com/v1/services/be43fe8d-d06a-46f7-bb8b-a75693e3810a/event_types \
+                -H "Content-Type: application/json" \
+                -H "x-api-key: ibY83fHnC99OlAN4YGoTE7TuBDB7xRjD7B0dYi0k" \
+                -d '{
+                  "name": "new_event_type_name"
+                }'
+            </code>
+          </pre>
+        </div>
+
         </p>
         <p>
           As with services, event types are also fairly static and are typically known before implementation, so again
@@ -518,8 +566,55 @@
           Tacklebox to ensure that an event created by a specific user only sends webhook notifications to that user’s
           endpoints.
         </p>
-        <p>Code snippet showing adding a new user situated within a larger user creation method
-        </p>
+        
+        <div class="code-block">
+          <ul class="language-list">
+            <li>
+              <p class="selected language-option" name="js">JavaScript</p>
+            </li>
+            <li>
+              <p class="language-option" name="ruby">Ruby</p>
+            </li>
+            <li>
+              <p class="language-option" name="go">Go</p>
+            </li>
+            <li>
+              <p class="language-option" name="python">Python</p>
+            </li>
+            <li>
+              <p class="language-option" name="curl">curl</p>
+            </li>
+          </ul>
+          <pre name="js" class="language-js line-numbers selected">
+            <code>
+              const Tacklebox = require('tacklebox-lib');
+
+              const apiKey = "ibY83fHnC99OlAN4YGoTE7TuBDB7xRjD7B0dYi0k";
+              const baseUrl = "https://ukfl963bh1.execute-api.us-west-1.amazonaws.com/v1/";
+              const tb = new Tacklebox(apiKey, baseUrl);
+              const serviceId = "be43fe8d-d06a-46f7-bb8b-a75693e3810a";
+
+              // ...code omitted for brevity
+
+              const handleAddUser = async (userData) => {
+                const { name } = userData;
+                const webhookUserData = await tb.user.create({ name });
+                addUserToMainApplication(userData, webhookUserData);
+              }
+            </code>
+          </pre>
+          <pre name="curl" class="language-bash line-numbers">
+            <code>
+              curl -X POST https://ukfl963bh1.execute-api.us-west-1.amazonaws.com/v1/services/be43fe8d-d06a-46f7-bb8b-a75693e3810a/users \
+                -H "Content-Type: application/json" \
+                -H "x-api-key: ibY83fHnC99OlAN4YGoTE7TuBDB7xRjD7B0dYi0k" \
+                -d '{
+                  "name": "new_user_name"
+                }'
+            </code>
+          </pre>
+        </div>
+
         <p>
           The benefit of using a client library starts to become apparent in this situation. If you’d like to add a new
           user to Tacklebox every time you add a new user to the app you’re providing webhooks for, all you need to do
@@ -535,9 +630,56 @@
           user might have a separate subscription for testing purposes with a different URL than their main
           subscription.
         </p>
-        <p>
-          Code snippet showing adding a few subscriptions
-        </p>
+        
+        <div class="code-block">
+          <ul class="language-list">
+            <li>
+              <p class="selected language-option" name="js">JavaScript</p>
+            </li>
+            <li>
+              <p class="language-option" name="ruby">Ruby</p>
+            </li>
+            <li>
+              <p class="language-option" name="go">Go</p>
+            </li>
+            <li>
+              <p class="language-option" name="python">Python</p>
+            </li>
+            <li>
+              <p class="language-option" name="curl">curl</p>
+            </li>
+          </ul>
+          <pre name="js" class="language-js line-numbers selected">
+            <code>
+              const Tacklebox = require('tacklebox-lib');
+
+              const apiKey = "ibY83fHnC99OlAN4YGoTE7TuBDB7xRjD7B0dYi0k";
+              const baseUrl = "https://ukfl963bh1.execute-api.us-west-1.amazonaws.com/v1/";
+              const tb = new Tacklebox(apiKey, baseUrl);
+              const serviceId = "be43fe8d-d06a-46f7-bb8b-a75693e3810a";
+              const userId = "48676b26-2906-4454-8436-bcc86383b7c5";
+
+              // ...code omitted for brevity
+
+              const handleAddSubscription = async (subscriptionData) => {
+                const { url, eventTypes } = subscriptionData;
+                const newSubscription = await tb.subscription.create(serviceId, userId, { url, eventTypes });
+              }
+            </code>
+          </pre>
+          <pre name="curl" class="language-bash line-numbers">
+            <code>
+              curl -X POST https://ukfl963bh1.execute-api.us-west-1.amazonaws.com/v1/services/be43fe8d-d06a-46f7-bb8b-a75693e3810a/users/48676b26-2906-4454-8436-bcc86383b7c5/subscriptions \
+                -H "Content-Type: application/json" \
+                -H "x-api-key: ibY83fHnC99OlAN4YGoTE7TuBDB7xRjD7B0dYi0k" \
+                -d '{
+                  "url": "https://myendpoint.io",
+                  "eventTypes": ["todo_created"]
+                }'
+            </code>
+          </pre>
+        </div>
+
         <p>
           A nice feature that many webhook providers choose to implement is a UI that allows their users to create their
           own subscriptions. You can use the client library to add a new subscription in Tacklebox when the user adds it
@@ -572,17 +714,70 @@
           How did the application send a POST request to Tacklebox’s API to create an event? If the app is using one our
           clients, it might look like this:
         </p>
-        <p>Code snippet showing creating an event
-        </p>
+        
+        <div class="code-block">
+          <ul class="language-list">
+            <li>
+              <p class="selected language-option" name="js">JavaScript</p>
+            </li>
+            <li>
+              <p class="language-option" name="ruby">Ruby</p>
+            </li>
+            <li>
+              <p class="language-option" name="go">Go</p>
+            </li>
+            <li>
+              <p class="language-option" name="python">Python</p>
+            </li>
+            <li>
+              <p class="language-option" name="curl">curl</p>
+            </li>
+          </ul>
+          <pre name="js" class="language-js line-numbers selected">
+            <code>
+              const Tacklebox = require('tacklebox-lib');
+
+              const apiKey = "ibY83fHnC99OlAN4YGoTE7TuBDB7xRjD7B0dYi0k";
+              const baseUrl = "https://ukfl963bh1.execute-api.us-west-1.amazonaws.com/v1/";
+              const tb = new Tacklebox(apiKey, baseUrl);
+              const serviceId = "be43fe8d-d06a-46f7-bb8b-a75693e3810a";
+              const userId = "48676b26-2906-4454-8436-bcc86383b7c5";
+
+              // ...code omitted for brevity
+
+              const handleTodoCreated = async (todoData) => {
+                createTodoInApplication(todoData);
+                const { eventType, payload } = todoData;
+                const idempotency_key = newIdempotencyKey();
+                const newSubscription = await tb.event.create(serviceId, userId, { eventType, payload, idempotency_key });
+              }
+            </code>
+          </pre>
+          <pre name="curl" class="language-bash line-numbers">
+            <code>
+              curl -X POST https://ukfl963bh1.execute-api.us-west-1.amazonaws.com/v1/services/be43fe8d-d06a-46f7-bb8b-a75693e3810a/users/48676b26-2906-4454-8436-bcc86383b7c5/events \
+                -H "Content-Type: application/json" \
+                -H "x-api-key: ibY83fHnC99OlAN4YGoTE7TuBDB7xRjD7B0dYi0k" \
+                -d '{
+                  "eventType": "todo_created",
+                  "payload": '{
+                      "msg": "A todo was just created by a user",
+                      "creation_id": "32789073883",
+                      "archived": "false"
+                  }',
+                  "idempotency_key": "12334452643544542645435"
+                }'
+            </code>
+          </pre>
+        </div>
+
         <h4>Viewing Webhook Data</h4>
         <p>
           Now that Tacklebox is sending webhook notifications to your subscribers, you may want to view that data
           visually. Tacklebox’s management UI gives you a central place to view entities, messages, and a dashboard with
-          metrics. You can start the UI by running:
+          metrics. You can start the UI by running: <code>tacklebox ui</code>.  This spins up the management UI locally, which you can view in a browser at http://localhost:3001.
         </p>
-        <pre>tacklebox ui</pre>
-        <p>This spins up the management UI locally, which you can view in a browser at http://localhost:3001.
-        </p>
+
         <div class="img-wrapper">
           <img src="images/diagrams/uiDash.png" />
         </div>
@@ -600,9 +795,46 @@
           If you no longer need Tacklebox for one of your applications, you can use one of the following to delete it:
         </p>
 
-        <p>
-          Code snippet that shows removing a service
-        </p>
+        <div class="code-block">
+          <ul class="language-list">
+            <li>
+              <p class="selected language-option" name="js">JavaScript</p>
+            </li>
+            <li>
+              <p class="language-option" name="ruby">Ruby</p>
+            </li>
+            <li>
+              <p class="language-option" name="go">Go</p>
+            </li>
+            <li>
+              <p class="language-option" name="python">Python</p>
+            </li>
+            <li>
+              <p class="language-option" name="curl">curl</p>
+            </li>
+          </ul>
+          <pre name="js" class="language-js line-numbers selected">
+            <code>
+              const Tacklebox = require('tacklebox-lib');
+
+              const apiKey = "ibY83fHnC99OlAN4YGoTE7TuBDB7xRjD7B0dYi0k";
+              const baseUrl = "https://ukfl963bh1.execute-api.us-west-1.amazonaws.com/v1/";
+              const tb = new Tacklebox(apiKey, baseUrl);
+              const serviceId = "be43fe8d-d06a-46f7-bb8b-a75693e3810a";
+
+              (async () => {
+                const deletedService = await tb.service.delete(serviceId);
+              })();
+            </code>
+          </pre>
+          <pre name="curl" class="language-bash line-numbers">
+            <code>
+              curl -X DELETE https://ukfl963bh1.execute-api.us-west-1.amazonaws.com/v1/services/be43fe8d-d06a-46f7-bb8b-a75693e3810a \
+                -H "Content-Type: application/json" \
+                -H "x-api-key: ibY83fHnC99OlAN4YGoTE7TuBDB7xRjD7B0dYi0k"
+            </code>
+          </pre>
+        </div>
 
         <p>
           Deleting a service effectively hides it and all of its event types, users, and subscriptions. The event and
@@ -611,13 +843,10 @@
 
         <p>
           If you no longer need Tacklebox for <em>any</em> of your applications, you can tear down the entire service
-          with a single command:
-        </p>
-        <pre>tacklebox destroy</pre>
-        <p>
-          This command removes all of Tacklebox’s AWS infrastructure, including the database, so be sure before running
+          with a single command: <code>tacklebox destroy</code>.  This command removes all of Tacklebox’s AWS infrastructure, including the database, so be sure before running
           it.
         </p>
+
         <div class="img-wrapper">
           <img src="images/gifs/destroy.gif" />
         </div>
@@ -700,7 +929,7 @@
         </ul>
 
         <div class="img-wrapper">
-          <img src="images/newDiagrams/eventLifecycleOverArchitecture.png" alt="Event Message Lifecycle" />
+          <img src="images/newDiagrams/eventLifecycle.png" alt="Event Message Lifecycle" />
         </div>
 
         <h4>CRUD Operations</h4>

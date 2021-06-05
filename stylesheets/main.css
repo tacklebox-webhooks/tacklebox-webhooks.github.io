@@ -474,7 +474,8 @@ h3 {
   position: relative;
   margin: 50px auto;
   width: 100%;
-  max-width: 900px;
+  max-width: 1000px;
+  /* max-height: 500px; */
 }
 
 #question-categories.img-wrapper {
@@ -1195,9 +1196,25 @@ footer h3 {
 }
 
 pre {
+  color: #f67280;
+  font-family: Monospace;
+  font-size: 1.5rem;
+}
+
+code {
+  color: #f67280;
+  font-family: Monospace;
+  font-size: 1.5rem;
+}
+
+.code-block pre {
   border-bottom-right-radius: 7px;
   border-bottom-left-radius: 7px;
   margin-top: 0;
+}
+
+.code-block code {
+  overflow-wrap: break-word;
 }
 
 #case-study .language-list {

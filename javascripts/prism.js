@@ -2202,7 +2202,7 @@ Prism.languages.py = Prism.languages.python;
 		'remove-indent': true,
 		'left-trim': true,
 		'right-trim': true,
-		'break-lines': 80,
+		// 'break-lines': 80,
 		/*'indent': 2,
 		'remove-initial-line-feed': false,
 		'tabs-to-spaces': 4,
