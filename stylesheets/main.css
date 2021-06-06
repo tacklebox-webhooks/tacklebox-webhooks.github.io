@@ -16,6 +16,7 @@ body {
 main {
   width: 70%;
   margin: 0 10rem 0 2rem;
+  min-width: 0;
 }
 
 .study-wrapper section {
@@ -1192,7 +1193,7 @@ footer h3 {
 /* Code Blocks */
 
 .code-block {
-  width: 80%;
+  width: 100%;
   margin: 0 auto;
 }
 
