@@ -188,11 +188,20 @@
         <h3 id="Who-uses-webhooks">2.3 Overview of providing webhooks</h3>
 
         <p>
-          If you are a webhook provider like Github, how would you build a webhook feature? By examining the desired
-          workflow, you can identify key features that you would need to consider.
+          If you are a webhook provider like Github, how would you build a webhook feature?  You’d first need to identify which events your users might want to be notified about, and which of those are technically feasible.  You’d want each instance of the same event to have a consistent label so that you can handle it the same way every time.  This label is what we call an event type.
+        </p>
+
+        <p>
+          Once you’ve established your list of event types,  you’d then need a way to identify where to send webhook notifications when an event occurs.  Github has millions of repositories, and when an event happens in one, they only want to notify, at most, the people who have access to that specific repository.  Within that repository, they also might want further specificity if certain users want to be notified in different ways or in different places.  This is where the idea of a subscription comes into play - subscriptions are combinations of URL endpoints and the event types those endpoints should be notified about.  By allowing your users to create subscriptions, you are effectively telling them that you will notify them at a certain URL when certain event types (and only those event types) happen in their repository.  Having distinct subscriptions also enables your users to create multiple subscriptions for themselves if they need to, or if they want their webhook notifications to go to multiple URL endpoints.
         </p>
         <p>
-          From Github’s perspective as a webhook provider, the previous example would look something like:
+          Once you have event types and subscriptions, you have all of the information you need to properly notify your subscribers when events happen.  From Github’s perspective, the previous branch creation example would look something like:
+        </p>
+
+        <div class="img-wrapper">
+          <img src="images/newDiagrams/providerFlow2.png" alt="Provider Workflow" />
+        </div>
+
         <ol>
           <li>
             <p>A new branch is created</p>
@@ -208,20 +217,10 @@
             </p>
           </li>
         </ol>
-        </p>
-        <div class="img-wrapper">
-          <img src="images/newDiagrams/providerFlow2.png" alt="Provider Workflow" />
-        </div>
+        
+        
         <p>
-          When an event occurs, you need to identify where to send webhook notifications. Ideally, you can query a
-          database to retrieve a list of subscribed URL endpoints (subscribed meaning they have indicated beforehand
-          that they want to be notified about that event), but you first need to ensure your users can register their
-          endpoints and choose events they care about. To distinguish between events, you can assign them each an “event
-          type”. Each event can then be assigned an event type upon creation, and the webhook service can use the event
-          type to generate a list of subscribed endpoints. Each subscribed endpoint will be sent a webhook notification.
-        </p>
-        <p>As a provider, adding a webhook feature requires careful thought and can impact your existing infrastructure.
-          In the next section, we examine some of the reasons why this is difficult.
+          While the above considerations are fairly straightforward, we’ve only been discussing building a webhook feature at a high level of abstraction.  In reality, adding a webhook feature requires careful thought and can impact your existing infrastructure.  In the next section, we examine some of the reasons why this is difficult.
         </p>
 
         <h2 id="BuildingWebhooks">
@@ -380,8 +379,7 @@
           using a paid provider you share data with a third-party vendor, and may be limited by a lack of software
           customization. A DIY approach will take longer to implement and requires that you manage your own
           infrastructure. By accepting these tradeoffs, you maintain control of your data and can customize your service
-          to meet evolving needs. Examining the benefits and drawbacks of each approach, we set out to create an
-          open-source framework that lets you quickly deploy a webhook service.
+          to meet evolving needs. Examining the benefits and drawbacks of each approach, we set out to create an open-source framework that balances flexibility and control over data with ease of deployment and integration.
         </p>
 
         <div id="comparison-table" class="img-wrapper">
@@ -395,8 +393,7 @@
           looking to quickly get up and running with a robust webhook-as-a-service solution. Although we have designed
           Tacklebox to be robust and extensible, it’s not a good fit for every scenario, like extremely high volume
           workloads. During load testing, it successfully delivered 12,000 webhook messages in a ten minute timeframe,
-          and persisted each message to the database. We were satisfied with these results, but it may not be
-          well-suited to large applications that generate millions of events per day.
+          and persisted each message to the database. We were satisfied with these results, but it may not be well-suited to large applications that generate hundreds of thousands or millions of events in the same time frame.
         </p>
 
         <h2 id="UsingTacklebox">5. Using Tacklebox</h2>
@@ -469,7 +466,7 @@
               <p class="language-option" name="python">Python</p>
             </li>
             <li>
-              <p class="language-option" name="curl">curl</p>
+              <p class="language-option" name="curl">cURL</p>
             </li>
           </ul>
           <pre name="js" class="language-js line-numbers selected">
@@ -533,7 +530,7 @@
               <p class="language-option" name="python">Python</p>
             </li>
             <li>
-              <p class="language-option" name="curl">curl</p>
+              <p class="language-option" name="curl">cURL</p>
             </li>
           </ul>
           <pre name="js" class="language-js line-numbers selected">
@@ -595,7 +592,7 @@
               <p class="language-option" name="python">Python</p>
             </li>
             <li>
-              <p class="language-option" name="curl">curl</p>
+              <p class="language-option" name="curl">cURL</p>
             </li>
           </ul>
           <pre name="js" class="language-js line-numbers selected">
@@ -661,7 +658,7 @@
               <p class="language-option" name="python">Python</p>
             </li>
             <li>
-              <p class="language-option" name="curl">curl</p>
+              <p class="language-option" name="curl">cURL</p>
             </li>
           </ul>
           <pre name="js" class="language-js line-numbers selected">
@@ -748,7 +745,7 @@
               <p class="language-option" name="python">Python</p>
             </li>
             <li>
-              <p class="language-option" name="curl">curl</p>
+              <p class="language-option" name="curl">cURL</p>
             </li>
           </ul>
           <pre name="js" class="language-js line-numbers selected">
@@ -807,8 +804,12 @@
           messages that service has, in addition to graphs that visualize message and event data by date, type, status
           code, and user.
         </p>
-        <p>Screenshot of UI messages tab
+
+        <p>
+          The other pages show detailed information about specific entities.  The messages page, for example, shows a list of all of the messages a specific service has generated, and it can be filtered by user.  If the message failed and needs to be resent, you can click the “resend” button.
         </p>
+
+        <p>Screenshot of UI messages tab</p>
 
         <h3 id="UI">5.3 Teardown</h3>
 
@@ -831,7 +832,7 @@
               <p class="language-option" name="python">Python</p>
             </li>
             <li>
-              <p class="language-option" name="curl">curl</p>
+              <p class="language-option" name="curl">cURL</p>
             </li>
           </ul>
           <pre name="js" class="language-js line-numbers selected">
@@ -911,7 +912,6 @@
         <div class="img-wrapper">
           <img src="images/newDiagrams/finalArchitecture.png" alt="Final Tacklebox Architecture" />
         </div>
-
 
         <p>
           The last step, saving messages to the database, is taken care of by a combination of a log service, CloudWatch
@@ -1579,20 +1579,9 @@
             <p>Phoenix, AZ</p>
             <ul class="social-icons">
               <li>
-                <script type="text/javascript" language="javascript">
-                  ML = 'e/ioh lr"g<=c.mtad>:b@f';
-                  MI = ":@5470F;8>@26?3C40663E9@D7206A0@6>02A@=<3>8B:1@B";
-                  OT = "";
-                  for (j = 0; j < MI.length; j++) {
-                    OT += ML.charAt(MI.charCodeAt(j) - 48);
-                  }
-                  let arr = OT.split("</a>").slice(0, 1);
-                  arr.push(
-                    `${`<img src="images/icons/email_icon.png" alt="email" /></a>`}`
-                  );
-                  document.write(arr.join(""));
-                    // -->
-                </script>
+                <a href="mailto:juanpedropalma@hotmail.com" target="_blank">
+                  <img src="images/icons/email_icon.png" alt="email" />
+                </a>
               </li>
               <li>
                 <a href="https://github.com/juanpalma1" target="_blank">
@@ -1613,20 +1602,9 @@
             <p>Atlanta, GA</p>
             <ul class="social-icons">
               <li>
-                <script type="text/javascript" language="javascript">
-                  ML2 = 's >h"ma@/.elo=ir<:uft';
-                  MI2 = "@613?:C=456>;D<A6?D3B?75590D42";
-                  OT2 = "";
-                  for (j = 0; j < MI2.length; j++) {
-                    OT2 += ML2.charAt(MI2.charCodeAt(j) - 48);
-                  }
-                  let arr2 = OT2.split("</a>").slice(0, 1);
-                  arr2.push(
-                    `${`<img src="images/icons/email_icon.png" alt="email" /></a>`}`
-                  );
-                  document.write(arr2.join(""));
-                    // -->
-                </script>
+                <a href="mailto:kaylthomas607@gmail.com" target="_blank">
+                  <img src="images/icons/email_icon.png" alt="email" />
+                </a>
               </li>
               <li>
                 <a href="https://github.com/Kaylthomas777" target="_blank">
@@ -1665,20 +1643,9 @@
             <p>Los Angeles, CA</p>
             <ul class="social-icons">
               <li>
-                <script type="text/javascript" language="javascript">
-                  ML4 = ' "<z:>o.irem=cflbhagt@/';
-                  MI4 = "2B0A9:><1;B8?D64@38CC3EC;B8?7=6;15";
-                  OT4 = "";
-                  for (j = 0; j < MI4.length; j++) {
-                    OT4 += ML4.charAt(MI4.charCodeAt(j) - 48);
-                  }
-                  let arr4 = OT4.split("</a>").slice(0, 1);
-                  arr4.push(
-                    `${`<img src="images/icons/email_icon.png" alt="email" /></a>`}`
-                  );
-                  document.write(arr4.join(""));
-                    // -->
-                </script>
+                <a href="mailto:armandomotagt@gmail.com" target="_blank">
+                  <img src="images/icons/email_icon.png" alt="email" />
+                </a>
               </li>
               <li>
                 <a href="https://github.com/ArmandoMota" target="_blank">
