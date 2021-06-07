@@ -18,7 +18,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:ital,wght@0,400;0,700;0,900;1,400&display=swap"
     rel="stylesheet" />
 
-  
+
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script type="text/javascript" src="javascripts/prismCustom.js"></script>
   <script src="javascripts/prism.js"></script>
@@ -165,12 +165,14 @@
         <ol>
           <li>
             <p>
-              Navigate to the “Webhooks” settings page of your repository. In the top right, the "Add webhook" button is used to add a new webhook subscription.
+              Navigate to the “Webhooks” settings page of your repository. In the top right, the "Add webhook" button is
+              used to add a new webhook subscription.
             </p>
           </li>
           <li>
             <p>
-              Specify a URL endpoint where you want to receive webhook notifications. Select event types you care about, and other optional configuration settings, then click “Add webhook”.
+              Specify a URL endpoint where you want to receive webhook notifications. Select event types you care about,
+              and other optional configuration settings, then click “Add webhook”.
             </p>
           </li>
         </ol>
@@ -207,7 +209,9 @@
           </li>
         </ol>
         </p>
-        <p>IMAGE OF PROVIDER WORKFLOW</p>
+        <div class="img-wrapper">
+          <img src="images/diagrams/providerWorkflow.png" alt="Provider Workflow" />
+        </div>
         <p>
           When an event occurs, you need to identify where to send webhook notifications. Ideally, you can query a
           database to retrieve a list of subscribed URL endpoints (subscribed meaning they have indicated beforehand
@@ -249,10 +253,10 @@
           about allowing them to verify the origin of messages?
         </p>
         <h4 id="Third-consideration">
-          monitoring
+          Monitoring
         </h4>
         <p>
-          The third category involves monitoring. How do you identify frequently failing endpoints, and are you able to
+          The third category involves monitoring. How do you identify failing endpoints, and are you able to
           monitor historical usage patterns?
         </p>
         <h4 id="Fourth-consideration">
@@ -430,7 +434,7 @@
           discuss each in detail in the following sections, however it’s important to note how they all relate to each
           other first.
         </p>
-        
+
         <div class="img-wrapper">
           <img src="images/newDiagrams/entities.png" alt="Entities" />
         </div>
@@ -449,7 +453,7 @@
           is the API Host mentioned previously), or you can use one of our client libraries in the language of your
           choice.
         </p>
-        
+
         <div class="code-block">
           <ul class="language-list">
             <li>
@@ -485,11 +489,11 @@
           <pre name="curl" class="language-bash line-numbers">
             <code>
               curl -X POST https://ukfl963bh1.execute-api.us-west-1.amazonaws.com/v1/services \
-                -H "Content-Type: application/json" \
-                -H "x-api-key: ibY83fHnC99OlAN4YGoTE7TuBDB7xRjD7B0dYi0k" \
-                -d '{
-                "name": "new_service_name"
-                }'
+              -H "Content-Type: application/json" \
+              -H "x-api-key: ibY83fHnC99OlAN4YGoTE7TuBDB7xRjD7B0dYi0k" \
+              -d '{
+              "name": "new_service_name"
+              }'
             </code>
           </pre>
         </div>
@@ -513,7 +517,7 @@
           the setup phase you’ll want to add all of the event types your consumers might potentially want to subscribe
           to.
         </p>
-        
+
         <div class="code-block">
           <ul class="language-list">
             <li>
@@ -549,12 +553,14 @@
           </pre>
           <pre name="curl" class="language-bash line-numbers">
             <code>
-              curl -X POST https://ukfl963bh1.execute-api.us-west-1.amazonaws.com/v1/services/be43fe8d-d06a-46f7-bb8b-a75693e3810a/event_types \
-                -H "Content-Type: application/json" \
-                -H "x-api-key: ibY83fHnC99OlAN4YGoTE7TuBDB7xRjD7B0dYi0k" \
-                -d '{
-                  "name": "new_event_type_name"
-                }'
+              curl -X POST
+              https://ukfl963bh1.execute-api.us-west-1.amazonaws.com/v1/services/be43fe8d-d06a-46f7-bb8b-a75693e3810a/event_types
+              \
+              -H "Content-Type: application/json" \
+              -H "x-api-key: ibY83fHnC99OlAN4YGoTE7TuBDB7xRjD7B0dYi0k" \
+              -d '{
+              "name": "new_event_type_name"
+              }'
             </code>
           </pre>
         </div>
@@ -573,7 +579,7 @@
           Tacklebox to ensure that an event created by a specific user only sends webhook notifications to that user’s
           endpoints.
         </p>
-        
+
         <div class="code-block">
           <ul class="language-list">
             <li>
@@ -612,12 +618,14 @@
           </pre>
           <pre name="curl" class="language-bash line-numbers">
             <code>
-              curl -X POST https://ukfl963bh1.execute-api.us-west-1.amazonaws.com/v1/services/be43fe8d-d06a-46f7-bb8b-a75693e3810a/users \
-                -H "Content-Type: application/json" \
-                -H "x-api-key: ibY83fHnC99OlAN4YGoTE7TuBDB7xRjD7B0dYi0k" \
-                -d '{
-                  "name": "new_user_name"
-                }'
+              curl -X POST
+              https://ukfl963bh1.execute-api.us-west-1.amazonaws.com/v1/services/be43fe8d-d06a-46f7-bb8b-a75693e3810a/users
+              \
+              -H "Content-Type: application/json" \
+              -H "x-api-key: ibY83fHnC99OlAN4YGoTE7TuBDB7xRjD7B0dYi0k" \
+              -d '{
+              "name": "new_user_name"
+              }'
             </code>
           </pre>
         </div>
@@ -637,7 +645,7 @@
           user might have a separate subscription for testing purposes with a different URL than their main
           subscription.
         </p>
-        
+
         <div class="code-block">
           <ul class="language-list">
             <li>
@@ -676,13 +684,15 @@
           </pre>
           <pre name="curl" class="language-bash line-numbers">
             <code>
-              curl -X POST https://ukfl963bh1.execute-api.us-west-1.amazonaws.com/v1/services/be43fe8d-d06a-46f7-bb8b-a75693e3810a/users/48676b26-2906-4454-8436-bcc86383b7c5/subscriptions \
-                -H "Content-Type: application/json" \
-                -H "x-api-key: ibY83fHnC99OlAN4YGoTE7TuBDB7xRjD7B0dYi0k" \
-                -d '{
-                  "url": "https://myendpoint.io",
-                  "eventTypes": ["todo_created"]
-                }'
+              curl -X POST
+              https://ukfl963bh1.execute-api.us-west-1.amazonaws.com/v1/services/be43fe8d-d06a-46f7-bb8b-a75693e3810a/users/48676b26-2906-4454-8436-bcc86383b7c5/subscriptions
+              \
+              -H "Content-Type: application/json" \
+              -H "x-api-key: ibY83fHnC99OlAN4YGoTE7TuBDB7xRjD7B0dYi0k" \
+              -d '{
+              "url": "https://myendpoint.io",
+              "eventTypes": ["todo_created"]
+              }'
             </code>
           </pre>
         </div>
@@ -708,8 +718,9 @@
           the time of an event, Tacklebox already has all of the information necessary to notify the applicable
           consumers.
         </p>
-        <p>GIF of endpoint receiving HTTP request
-        </p>
+        <div class="img-wrapper">
+          <img src="images/gifs/createEvent.gif" alt="Creating Event" />
+        </div>
         <p>
           Above on the left, we trigger an event in an application that is using Tacklebox. In this case, the event is
           the creation of a new purchase order. The application’s code sends a POST request to Tacklebox’s API which
@@ -721,7 +732,7 @@
           How did the application send a POST request to Tacklebox’s API to create an event? If the app is using one our
           clients, it might look like this:
         </p>
-        
+
         <div class="code-block">
           <ul class="language-list">
             <li>
@@ -762,18 +773,20 @@
           </pre>
           <pre name="curl" class="language-bash line-numbers">
             <code>
-              curl -X POST https://ukfl963bh1.execute-api.us-west-1.amazonaws.com/v1/services/be43fe8d-d06a-46f7-bb8b-a75693e3810a/users/48676b26-2906-4454-8436-bcc86383b7c5/events \
-                -H "Content-Type: application/json" \
-                -H "x-api-key: ibY83fHnC99OlAN4YGoTE7TuBDB7xRjD7B0dYi0k" \
-                -d '{
-                  "eventType": "todo_created",
-                  "payload": '{
-                      "msg": "A todo was just created by a user",
-                      "creation_id": "32789073883",
-                      "archived": "false"
-                  }',
-                  "idempotency_key": "12334452643544542645435"
-                }'
+              curl -X POST
+              https://ukfl963bh1.execute-api.us-west-1.amazonaws.com/v1/services/be43fe8d-d06a-46f7-bb8b-a75693e3810a/users/48676b26-2906-4454-8436-bcc86383b7c5/events
+              \
+              -H "Content-Type: application/json" \
+              -H "x-api-key: ibY83fHnC99OlAN4YGoTE7TuBDB7xRjD7B0dYi0k" \
+              -d '{
+              "eventType": "todo_created",
+              "payload": '{
+              "msg": "A todo was just created by a user",
+              "creation_id": "32789073883",
+              "archived": "false"
+              }',
+              "idempotency_key": "12334452643544542645435"
+              }'
             </code>
           </pre>
         </div>
@@ -782,7 +795,8 @@
         <p>
           Now that Tacklebox is sending webhook notifications to your subscribers, you may want to view that data
           visually. Tacklebox’s management UI gives you a central place to view entities, messages, and a dashboard with
-          metrics. You can start the UI by running: <code>tacklebox ui</code>.  This spins up the management UI locally, which you can view in a browser at http://localhost:3001.
+          metrics. You can start the UI by running: <code>tacklebox ui</code>. This spins up the management UI locally,
+          which you can view in a browser at http://localhost:3001.
         </p>
 
         <div class="img-wrapper">
@@ -836,9 +850,10 @@
           </pre>
           <pre name="curl" class="language-bash line-numbers">
             <code>
-              curl -X DELETE https://ukfl963bh1.execute-api.us-west-1.amazonaws.com/v1/services/be43fe8d-d06a-46f7-bb8b-a75693e3810a \
-                -H "Content-Type: application/json" \
-                -H "x-api-key: ibY83fHnC99OlAN4YGoTE7TuBDB7xRjD7B0dYi0k"
+              curl -X DELETE
+              https://ukfl963bh1.execute-api.us-west-1.amazonaws.com/v1/services/be43fe8d-d06a-46f7-bb8b-a75693e3810a \
+              -H "Content-Type: application/json" \
+              -H "x-api-key: ibY83fHnC99OlAN4YGoTE7TuBDB7xRjD7B0dYi0k"
             </code>
           </pre>
         </div>
@@ -850,7 +865,8 @@
 
         <p>
           If you no longer need Tacklebox for <em>any</em> of your applications, you can tear down the entire service
-          with a single command: <code>tacklebox destroy</code>.  This command removes all of Tacklebox’s AWS infrastructure, including the database, so be sure before running
+          with a single command: <code>tacklebox destroy</code>. This command removes all of Tacklebox’s AWS
+          infrastructure, including the database, so be sure before running
           it.
         </p>
 
@@ -1079,7 +1095,8 @@
         <ul>
           <li>
             <p>
-              First of all, cold start times can increase latency (cold start time refers to the time that it takes to load the function into memory before it can be invoked)
+              First of all, cold start times can increase latency (cold start time refers to the time that it takes to
+              load the function into memory before it can be invoked)
             </p>
           </li>
           <!-- [https://lumigo.io/blog/this-is-all-you-need-to-know-about-lambda-cold-starts/] -->
@@ -1103,7 +1120,9 @@
         </p>
 
         <ul>
-          <li><p>Intake a new event and persist it to the database</p></li>
+          <li>
+            <p>Intake a new event and persist it to the database</p>
+          </li>
           <li>
             <p>
               Gather subscriptions and create messages for each subscriber
@@ -1114,8 +1133,12 @@
               Send messages to all subscribers and wait for their responses
             </p>
           </li>
-          <li><p>Write responses to the database</p></li>
-          <li><p>Respond back to the event producer</p></li>
+          <li>
+            <p>Write responses to the database</p>
+          </li>
+          <li>
+            <p>Respond back to the event producer</p>
+          </li>
         </ul>
 
         <h3 id="Message Fanout">6.4 How we handled message fanout</h3>
