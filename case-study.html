@@ -543,7 +543,7 @@
               const serviceId = "be43fe8d-d06a-46f7-bb8b-a75693e3810a";
 
               (async () => {
-                const eventTypeData = { name: "todo_created" };
+                const eventTypeData = { name: "new_event_type" };
                 const newEventType = await tb.eventType.create(serviceId, eventTypeData);
               })();
             </code>
@@ -688,7 +688,7 @@
               -H "x-api-key: ibY83fHnC99OlAN4YGoTE7TuBDB7xRjD7B0dYi0k" \
               -d '{
               "url": "https://myendpoint.io",
-              "eventTypes": ["todo_created"]
+              "eventTypes": ["new_event_type"]
               }'
             </code>
           </pre>
@@ -763,8 +763,8 @@
               const handleTodoCreated = async (todoData) => {
                 createTodoInApplication(todoData);
                 const { eventType, payload } = todoData;
-                const idempotency_key = newIdempotencyKey();
-                const newSubscription = await tb.event.create(serviceId, userId, { eventType, payload, idempotency_key });
+                const idempotencyKey = newIdempotencyKey();
+                const newSubscription = await tb.event.create(serviceId, userId, { eventType, payload, idempotencyKey });
               }
             </code>
           </pre>
@@ -776,13 +776,13 @@
               -H "Content-Type: application/json" \
               -H "x-api-key: ibY83fHnC99OlAN4YGoTE7TuBDB7xRjD7B0dYi0k" \
               -d '{
-              "eventType": "todo_created",
+              "eventType": "new_event_type",
               "payload": '{
               "msg": "A todo was just created by a user",
               "creation_id": "32789073883",
               "archived": "false"
               }',
-              "idempotency_key": "12334452643544542645435"
+              "idempotencyKey": "12334452643544542645435"
               }'
             </code>
           </pre>
