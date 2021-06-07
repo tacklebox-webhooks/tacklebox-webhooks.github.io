@@ -478,7 +478,7 @@
               const tb = new Tacklebox(apiKey, baseUrl);
 
               (async () => {
-                const serviceData = { name: "new_service_name" };
+                const serviceData = { name: "todo_app" };
                 const newService = await tb.service.create(serviceData);
               })();
             </code>
@@ -489,7 +489,7 @@
               -H "Content-Type: application/json" \
               -H "x-api-key: ibY83fHnC99OlAN4YGoTE7TuBDB7xRjD7B0dYi0k" \
               -d '{
-              "name": "new_service_name"
+              "name": "todo_app"
               }'
             </code>
           </pre>
@@ -543,7 +543,7 @@
               const serviceId = "be43fe8d-d06a-46f7-bb8b-a75693e3810a";
 
               (async () => {
-                const eventTypeData = { name: "new_event_type" };
+                const eventTypeData = { name: "todo_created" };
                 const newEventType = await tb.eventType.create(serviceId, eventTypeData);
               })();
             </code>
@@ -688,7 +688,7 @@
               -H "x-api-key: ibY83fHnC99OlAN4YGoTE7TuBDB7xRjD7B0dYi0k" \
               -d '{
               "url": "https://myendpoint.io",
-              "eventTypes": ["new_event_type"]
+              "eventTypes": ["todo_created"]
               }'
             </code>
           </pre>
@@ -776,7 +776,7 @@
               -H "Content-Type: application/json" \
               -H "x-api-key: ibY83fHnC99OlAN4YGoTE7TuBDB7xRjD7B0dYi0k" \
               -d '{
-              "eventType": "new_event_type",
+              "eventType": "todo_created",
               "payload": '{
               "msg": "A todo was just created by a user",
               "creation_id": "32789073883",
