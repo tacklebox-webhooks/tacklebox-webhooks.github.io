@@ -334,7 +334,7 @@
           When designing Tacklebox, we studied existing webhook-as-a-service solutions. Many companies have already
           implemented in-house webhook-as-a-service solutions and shared their experiences in engineering blog posts,
           which we found crucial when creating our architecture. Here, we focus on two in-house webhook-as-a-service
-          solutions, from Square and Wise Engineering, before looking at third-party paid solutions
+          solutions, from Square and Wise Engineering, before looking at third-party paid solutions.
         </p>
 
         <h3 id="In-HouseSolutions">4.1 In-House Solutions</h3>
@@ -502,12 +502,12 @@ new_service = tb.service.create(service_data)
               import "github.com/tacklebox-webhooks/golang"
               ​
               func main() {
-                tb := tacklebox.Webhooks{
-                  ApiKey:  "ZOyhHr4Czd4jZHUR4T7j0aUFhyUfIQuN6NOpFV8M",
-                  BaseUrl: "https://98co0luvh2.execute-api.us-east-2.amazonaws.com/v1/"}
-                serviceData := map[string]interface{}{"name": "todo_app"}
+                  tb := tacklebox.Webhooks{
+                      ApiKey:  "ZOyhHr4Czd4jZHUR4T7j0aUFhyUfIQuN6NOpFV8M",
+                      BaseUrl: "https://98co0luvh2.execute-api.us-east-2.amazonaws.com/v1/"}
+                  serviceData := map[string]interface{}{"name": "todo_app"}
 
-                newService := tb.Service().Create(serviceData)
+                  newService := tb.Service().Create(serviceData)
               }
             </code>
           </pre>
@@ -609,13 +609,13 @@ new_event_type = tb.event_type.create(service_id, event_type_data)
               import "github.com/tacklebox-webhooks/golang"
               ​
               func main() {
-                tb := tacklebox.Webhooks{
-                  ApiKey:  "ZOyhHr4Czd4jZHUR4T7j0aUFhyUfIQuN6NOpFV8M",
-                  BaseUrl: "https://98co0luvh2.execute-api.us-east-2.amazonaws.com/v1/"}
-                serviceId := "d90af763-5839-4a90-834c-5512980984f5"
-                eventTypeData := map[string]interface{}{"name": "todo_created"}
+                  tb := tacklebox.Webhooks{
+                      ApiKey:  "ZOyhHr4Czd4jZHUR4T7j0aUFhyUfIQuN6NOpFV8M",
+                      BaseUrl: "https://98co0luvh2.execute-api.us-east-2.amazonaws.com/v1/"}
+                  serviceId := "d90af763-5839-4a90-834c-5512980984f5"
+                  eventTypeData := map[string]interface{}{"name": "todo_created"}
 
-                newEventType := tb.EventType().Create(serviceId, eventTypeData)
+                  newEventType := tb.EventType().Create(serviceId, eventTypeData)
               }
             </code>
           </pre>
@@ -707,7 +707,6 @@ def handle_add_user(user_data)
   webhook_user_data = tb.user.create(service_id, user_data)
   add_user_to_main_application(user_data, webhook_user_data);
 end
-
             </code>
           </pre>
           <pre name="go" class="language-go line-numbers">
@@ -716,16 +715,16 @@ end
 
               import "github.com/tacklebox-webhooks/golang"
               ​
-              func main() {
-                tb := tacklebox.Webhooks{
-                  ApiKey:  "ZOyhHr4Czd4jZHUR4T7j0aUFhyUfIQuN6NOpFV8M",
-                  BaseUrl: "https://98co0luvh2.execute-api.us-east-2.amazonaws.com/v1/"}
-                serviceId := "d90af763-5839-4a90-834c-5512980984f5"
+              func handleAddUser(tb tacklebox.Webhooks, serviceId string, userData map[string]interface{}) {
+                  webhookUserData := tb.User().Create(serviceId, userData)
+                  addUserToMainApplication(userData, webhookUserData);
+              }
 
-                func handleAddUser(userData map[string]interface{}) {
-                    webhookUserData := tb.User().Create(serviceId, userData.name)
-                    addUserToMainApplication(userData, webhookUserData);
-                }
+              func main() {
+                  tb := tacklebox.Webhooks{
+                      ApiKey:  "ZOyhHr4Czd4jZHUR4T7j0aUFhyUfIQuN6NOpFV8M",
+                      BaseUrl: "https://98co0luvh2.execute-api.us-east-2.amazonaws.com/v1/"}
+                  serviceId := "d90af763-5839-4a90-834c-5512980984f5"
               }
             </code>
           </pre>
@@ -826,15 +825,15 @@ end
 
               import "github.com/tacklebox-webhooks/golang"
               ​
+              func handleAddSubscription(tb tacklebox.Webhooks, serviceId, userId string, subscriptionData map[string]interface{}) {
+                  newSubscription := tb.Subscription().Create(serviceId, userId, subscriptionData)
+              }
+
               func main() {
-                tb := tacklebox.Webhooks{
-                  ApiKey:  "ZOyhHr4Czd4jZHUR4T7j0aUFhyUfIQuN6NOpFV8M",
-                  BaseUrl: "https://98co0luvh2.execute-api.us-east-2.amazonaws.com/v1/"}
-                serviceId := "d90af763-5839-4a90-834c-5512980984f5"
-                      ​
-                func handleAddSubscription(userId string, subscriptionData map[string]interface{}) {
-                    newSubscription := tb.Subscription().Create(serviceId, userId, subscriptionData)
-                }
+                  tb := tacklebox.Webhooks{
+                      ApiKey:  "ZOyhHr4Czd4jZHUR4T7j0aUFhyUfIQuN6NOpFV8M",
+                      BaseUrl: "https://98co0luvh2.execute-api.us-east-2.amazonaws.com/v1/"}
+                  serviceId := "d90af763-5839-4a90-834c-5512980984f5"
               }
             </code>
           </pre>
@@ -956,15 +955,15 @@ end
 
               import "github.com/tacklebox-webhooks/golang"
               ​
-              func main() {
-                tb := tacklebox.Webhooks{
-                  ApiKey:  "ZOyhHr4Czd4jZHUR4T7j0aUFhyUfIQuN6NOpFV8M",
-                  BaseUrl: "https://98co0luvh2.execute-api.us-east-2.amazonaws.com/v1/"}
-                serviceId := "d90af763-5839-4a90-834c-5512980984f5"
+              func handleTodoCreated(tb tacklebox.Webhooks, serviceId, userId string, todoData map[string]interface{}) {
+                  newTodo := tb.Event().Create(serviceId, userId, todoData)
+              }
 
-                func handleTodoCreated(userId string, todoData map[string]interface{}) {
-                    newTodo := tb.Event().Create(serviceId, userId, todoData)
-                }
+              func main() {
+                  tb := tacklebox.Webhooks{
+                      ApiKey:  "ZOyhHr4Czd4jZHUR4T7j0aUFhyUfIQuN6NOpFV8M",
+                      BaseUrl: "https://98co0luvh2.execute-api.us-east-2.amazonaws.com/v1/"}
+                  serviceId := "d90af763-5839-4a90-834c-5512980984f5"
               }
             </code>
           </pre>
@@ -1084,12 +1083,12 @@ deleted_service = tb.service.delete(service_id)
               import "github.com/tacklebox-webhooks/golang"
               ​
               func main() {
-                tb := tacklebox.Webhooks{
-                  ApiKey:  "ZOyhHr4Czd4jZHUR4T7j0aUFhyUfIQuN6NOpFV8M",
-                  BaseUrl: "https://98co0luvh2.execute-api.us-east-2.amazonaws.com/v1/"}
-                serviceId := "d90af763-5839-4a90-834c-5512980984f5"
-                
-                deletedService := tb.Service().Delete(serviceId)
+                  tb := tacklebox.Webhooks{
+                      ApiKey:  "ZOyhHr4Czd4jZHUR4T7j0aUFhyUfIQuN6NOpFV8M",
+                      BaseUrl: "https://98co0luvh2.execute-api.us-east-2.amazonaws.com/v1/"}
+                  serviceId := "d90af763-5839-4a90-834c-5512980984f5"
+                  
+                  deletedService := tb.Service().Delete(serviceId)
               }
             </code>
           </pre>
@@ -1216,7 +1215,7 @@ deleted_service = tb.service.delete(service_id)
         <p>
           Even though we are going to be focusing almost exclusively on the event/message lifecycle as we discuss our
           architecture moving forward, our architecture also tracks additional entities in the database, such as
-          applications, users, and event types. Almost all of our CRUD operations are handled by our intake lambda,
+          services, users, and event types. Almost all of our CRUD operations are handled by our intake lambda,
           which communicates directly with the database as needed. There are a few processes that require interacting
           with both the database and SNS, like creating or updating a subscription, and in those cases, the lambda
           orchestrates the process.
@@ -1416,8 +1415,7 @@ deleted_service = tb.service.delete(service_id)
           can finish its work by writing the results to the database. Because webhooks are typically application or
           user-specific, the number of consumers needing to be notified when a given event occurs is typically low,
           however even with tens of consumers the chance that one of the consumer’s endpoints will fail over time
-          increases.
-          <!-- Insert citation for DDIA pg. 278 here -->
+          increases. <sup class="footnote-ref"><a id="fnref10" href="#fn10">[10]</a></sup>
         </p>
 
         <h4>Message Retries</h4>
@@ -1449,8 +1447,7 @@ deleted_service = tb.service.delete(service_id)
           When you do receive an explicit response and are considering the status code, you must determine whether it
           indicates the consumer received the message and whether it makes sense to try sending the message again.
           Repeatedly sending messages to endpoints that are misconfigured by the consumer, for example, may not make
-          sense. Existing webhook implementations approach this in a wide variety of ways, from strictly requiring a 200
-          response to considering anything other than a 5xx response a success. We chose the latter approach.
+          sense. Existing webhook implementations approach this in a wide variety of ways, from strictly requiring a 2xx response <sup class="footnote-ref"><a id="fnref8" href="#fn8">[8]</a></sup> to considering anything other than a 5xx response <sup class="footnote-ref"><a id="fnref9" href="#fn9">[9]</a></sup> a success. We chose the latter approach.
         </p>
 
         <h4>Split-Lambda Implementation</h4>
@@ -1748,28 +1745,22 @@ deleted_service = tb.service.delete(service_id)
               <a href="#fnref7">↩︎</a>
             </li>
             <li id="fn8" class="footnote-item">
-              <a href="https://dzone.com/articles/patterns-for-microservices-sync-vs-async">
-                https://dzone.com/articles/patterns-for-microservices-sync-vs-async
+              <a href="https://stripe.com/docs/webhooks/build">
+                https://stripe.com/docs/webhooks/build
               </a>
               <a href="#fnref8">↩︎</a>
             </li>
             <li id="fn9" class="footnote-item">
-              <a href="https://dzone.com/articles/patterns-for-microservices-sync-vs-async">
-                https://dzone.com/articles/patterns-for-microservices-sync-vs-async
+              <a href="https://docs.aws.amazon.com/sns/latest/dg/SendMessageToHttp.prepare.html">
+                https://docs.aws.amazon.com/sns/latest/dg/SendMessageToHttp.prepare.html
               </a>
               <a href="#fnref9">↩︎</a>
             </li>
-            <li id="fn11" class="footnote-item">
-              <a href="https://openprairie.sdstate.edu/cgi/viewcontent.cgi?article=4417&context=etd">
-                https://openprairie.sdstate.edu/cgi/viewcontent.cgi?article=4417&context=etd
+            <li id="fn10" class="footnote-item">
+              <a>
+                Kleppmann, M. (2017). Message-Passing Dataflow. In Designing data-intensive applications (pp. 137–137). O'Reilly.
               </a>
-              <a href="#fnref11">↩︎</a>
-            </li>
-            <li id="fn14" class="footnote-item">
-              <a href="https://medium.com/@jeremydaly/serverless-microservice-patterns-for-aws-6dadcd21bc02">
-                https://medium.com/@jeremydaly/serverless-microservice-patterns-for-aws-6dadcd21bc02
-              </a>
-              <a href="#fnref14">↩︎</a>
+              <a href="#fnref10">↩︎</a>
             </li>
           </ol>
         </div>
@@ -1839,6 +1830,11 @@ deleted_service = tb.service.delete(service_id)
             <h3>Kevin Counihan</h3>
             <p>Seattle, WA</p>
             <ul class="social-icons">
+              <li>
+                <a href="mailto:kevin.counihan17@gmail.com" target="_blank">
+                  <img src="images/icons/email_icon.png" alt="email" />
+                </a>
+              </li>
               <li>
                 <a href="https://github.com/counik" target="_blank">
                   <img src="images/icons/website_icon.png" alt="website" />
