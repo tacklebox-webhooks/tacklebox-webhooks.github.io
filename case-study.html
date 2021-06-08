@@ -476,11 +476,51 @@
               const apiKey = "ibY83fHnC99OlAN4YGoTE7TuBDB7xRjD7B0dYi0k";
               const baseUrl = "https://ukfl963bh1.execute-api.us-west-1.amazonaws.com/v1/";
               const tb = new Tacklebox(apiKey, baseUrl);
+              const serviceData = { name: "todo_app" };
 
               (async () => {
-                const serviceData = { name: "todo_app" };
                 const newService = await tb.service.create(serviceData);
               })();
+            </code>
+          </pre>
+          <pre name="ruby" class="language-ruby line-numbers">
+            <code>
+              require "tacklebox"
+              
+api_key = "ZOyhHr4Czd4jZHUR4T7j0aUFhyUfIQuN6NOpFV8M"
+base_url = "https://98co0luvh2.execute-api.us-east-2.amazonaws.com/v1/"
+tb = Tacklebox.new(api_key, base_url)
+service_data = {"name" => "todo_app"}
+​
+new_service = tb.service.create(service_data)
+            </code>
+          </pre>
+          <pre name="go" class="language-go line-numbers">
+            <code>
+              package main
+
+              import "github.com/tacklebox-webhooks/golang"
+              ​
+              func main() {
+                tb := tacklebox.Webhooks{
+                  ApiKey:  "ZOyhHr4Czd4jZHUR4T7j0aUFhyUfIQuN6NOpFV8M",
+                  BaseUrl: "https://98co0luvh2.execute-api.us-east-2.amazonaws.com/v1/"}
+                serviceData := map[string]interface{}{"name": "todo_app"}
+
+                newService := tb.Service().Create(serviceData)
+              }
+            </code>
+          </pre>
+          <pre name="python" class="language-py line-numbers">
+            <code>
+              from tacklebox_webhooks import Tacklebox
+​
+api_key = "ZOyhHr4Czd4jZHUR4T7j0aUFhyUfIQuN6NOpFV8M"
+base_url = "https://98co0luvh2.execute-api.us-east-2.amazonaws.com/v1/"
+tb = Tacklebox(api_key, base_url)
+service_data = {"name": "todo_app"}
+​
+new_service = tb.service.create(service_data)
             </code>
           </pre>
           <pre name="curl" class="language-bash line-numbers">
@@ -541,11 +581,55 @@
               const baseUrl = "https://ukfl963bh1.execute-api.us-west-1.amazonaws.com/v1/";
               const tb = new Tacklebox(apiKey, baseUrl);
               const serviceId = "be43fe8d-d06a-46f7-bb8b-a75693e3810a";
+              const eventTypeData = { name: "todo_created" };
 
               (async () => {
-                const eventTypeData = { name: "todo_created" };
                 const newEventType = await tb.eventType.create(serviceId, eventTypeData);
               })();
+            </code>
+          </pre>
+          <pre name="ruby" class="language-ruby line-numbers">
+            <code>
+              require "tacklebox"
+​
+api_key = "ZOyhHr4Czd4jZHUR4T7j0aUFhyUfIQuN6NOpFV8M"
+base_url = "https://98co0luvh2.execute-api.us-east-2.amazonaws.com/v1/"
+tb = Tacklebox.new(api_key, base_url)
+service_id = "d90af763-5839-4a90-834c-5512980984f5"
+event_type_data = {"name" => "todo_created"}
+​
+new_event_type = tb.event_type.create(service_id, event_type_data)
+
+            </code>
+          </pre>
+          <pre name="go" class="language-go line-numbers">
+            <code>
+              package main
+
+              import "github.com/tacklebox-webhooks/golang"
+              ​
+              func main() {
+                tb := tacklebox.Webhooks{
+                  ApiKey:  "ZOyhHr4Czd4jZHUR4T7j0aUFhyUfIQuN6NOpFV8M",
+                  BaseUrl: "https://98co0luvh2.execute-api.us-east-2.amazonaws.com/v1/"}
+                serviceId := "d90af763-5839-4a90-834c-5512980984f5"
+                eventTypeData := map[string]interface{}{"name": "todo_created"}
+
+                newEventType := tb.EventType().Create(serviceId, eventTypeData)
+              }
+            </code>
+          </pre>
+          <pre name="python" class="language-py line-numbers">
+            <code>
+              from tacklebox_webhooks import Tacklebox
+​
+api_key = "ZOyhHr4Czd4jZHUR4T7j0aUFhyUfIQuN6NOpFV8M"
+base_url = "https://98co0luvh2.execute-api.us-east-2.amazonaws.com/v1/"
+tb = Tacklebox(api_key, base_url)
+service_id = "d90af763-5839-4a90-834c-5512980984f5"
+event_type_data = {"name": "todo_created"}
+​
+new_event_type = tb.event_type.create(service_id, event_type_data)
             </code>
           </pre>
           <pre name="curl" class="language-bash line-numbers">
@@ -604,13 +688,59 @@
               const tb = new Tacklebox(apiKey, baseUrl);
               const serviceId = "be43fe8d-d06a-46f7-bb8b-a75693e3810a";
 
-              // ...code omitted for brevity
-
               const handleAddUser = async (userData) => {
-                const { name } = userData;
-                const webhookUserData = await tb.user.create({ name });
+                const webhookUserData = await tb.user.create(serviceId, userData);
                 addUserToMainApplication(userData, webhookUserData);
               }
+            </code>
+          </pre>
+          <pre name="ruby" class="language-ruby line-numbers">
+            <code>
+              require "tacklebox"
+​
+api_key = "ZOyhHr4Czd4jZHUR4T7j0aUFhyUfIQuN6NOpFV8M"
+base_url = "https://98co0luvh2.execute-api.us-east-2.amazonaws.com/v1/"
+tb = Tacklebox.new(api_key, base_url)
+service_id = "d90af763-5839-4a90-834c-5512980984f5"
+​
+def handle_add_user(user_data)
+  webhook_user_data = tb.user.create(service_id, user_data)
+  add_user_to_main_application(user_data, webhook_user_data);
+end
+
+            </code>
+          </pre>
+          <pre name="go" class="language-go line-numbers">
+            <code>
+              package main
+
+              import "github.com/tacklebox-webhooks/golang"
+              ​
+              func main() {
+                tb := tacklebox.Webhooks{
+                  ApiKey:  "ZOyhHr4Czd4jZHUR4T7j0aUFhyUfIQuN6NOpFV8M",
+                  BaseUrl: "https://98co0luvh2.execute-api.us-east-2.amazonaws.com/v1/"}
+                serviceId := "d90af763-5839-4a90-834c-5512980984f5"
+
+                func handleAddUser(userData map[string]interface{}) {
+                    webhookUserData := tb.User().Create(serviceId, userData.name)
+                    addUserToMainApplication(userData, webhookUserData);
+                }
+              }
+            </code>
+          </pre>
+          <pre name="python" class="language-py line-numbers">
+            <code>
+              from tacklebox_webhooks import Tacklebox
+​
+api_key = "ZOyhHr4Czd4jZHUR4T7j0aUFhyUfIQuN6NOpFV8M"
+base_url = "https://98co0luvh2.execute-api.us-east-2.amazonaws.com/v1/"
+tb = Tacklebox(api_key, base_url)
+service_id = "d90af763-5839-4a90-834c-5512980984f5"
+
+def handle_add_user(user_data):
+  	webhook_user_data = tb.user.create(service_id, user_data)
+  	add_user_to_main_application(user_data, webhook_user_data)
             </code>
           </pre>
           <pre name="curl" class="language-bash line-numbers">
@@ -669,14 +799,56 @@
               const baseUrl = "https://ukfl963bh1.execute-api.us-west-1.amazonaws.com/v1/";
               const tb = new Tacklebox(apiKey, baseUrl);
               const serviceId = "be43fe8d-d06a-46f7-bb8b-a75693e3810a";
-              const userId = "48676b26-2906-4454-8436-bcc86383b7c5";
 
-              // ...code omitted for brevity
-
-              const handleAddSubscription = async (subscriptionData) => {
-                const { url, eventTypes } = subscriptionData;
-                const newSubscription = await tb.subscription.create(serviceId, userId, { url, eventTypes });
+              const handleAddSubscription = async (userId, subscriptionData) => {
+                const newSubscription = await tb.subscription.create(serviceId, userId, subscriptionData);
               }
+            </code>
+          </pre>
+          <pre name="ruby" class="language-ruby line-numbers">
+            <code>
+              require "tacklebox"
+​
+api_key = "ZOyhHr4Czd4jZHUR4T7j0aUFhyUfIQuN6NOpFV8M"
+base_url = "https://98co0luvh2.execute-api.us-east-2.amazonaws.com/v1/"
+tb = Tacklebox.new(api_key, base_url)
+service_id = "d90af763-5839-4a90-834c-5512980984f5"
+​
+def handle_add_subscription(user_id, subscription_data)
+  new_subscription = tb.subscription.create(service_id, user_id, subscription_data)
+end
+
+            </code>
+          </pre>
+          <pre name="go" class="language-go line-numbers">
+            <code>
+              package main
+
+              import "github.com/tacklebox-webhooks/golang"
+              ​
+              func main() {
+                tb := tacklebox.Webhooks{
+                  ApiKey:  "ZOyhHr4Czd4jZHUR4T7j0aUFhyUfIQuN6NOpFV8M",
+                  BaseUrl: "https://98co0luvh2.execute-api.us-east-2.amazonaws.com/v1/"}
+                serviceId := "d90af763-5839-4a90-834c-5512980984f5"
+                      ​
+                func handleAddSubscription(userId string, subscriptionData map[string]interface{}) {
+                    newSubscription := tb.Subscription().Create(serviceId, userId, subscriptionData)
+                }
+              }
+            </code>
+          </pre>
+          <pre name="python" class="language-py line-numbers">
+            <code>
+              from tacklebox_webhooks import Tacklebox
+​
+api_key = "ZOyhHr4Czd4jZHUR4T7j0aUFhyUfIQuN6NOpFV8M"
+base_url = "https://98co0luvh2.execute-api.us-east-2.amazonaws.com/v1/"
+tb = Tacklebox(api_key, base_url)
+service_id = "d90af763-5839-4a90-834c-5512980984f5"
+
+def handle_add_subscription(user_id, subscription_data):
+	new_subscription = tb.subscription.create(service_id, user_id, subscription_data)
             </code>
           </pre>
           <pre name="curl" class="language-bash line-numbers">
@@ -756,16 +928,57 @@
               const baseUrl = "https://ukfl963bh1.execute-api.us-west-1.amazonaws.com/v1/";
               const tb = new Tacklebox(apiKey, baseUrl);
               const serviceId = "be43fe8d-d06a-46f7-bb8b-a75693e3810a";
-              const userId = "48676b26-2906-4454-8436-bcc86383b7c5";
 
-              // ...code omitted for brevity
-
-              const handleTodoCreated = async (todoData) => {
+              const handleTodoCreated = async (userId, todoData) => {
                 createTodoInApplication(todoData);
-                const { eventType, payload } = todoData;
-                const idempotencyKey = newIdempotencyKey();
-                const newSubscription = await tb.event.create(serviceId, userId, { eventType, payload, idempotencyKey });
+                todoData.idempotencyKey = newIdempotencyKey();
+                const newTodo = await tb.event.create(serviceId, userId, todoData);
               }
+            </code>
+          </pre>
+          <pre name="ruby" class="language-ruby line-numbers">
+            <code>
+              require "tacklebox"
+​
+api_key = "ZOyhHr4Czd4jZHUR4T7j0aUFhyUfIQuN6NOpFV8M"
+base_url = "https://98co0luvh2.execute-api.us-east-2.amazonaws.com/v1/"
+tb = Tacklebox.new(api_key, base_url)
+service_id = "d90af763-5839-4a90-834c-5512980984f5"
+
+def handle_todo_created(user_id, event_data)
+  new_event = tb.event.create(service_id, user_id, event_data)
+end
+            </code>
+          </pre>
+          <pre name="go" class="language-go line-numbers">
+            <code>
+              package main
+
+              import "github.com/tacklebox-webhooks/golang"
+              ​
+              func main() {
+                tb := tacklebox.Webhooks{
+                  ApiKey:  "ZOyhHr4Czd4jZHUR4T7j0aUFhyUfIQuN6NOpFV8M",
+                  BaseUrl: "https://98co0luvh2.execute-api.us-east-2.amazonaws.com/v1/"}
+                serviceId := "d90af763-5839-4a90-834c-5512980984f5"
+
+                func handleTodoCreated(userId string, todoData map[string]interface{}) {
+                    newTodo := tb.Event().Create(serviceId, userId, todoData)
+                }
+              }
+            </code>
+          </pre>
+          <pre name="python" class="language-py line-numbers">
+            <code>
+              from tacklebox_webhooks import Tacklebox
+​
+api_key = "ZOyhHr4Czd4jZHUR4T7j0aUFhyUfIQuN6NOpFV8M"
+base_url = "https://98co0luvh2.execute-api.us-east-2.amazonaws.com/v1/"
+tb = Tacklebox(api_key, base_url)
+service_id = "d90af763-5839-4a90-834c-5512980984f5"
+
+def handle_todo_created(user_id, event_data):
+	new_event = tb.event.create(service_id, userId, event_data)
             </code>
           </pre>
           <pre name="curl" class="language-bash line-numbers">
@@ -850,6 +1063,46 @@
               (async () => {
                 const deletedService = await tb.service.delete(serviceId);
               })();
+            </code>
+          </pre>
+          <pre name="ruby" class="language-ruby line-numbers">
+            <code>
+              require "tacklebox"
+​
+api_key = "ZOyhHr4Czd4jZHUR4T7j0aUFhyUfIQuN6NOpFV8M"
+base_url = "https://98co0luvh2.execute-api.us-east-2.amazonaws.com/v1/"
+tb = Tacklebox.new(api_key, base_url)
+service_id = "d90af763-5839-4a90-834c-5512980984f5"
+​
+deleted_service = tb.service.delete(service_id)
+            </code>
+          </pre>
+          <pre name="go" class="language-go line-numbers">
+            <code>
+              package main
+
+              import "github.com/tacklebox-webhooks/golang"
+              ​
+              func main() {
+                tb := tacklebox.Webhooks{
+                  ApiKey:  "ZOyhHr4Czd4jZHUR4T7j0aUFhyUfIQuN6NOpFV8M",
+                  BaseUrl: "https://98co0luvh2.execute-api.us-east-2.amazonaws.com/v1/"}
+                serviceId := "d90af763-5839-4a90-834c-5512980984f5"
+                
+                deletedService := tb.Service().Delete(serviceId)
+              }
+            </code>
+          </pre>
+          <pre name="python" class="language-py line-numbers">
+            <code>
+              from tacklebox_webhooks import Tacklebox
+​
+api_key = "ZOyhHr4Czd4jZHUR4T7j0aUFhyUfIQuN6NOpFV8M"
+base_url = "https://98co0luvh2.execute-api.us-east-2.amazonaws.com/v1/"
+tb = Tacklebox(api_key, base_url)
+service_id = "d90af763-5839-4a90-834c-5512980984f5"
+
+deleted_service = tb.service.delete(service_id)
             </code>
           </pre>
           <pre name="curl" class="language-bash line-numbers">
@@ -1506,58 +1759,17 @@
               </a>
               <a href="#fnref9">↩︎</a>
             </li>
-            <li id="fn10" class="footnote-item">
-              <a href="https://www.infoq.com/articles/anatomy-cascading-failure/">
-                https://www.infoq.com/articles/anatomy-cascading-failure/
-              </a>
-              <a href="#fnref10">↩︎</a>
-            </li>
             <li id="fn11" class="footnote-item">
               <a href="https://openprairie.sdstate.edu/cgi/viewcontent.cgi?article=4417&context=etd">
                 https://openprairie.sdstate.edu/cgi/viewcontent.cgi?article=4417&context=etd
               </a>
               <a href="#fnref11">↩︎</a>
             </li>
-            <li id="fn12" class="footnote-item">
-              <a href="https://shopify.engineering/circuit-breaker-misconfigured">
-                https://shopify.engineering/circuit-breaker-misconfigured
-              </a>
-              <a href="#fnref12">↩︎</a>
-            </li>
-            <li id="fn13" class="footnote-item">
-              Or until browser timeout, which in the case of Google Chrome, is
-              five minutes.
-              <a href="#fnref13">↩︎</a>
-            </li>
             <li id="fn14" class="footnote-item">
               <a href="https://medium.com/@jeremydaly/serverless-microservice-patterns-for-aws-6dadcd21bc02">
                 https://medium.com/@jeremydaly/serverless-microservice-patterns-for-aws-6dadcd21bc02
               </a>
               <a href="#fnref14">↩︎</a>
-            </li>
-            <li id="fn15" class="footnote-item">
-              <a href="https://pragprog.com/titles/mnee2/release-it-second-edition/">
-                https://pragprog.com/titles/mnee2/release-it-second-edition/
-              </a>
-              <a href="#fnref15">↩︎</a>
-            </li>
-            <li id="fn16" class="footnote-item">
-              Latency: the time it takes for data to travel across a network.
-              <a href="#fnref16">↩︎</a>
-            </li>
-            <li id="fn17" class="footnote-item">
-              This lines up with Cloudflare’s own testing, which shows
-              significant speed increases of Workers compared to Lambda@Edge:
-              <a href="https://blog.cloudflare.com/serverless-performance-comparison-workers-lambda/">
-                https://blog.cloudflare.com/serverless-performance-comparison-workers-lambda/
-              </a>
-              <a href="#fnref17">↩︎</a>
-            </li>
-            <li id="fn18" class="footnote-item">
-              <a href="https://shopify.engineering/circuit-breaker-misconfigured">
-                https://shopify.engineering/circuit-breaker-misconfigured
-              </a>
-              <a href="#fnref18">↩︎</a>
             </li>
           </ol>
         </div>
