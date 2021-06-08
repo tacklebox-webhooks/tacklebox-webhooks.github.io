@@ -944,8 +944,10 @@ base_url = "https://98co0luvh2.execute-api.us-east-2.amazonaws.com/v1/"
 tb = Tacklebox.new(api_key, base_url)
 service_id = "d90af763-5839-4a90-834c-5512980984f5"
 
-def handle_todo_created(user_id, event_data)
-  new_event = tb.event.create(service_id, user_id, event_data)
+def handle_todo_created(user_id, todo_data)
+  create_todo_in_application(todo_data);
+  todo_data.idempotency_key = new_idempotency_key();
+  new_todo = tb.event.create(service_id, user_id, todo_data)
 end
             </code>
           </pre>
@@ -977,7 +979,9 @@ tb = Tacklebox(api_key, base_url)
 service_id = "d90af763-5839-4a90-834c-5512980984f5"
 
 def handle_todo_created(user_id, event_data):
-	new_event = tb.event.create(service_id, userId, event_data)
+    create_todo_in_application(todo_data);
+    todo_data["idempotency_key"] = new_idempotency_key();
+    new_todo = tb.event.create(service_id, user_id, todo_data)
             </code>
           </pre>
           <pre name="curl" class="language-bash line-numbers">
