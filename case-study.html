@@ -705,7 +705,7 @@ service_id = "d90af763-5839-4a90-834c-5512980984f5"
 ​
 def handle_add_user(user_data)
   webhook_user_data = tb.user.create(service_id, user_data)
-  add_user_to_main_application(user_data, webhook_user_data);
+  add_user_to_main_application(user_data, webhook_user_data)
 end
             </code>
           </pre>
@@ -717,7 +717,7 @@ end
               ​
               func handleAddUser(tb tacklebox.Webhooks, serviceId string, userData map[string]interface{}) {
                   webhookUserData := tb.User().Create(serviceId, userData)
-                  addUserToMainApplication(userData, webhookUserData);
+                  addUserToMainApplication(userData, webhookUserData)
               }
 
               func main() {
@@ -945,8 +945,8 @@ tb = Tacklebox.new(api_key, base_url)
 service_id = "d90af763-5839-4a90-834c-5512980984f5"
 
 def handle_todo_created(user_id, todo_data)
-  create_todo_in_application(todo_data);
-  todo_data.idempotency_key = new_idempotency_key();
+  create_todo_in_application(todo_data)
+  todo_data.idempotency_key = new_idempotency_key()
   new_todo = tb.event.create(service_id, user_id, todo_data)
 end
             </code>
@@ -979,8 +979,8 @@ tb = Tacklebox(api_key, base_url)
 service_id = "d90af763-5839-4a90-834c-5512980984f5"
 
 def handle_todo_created(user_id, event_data):
-    create_todo_in_application(todo_data);
-    todo_data["idempotency_key"] = new_idempotency_key();
+    create_todo_in_application(todo_data)
+    todo_data["idempotency_key"] = new_idempotency_key()
     new_todo = tb.event.create(service_id, user_id, todo_data)
             </code>
           </pre>
