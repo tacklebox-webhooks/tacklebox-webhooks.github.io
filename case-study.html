@@ -340,7 +340,7 @@
         <h3 id="In-HouseSolutions">4.1 In-House Solutions</h3>
 
         <p>
-          We took inspiration from how Square implemented webhooks-as-a-service <sup class="footnote-ref"><a id="fnref11" href="#fn11">[10]</a></sup>, shown in the diagram below. The
+          We took inspiration from how Square implemented webhooks-as-a-service <sup class="footnote-ref"><a id="fnref11" href="#fn11">[11]</a></sup>, shown in the diagram below. The
           “Message Queue” acts as a buffer during periods of high usage. Without the queue, they would risk data loss if
           the lambdas responsible for message delivery were at-capacity.
         </p>
@@ -350,7 +350,7 @@
         </div>
 
         <p>
-          We also liked Wise Engineering’s webhook service implementation <sup class="footnote-ref"><a id="fnref12" href="#fn12">[10]</a></sup>, shown below. Compared with Square’s approach,
+          We also liked Wise Engineering’s webhook service implementation <sup class="footnote-ref"><a id="fnref12" href="#fn12">[12]</a></sup>, shown below. Compared with Square’s approach,
           one of the more stark differences is that they used Amazon’s Simple Notification Service (SNS) rather than a
           queue. SNS offers a few features well-suited to webhooks, like subscription management, message fanout, and
           message delivery. If a message delivery fails, SNS can be configured to retry automatically. It also offers
