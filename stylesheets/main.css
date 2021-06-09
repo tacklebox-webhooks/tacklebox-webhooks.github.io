@@ -71,19 +71,8 @@ p > code {
   width: 100%;
   display: flex;
   color: #262335;
-}
-
-.integration:first-of-type {
-  padding-top: 20px;
-  padding-bottom: 40px;
-}
-
-.integration:nth-of-type(2) {
-  padding: 40px 0;
-}
-
-.integration:nth-of-type(3) {
-  padding-top: 40px;
+  padding: 0 20px;
+  box-sizing: border-box;
 }
 
 .text-box {
@@ -305,16 +294,19 @@ nav ul li img {
   padding-top: 150px;
   margin-top: 50px;
   height: 350px;
+  padding: 150px 20px 0 20px;
 }
 
 .banner h1 {
   color: #f67280;
   text-transform: uppercase;
-  /* font-family: "Red Hat Display", sans-serif; */
   font-weight: 600;
   letter-spacing: 5px;
   font-family: 'Work Sans', sans-serif;
   font-size: 5rem;
+  padding: 0 20px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .banner-cta {
@@ -913,7 +905,7 @@ small {
 
 @media (max-width: 600px) {
   .banner h1 {
-    font-size: 4rem;
+    font-size: 3rem;
   }
 
   /* General */
@@ -934,6 +926,16 @@ small {
     font-size: 1rem;
   }
 
+  /* header */
+  .header-backdrop ul {
+    justify-content: space-between;
+    padding: 0 12.5px;
+  }
+
+  .header-backdrop ul li:nth-child(1) {
+    margin-right: 0;
+  }
+
   /* section */
 
   .integration {
@@ -941,11 +943,15 @@ small {
   }
 
   .text-box h1 {
-    font-size: 2rem;
+    font-size: 1.5rem;
   }
 
   .text-box p {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
+  }
+
+  .text-box code {
+    font-size: 1.2rem;
   }
 
   nav {
@@ -1026,6 +1032,14 @@ small {
 }
 
 @media (max-width: 500px) {
+
+  /* header */
+
+  .flex-float-right {
+    padding: 0;
+    margin: 0 15px 0 0;
+  }
+
   main {
     padding: 0;
   }
@@ -1071,6 +1085,10 @@ small {
 }
 
 @media (max-width: 400px) {
+  .banner h1 {
+    font-size: 2.5rem;
+  }
+  
   #toTop-logo {
     bottom: 20px;
     width: 23px;
@@ -1085,12 +1103,16 @@ small {
 
   /* section */
 
-  .text-box p {
-    font-size: 1.7rem;
+  .text-box {
+    width: 90%;
   }
 
   .text-box h1 {
-    font-size: 2.5rem;
+    font-size: 1.7rem;
+  }
+  
+  .text-box p {
+    font-size: 1.2rem;
   }
 
   h1 {
