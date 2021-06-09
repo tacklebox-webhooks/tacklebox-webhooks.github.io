@@ -200,31 +200,68 @@ sup a:hover {
   Arrow
 ******************/
 
-.arrow {
-  width: 40px;
-  height: 30px;
-  text-indent: -9999px;
+.bounce {
+  position: fixed;
+  left: 50%;
+  bottom: 0;
+  margin-top: -25px;
+  margin-left: -25px;
+  height: 50px;
+  width: 50px;
+  background: url("https://static1.squarespace.com/static/5e78f290575a6321739eba41/t/5ec8625c6dad0e25fa5a8234/1590190684880/Arrow.png");
+  background-size: 100% auto;
+  -webkit-animation: bounce 1s infinite;
+  -moz-animation: bounce 1s infinite;
+  -o-animation: bounce 1s infinite;
+  animation: bounce 1s infinite;
 }
 
-.arrow .white-arrow,
-.arrow .black-arrow {
-  width: 100%;
-  height: 100%;
-  border: none;
+@-webkit-keyframes bounce {
+  0% {
+    bottom: 0px;
+  }
+  50% {
+    bottom: 15px;
+  }
+  100% {
+    bottom: 30;
+  }
 }
 
-.arrow .white-arrow {
-  display: block;
-  background: url("https://personal-site-assets.sfo2.cdn.digitaloceanspaces.com/public/images/down-arrow.svg");
-  background-repeat: no-repeat;
-  background-size: cover;
+@-moz-keyframes bounce {
+  0% {
+    bottom: 0px;
+  }
+  50% {
+    bottom: 15px;
+  }
+  100% {
+    bottom: 30;
+  }
 }
 
-.arrow .black-arrow {
-  display: block;
-  background: url("https://personal-site-assets.sfo2.cdn.digitaloceanspaces.com/public/images/down-arrow-black.svg");
-  background-repeat: no-repeat;
-  background-size: cover;
+@-o-keyframes bounce {
+  0% {
+    bottom: 0px;
+  }
+  50% {
+    bottom: 15px;
+  }
+  100% {
+    bottom: 30;
+  }
+}
+
+@keyframes bounce {
+  0% {
+    bottom: 0px;
+  }
+  50% {
+    bottom: 15px;
+  }
+  100% {
+    bottom: 30;
+  }
 }
 
 /* ---------------------------------
@@ -1063,7 +1100,6 @@ small {
 }
 
 @media (max-width: 500px) {
-
   /* header */
 
   .flex-float-right {
@@ -1119,7 +1155,7 @@ small {
   .banner h1 {
     font-size: 2.5rem;
   }
-  
+
   #toTop-logo {
     bottom: 20px;
     width: 23px;
@@ -1141,7 +1177,7 @@ small {
   .text-box h1 {
     font-size: 1.7rem;
   }
-  
+
   .text-box p {
     font-size: 1.2rem;
   }
