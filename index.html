@@ -1,255 +1,318 @@
 <!DOCTYPE html>
 <html lang="en-US">
+  <head>
+    <meta charset="UTF-8" />
+    <meta property="og:title" content="Tacklebox | Webhooks as a Service" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="images/logos/red_and_green2.png" />
+    <meta
+      property="og:description"
+      content="I recently built Tacklebox, an open-source serverless framework that offers webhooks as a service."
+    />
+    <meta property="og:url" content="https://tacklebox-webhooks.github.io" />
 
-<head>
-  <meta charset="UTF-8" />
-  <meta property='og:title' content='Tacklebox | Webhooks as a Service'/>
-  <meta property='og:type' content='website'/>
-  <meta property='og:image' content='images/logos/red_and_green2.png'/>
-  <meta property='og:description' content='I recently built Tacklebox, an open-source serverless framework that offers webhooks as a service.'/>
-  <meta property='og:url' content='https://tacklebox-webhooks.github.io'/>
+    <title>Tacklebox | Webhooks as a Service</title>
 
-  <title>Tacklebox | Webhooks as a Service</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Work+Sans:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
 
-  <link rel="preconnect" href="https://fonts.gstatic.com" />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Work+Sans:wght@400;600;700&display=swap"
-    rel="stylesheet" />
+    <link rel="stylesheet" href="stylesheets/reset.css" />
+    <link rel="stylesheet" href="stylesheets/main.css" />
 
-  <link rel="stylesheet" href="stylesheets/reset.css" />
-  <link rel="stylesheet" href="stylesheets/main.css" />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="images/icons/favicons/graphic-red.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="images/icons/favicons/graphic-red.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="images/icons/favicons/graphic-red.png"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <link rel="apple-touch-icon" sizes="180x180" href="images/icons/favicons/graphic-red.png" />
-  <link rel="icon" type="image/png" sizes="32x32" href="images/icons/favicons/graphic-red.png" />
-  <link rel="icon" type="image/png" sizes="16x16" href="images/icons/favicons/graphic-red.png" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:ital,wght@0,400;0,700;0,900;1,400&display=swap"
+      rel="stylesheet"
+    />
+  </head>
 
-  <link rel="preconnect" href="https://fonts.gstatic.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:ital,wght@0,400;0,700;0,900;1,400&display=swap"
-    rel="stylesheet" />
+  <body>
+    <header id="home">
+      <div class="header-backdrop">
+        <nav>
+          <ul>
+            <li>
+              <a href="index.html">
+                <img src="images/logos/graphic-red.png" />
+              </a>
+            </li>
+            <li>
+              <a href="index.html" class="active">Home</a>
+            </li>
+            <li><a href="case-study.html">Case Study</a></li>
+            <li><a href="team.html">Our Team</a></li>
+            <li class="flex-float-right">
+              <a
+                href="https://github.com/tacklebox-webhooks/cli"
+                target="_blank"
+              >
+                <img
+                  src="images/logos/github-mark-light.png"
+                  alt="Tacklebox GitHub"
+                  class="github"
+                />
+              </a>
+            </li>
+          </ul>
+        </nav>
 
-  
-
-</head>
-
-<body>
-  <header id="home">
-    <div class="header-backdrop">
-      <nav>
-        <ul>
-          <li>
-            <a href="index.html">
-              <img src="images/logos/graphic-red.png" />
-            </a>
-          </li>
-          <li>
-            <a href="index.html" class="active">Home</a>
-          </li>
-          <li><a href="case-study.html">Case Study</a></li>
-          <li><a href="team.html">Our Team</a></li>
-          <li class="flex-float-right">
-            <a href="https://github.com/tacklebox-webhooks/cli" target="_blank">
-              <img src="images/logos/github-mark-light.png" alt="Tacklebox GitHub" class="github" />
-            </a>
-          </li>
-        </ul>
-      </nav>
-
-      <div class="banner">
-        <h1>Tacklebox</h1>
-        <p>
-          An open-source serverless framework that offers webhooks as a
-          service
-        </p>
-        <a href="case-study.html" class="button button-primary button-wide banner-cta">View Case Study</a>
+        <div class="banner">
+          <h1>Tacklebox</h1>
+          <p>
+            An open-source serverless framework that offers webhooks as a
+            service
+          </p>
+          <a
+            href="case-study.html"
+            class="button button-primary button-wide banner-cta"
+            >View Case Study</a
+          >
+        </div>
       </div>
-    </div>
-  </header>
+    </header>
 
-  <div class="spacer"></div>
+    <div class="spacer"></div>
 
-  <h1 id="overview">Overview</h1>
+    <h1 id="overview">Overview</h1>
 
-  <section class="integration">
-    <article class="box">
-      <div class="text-box">
-        <h1>What Is Tacklebox?</h1>
-        <p>
-          Tacklebox is an open-source framework that enables you to provide
-          webhooks to your users across multiple applications. Rather than
-          requiring users to poll your API to get updates for events they care
-          about, Tacklebox notifies them when those events occur.
-        </p>
-        <p>&nbsp;</p>
-        <h1>Easy Setup</h1>
-        <p>
-          Use our
-          <a href="https://github.com/tacklebox-webhooks/cli">CLI tool</a> to
-          deploy your own webhooks service with one simple command:
-          <code>tacklebox deploy</code>. Tear it down just as easily with
-          <code>tacklebox destroy</code>.
-        </p>
+    <section class="integration">
+      <article class="box">
+        <div class="text-box">
+          <h1>What Is Tacklebox?</h1>
+          <p>
+            Tacklebox is an open-source framework that enables you to provide
+            webhooks to your users across multiple applications. Rather than
+            requiring users to poll your API to get updates for events they care
+            about, Tacklebox notifies them when those events occur.
+          </p>
+          <p>&nbsp;</p>
+          <h1>Easy Setup</h1>
+          <p>
+            Use our
+            <a href="https://github.com/tacklebox-webhooks/cli">CLI tool</a> to
+            deploy your own webhooks service with one simple command:
+            <code>tacklebox deploy</code>. Tear it down just as easily with
+            <code>tacklebox destroy</code>.
+          </p>
+        </div>
+      </article>
+
+      <div class="box">
+        <img
+          class="gif shadow-screenshot"
+          src="images/gifs/deployWithLogo.gif"
+          alt="Tacklebox setup command in action"
+        />
       </div>
-    </article>
+    </section>
 
-    <div class="box">
-      <img class="gif shadow-screenshot" src="images/gifs/deployWithLogo.gif" alt="Tacklebox setup command in action" />
-    </div>
-  </section>
-
-  <section class="integration">
-    <div class="box providers">
-      <img id="ui-screenshot" class="browser-screenshot shadow-screenshot" src="images/diagrams/uiDash.png"
-        alt="central control point for viewing services" />
-    </div>
-
-    <article class="box">
-      <div class="text-box">
-        <h1>Easy Management</h1>
-        <p>
-          Manage your webhooks across services in one central dashboard with
-          <code>tacklebox ui</code>.
-        </p>
+    <section class="integration">
+      <div class="box providers">
+        <img
+          id="ui-screenshot"
+          class="browser-screenshot shadow-screenshot"
+          src="images/diagrams/uiDash.png"
+          alt="central control point for viewing services"
+        />
       </div>
-    </article>
-  </section>
 
-  <section class="integration">
-    <article class="box">
-      <div class="text-box">
-        <h1>Easy Integration</h1>
-        <p>
-          Integrate Tacklebox into your existing applications with one of our
-          four client libraries in
-          <a href="https://github.com/tacklebox-webhooks/ruby">Ruby</a>,
-          <a href="https://github.com/tacklebox-webhooks/golang">Go</a>,
-          <a href="https://github.com/tacklebox-webhooks/javascript">JavaScript</a>, or
-          <a href="https://github.com/tacklebox-webhooks/python">Python</a>.
-        </p>
+      <article class="box">
+        <div class="text-box">
+          <h1>Easy Management</h1>
+          <p>
+            Manage your webhooks across services in one central dashboard with
+            <code>tacklebox ui</code>.
+          </p>
+        </div>
+      </article>
+    </section>
+
+    <section class="integration">
+      <article class="box">
+        <div class="text-box">
+          <h1>Easy Integration</h1>
+          <p>
+            Integrate Tacklebox into your existing applications with one of our
+            four client libraries in
+            <a href="https://github.com/tacklebox-webhooks/ruby">Ruby</a>,
+            <a href="https://github.com/tacklebox-webhooks/golang">Go</a>,
+            <a href="https://github.com/tacklebox-webhooks/javascript"
+              >JavaScript</a
+            >, or
+            <a href="https://github.com/tacklebox-webhooks/python">Python</a>.
+          </p>
+        </div>
+      </article>
+
+      <div class="box">
+        <img
+          class="browser-screenshot"
+          src="images/newDiagrams/clientLibraries.png"
+          alt="central control point for viewing services"
+        />
       </div>
-    </article>
+    </section>
 
-    <div class="box">
-      <img class="browser-screenshot" src="images/newDiagrams/clientLibraries.png"
-        alt="central control point for viewing services" />
-    </div>
-  </section>
+    <section class="lower-cta">
+      <h2>Want to know more?</h2>
 
-  <section class="lower-cta">
-    <h2>Want to know more?</h2>
+      <div class="buttons">
+        <a
+          href="case-study.html"
+          class="button button-primary button-wide banner-cta"
+          >View Case Study</a
+        >
+        <a
+          href="https://github.com/tacklebox-webhooks/cli"
+          target="_blank"
+          class="button button-link banner-cta"
+          >View on GitHub</a
+        >
+      </div>
+    </section>
 
-    <div class="buttons">
-      <a href="case-study.html" class="button button-primary button-wide banner-cta">View Case Study</a>
-      <a href="https://github.com/tacklebox-webhooks/cli" target="_blank" class="button button-link banner-cta">View on
-        GitHub</a>
-    </div>
-  </section>
-
-  <footer>
-    <div class="footer-backdrop">
-      <section id="our-team">
-        <h1>Our Team</h1>
-        <p>
-          We are currently looking for opportunities.<br />If you liked what
-          you saw and want to talk more, please reach out!
-        </p>
-        <ul>
-          <li class="individual">
-            <a href="https://github.com/juanpalma1" target="_blank"><img src="images/team/juan.png"
-                alt="Juan Palma" /></a>
-            <h3>Juan Palma</h3>
-            <p>Phoenix, AZ</p>
-            <ul class="social-icons">
-              <li>
-                <a href="mailto:juanpedropalma@hotmail.com" target="_blank">
-                  <img src="images/icons/email_icon.png" alt="email" />
-                </a>
-              </li>
-              <li>
-                <a href="https://juanpalma1.github.io/" target="_blank">
-                  <img src="images/icons/website_icon.png" alt="website" />
-                </a>
-              </li>
-              <li>
-                <a href="https://www.linkedin.com/in/juanpalma1/" target="_blank">
-                  <img src="images/icons/linked_in_icon.png" alt="linkedin" />
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li class="individual">
-            <a href="https://github.com/Kaylthomas777" target="_blank"><img src="images/team/kayl.png"
-                alt="John Kayl Thomas" /></a>
-            <h3>John Kayl Thomas</h3>
-            <p>Atlanta, GA</p>
-            <ul class="social-icons">
-              <li>
-                <a href="mailto:kaylthomas607@gmail.com" target="_blank">
-                  <img src="images/icons/email_icon.png" alt="email" />
-                </a>
-              </li>
-              <li>
-                <a href="https://github.com/Kaylthomas777" target="_blank">
-                  <img src="images/icons/website_icon.png" alt="website" />
-                </a>
-              </li>
-              <li>
-                <a href="https://www.linkedin.com/in/john-kayl-thomas-09a79a113" target="_blank">
-                  <img src="images/icons/linked_in_icon.png" alt="linkedin" />
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li class="individual">
-            <a href="https://github.com/counik" target="_blank"><img src="images/team/kevin.png"
-                alt="Kevin Counihan" /></a>
-            <h3>Kevin Counihan</h3>
-            <p>Seattle, WA</p>
-            <ul class="social-icons">
-              <li>
-                <a href="mailto:kevin.counihan17@gmail.com" target="_blank">
-                  <img src="images/icons/email_icon.png" alt="email" />
-                </a>
-              </li>
-              <li>
-                <a href="https://github.com/counik" target="_blank">
-                  <img src="images/icons/website_icon.png" alt="website" />
-                </a>
-              </li>
-              <li>
-                <a href="https://www.linkedin.com/in/kevincounihan/" target="_blank">
-                  <img src="images/icons/linked_in_icon.png" alt="linkedin" />
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li class="individual">
-            <a href="https://github.com/ArmandoMota" target="_blank"><img src="images/team/armando.png"
-                alt="Armando Mota" /></a>
-            <h3>Armando Mota</h3>
-            <p>Los Angeles, CA</p>
-            <ul class="social-icons">
-              <li>
-                <a href="mailto:armandomotagt@gmail.com" target="_blank">
-                  <img src="images/icons/email_icon.png" alt="email" />
-                </a>
-              </li>
-              <li>
-                <a href="https://github.com/ArmandoMota" target="_blank">
-                  <img src="images/icons/website_icon.png" alt="website" />
-                </a>
-              </li>
-              <li>
-                <a href="https://linkedin.com/in/armando-mota-7a8b3092" target="_blank">
-                  <img src="images/icons/linked_in_icon.png" alt="linkedin" />
-                </a>
-              </li>
-            </ul>
-          </li>
-        </ul>
-      </section>
-    </div>
-  </footer>
-</body>
-
+    <footer>
+      <div class="footer-backdrop">
+        <section id="our-team">
+          <h1>Our Team</h1>
+          <p>
+            We are currently looking for opportunities.<br />If you liked what
+            you saw and want to talk more, please reach out!
+          </p>
+          <ul>
+            <li class="individual">
+              <a href="https://github.com/juanpalma1" target="_blank"
+                ><img src="images/team/juan.png" alt="Juan Palma"
+              /></a>
+              <h3>Juan Palma</h3>
+              <p>Phoenix, AZ</p>
+              <ul class="social-icons">
+                <li>
+                  <a href="mailto:juanpedropalma@hotmail.com" target="_blank">
+                    <img src="images/icons/email_icon.png" alt="email" />
+                  </a>
+                </li>
+                <li>
+                  <a href="https://juanpalma1.github.io/" target="_blank">
+                    <img src="images/icons/website_icon.png" alt="website" />
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://www.linkedin.com/in/juanpalma1/"
+                    target="_blank"
+                  >
+                    <img src="images/icons/linked_in_icon.png" alt="linkedin" />
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <li class="individual">
+              <a href="https://kaylthomas777.github.io/" target="_blank"
+                ><img src="images/team/kayl.png" alt="John Kayl Thomas"
+              /></a>
+              <h3>John Kayl Thomas</h3>
+              <p>Atlanta, GA</p>
+              <ul class="social-icons">
+                <li>
+                  <a href="mailto:kaylthomas607@gmail.com" target="_blank">
+                    <img src="images/icons/email_icon.png" alt="email" />
+                  </a>
+                </li>
+                <li>
+                  <a href="https://kaylthomas777.github.io/" target="_blank">
+                    <img src="images/icons/website_icon.png" alt="website" />
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://www.linkedin.com/in/john-kayl-thomas-09a79a113"
+                    target="_blank"
+                  >
+                    <img src="images/icons/linked_in_icon.png" alt="linkedin" />
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <li class="individual">
+              <a href="https://github.com/counik" target="_blank"
+                ><img src="images/team/kevin.png" alt="Kevin Counihan"
+              /></a>
+              <h3>Kevin Counihan</h3>
+              <p>Seattle, WA</p>
+              <ul class="social-icons">
+                <li>
+                  <a href="mailto:kevin.counihan17@gmail.com" target="_blank">
+                    <img src="images/icons/email_icon.png" alt="email" />
+                  </a>
+                </li>
+                <li>
+                  <a href="https://github.com/counik" target="_blank">
+                    <img src="images/icons/website_icon.png" alt="website" />
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://www.linkedin.com/in/kevincounihan/"
+                    target="_blank"
+                  >
+                    <img src="images/icons/linked_in_icon.png" alt="linkedin" />
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <li class="individual">
+              <a href="https://github.com/ArmandoMota" target="_blank"
+                ><img src="images/team/armando.png" alt="Armando Mota"
+              /></a>
+              <h3>Armando Mota</h3>
+              <p>Los Angeles, CA</p>
+              <ul class="social-icons">
+                <li>
+                  <a href="mailto:armandomotagt@gmail.com" target="_blank">
+                    <img src="images/icons/email_icon.png" alt="email" />
+                  </a>
+                </li>
+                <li>
+                  <a href="https://github.com/ArmandoMota" target="_blank">
+                    <img src="images/icons/website_icon.png" alt="website" />
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://linkedin.com/in/armando-mota-7a8b3092"
+                    target="_blank"
+                  >
+                    <img src="images/icons/linked_in_icon.png" alt="linkedin" />
+                  </a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </section>
+      </div>
+    </footer>
+  </body>
 </html>
