@@ -39,6 +39,15 @@
         });
       });
     </script>
+    <script>
+      $(window).scroll(function () {
+        if ($(this).scrollTop() > 300) {
+          $(".bounce").hide(1000);
+        } else {
+          $(".bounce").show(1000);
+        }
+      });
+    </script>
 
     <title>Tacklebox | Webhooks as a Service</title>
 
