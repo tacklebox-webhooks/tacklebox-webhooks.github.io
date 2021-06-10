@@ -67,6 +67,12 @@ p > code {
   border-radius: 4px;
 }
 
+.lower-cta {
+  padding-top: 50px;
+  margin: 0 auto 60px auto;
+  text-align: center;
+}
+
 .integration {
   width: 100%;
   display: flex;
@@ -76,7 +82,7 @@ p > code {
 }
 
 .text-box {
-  width: 70%;
+  width: 90%;
 }
 
 .text-box h1 {
@@ -389,7 +395,7 @@ nav ul li img {
 }
 
 #overview {
-  text-align: center;
+  /* text-align: center; */
   margin-bottom: 2rem;
   font-size: 3rem;
 }
@@ -708,7 +714,6 @@ footer,
 #our-team .social-icons li {
   display: inline-block;
   margin: 0 3%;
-  width: 18%;
   vertical-align: top;
 }
 
@@ -731,6 +736,9 @@ footer,
 
 #our-team .individual ul {
   margin: 0;
+  display: flex;
+  justify-content: space-around;
+  /* max-width: 80%; */
 }
 
 #our-team .individual li a img {
@@ -772,20 +780,40 @@ small {
     responsive design (width)
 ------------------------------------ */
 
-/* @media (max-width: 1400px) {
-  .sidebar {
-    margin-left: 0;
-  }
-} */
-
-/* @media (min-width: 1101px) {
-  .study-wrapper {
+@media (max-width: 1400px) {
+  #our-team > ul {
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
+    padding-left: 20px;
+    padding-right: 20px;
   }
-} */
+
+  #our-team li {
+    margin: 0;
+  }
+
+  #our-team > p {
+    width: 70%;
+  }
+}
 
 @media (max-width: 1100px) {
+  #our-team > p {
+    width: 70%;
+  }
+
+  .text-box h1 {
+    font-size: 1.8rem;
+  }
+
+  .text-box p {
+    font-size: 1.3rem;
+  }
+
+  #overview .text-box p:nth-child(3) {
+    margin-top: 0;
+  }
+
   nav#case-study-mobile ul {
     margin: 0;
   }
@@ -840,15 +868,10 @@ small {
   .sidebar {
     margin-right: 0;
   }
-
-  .gif {
-    width: 70%;
-  }
 }
 
 @media (max-width: 975px) {
   /* section */
-
   .sidebar {
     display: none;
   }
@@ -923,10 +946,30 @@ small {
     font-size: 1.3rem;
   }
 
+  #overview .gif {
+    width: 80%;
+  }
+
+  .integration img {
+    width: 80%;
+  }
+
   /* Main */
 
+  #home h1 {
+    font-size: 4rem;
+  }
+
   #home p {
-    font-size: 2.5rem;
+    font-size: 2rem;
+  }
+
+  .text-box {
+    width: 80%;
+  }
+
+  .lower-cta {
+    padding-top: 20px;
   }
 
   section#case-study {
@@ -978,8 +1021,20 @@ small {
 }
 
 @media (max-width: 600px) {
-  .banner h1 {
+  #home h1 {
     font-size: 3rem;
+  }
+
+  .lower-cta {
+    margin-bottom: 0;
+  }
+
+  .lower-cta .buttons {
+    margin-bottom: 20px;
+  }
+
+  .lower-cta .buttons a {
+    margin-top: 20px;
   }
 
   /* General */
@@ -1069,17 +1124,11 @@ small {
   #our-team > ul {
     margin-top: 0;
     padding: 0;
-  }
-
-  #our-team li {
-    display: block;
-    margin: 0 auto;
-    width: 60%;
+    flex-wrap: wrap;
   }
 
   #our-team .individual {
     padding: 50px 0;
-    border-bottom: 1px solid #483b80;
   }
 
   #our-team .individual:last-of-type {
@@ -1098,6 +1147,10 @@ small {
   #our-team .individual li img {
     width: 25px;
     padding: 3px;
+  }
+
+  #our-team .individual h3 {
+    font-size: 1.2rem;
   }
 
   #our-team li > img {
@@ -1162,6 +1215,19 @@ small {
     font-size: 2.5rem;
   }
 
+  #home h1 {
+    font-size: 2.7rem;
+  }
+
+  #home p {
+    font-size: 1.4rem;
+  }
+
+  #overview .gif,
+  .integration img {
+    width: 90%;
+  }
+
   #toTop-logo {
     bottom: 20px;
     width: 23px;
@@ -1181,11 +1247,31 @@ small {
   }
 
   .text-box h1 {
-    font-size: 1.7rem;
+    font-size: 1.4rem;
+  }
+
+  .lower-cta h2 {
+    font-size: 1.4rem;
   }
 
   .text-box p {
-    font-size: 1.2rem;
+    font-size: 1rem;
+  }
+
+  .text-box code {
+    font-size: 1rem;
+  }
+
+  #our-team h1 {
+    font-size: 2.5rem;
+  }
+
+  #our-team > p {
+    padding-bottom: 40px;
+  }
+
+  #our-team .individual {
+    padding: 10px 0;
   }
 
   h1 {
@@ -1271,11 +1357,7 @@ hr.minor {
   min-height: 100vh;
 }
 
-.lower-cta {
-  padding-top: 100px;
-  margin: 0 auto 60px auto;
-  text-align: center;
-}
+
 
 .dark-bg {
   background-color: #43494d;
