@@ -1026,12 +1026,12 @@ small {
 
 @media (max-width: 600px) {
   #home h1 {
-    font-size: 3rem;
+    /* font-size: 3rem; */
+    font-size: 10.5vw;
   }
 
   .lower-cta {
     margin-bottom: 0;
-    /* padding-top: 5px; */
   }
 
   .lower-cta .buttons {
@@ -1252,7 +1252,7 @@ small {
   }
 
   #home h1 {
-    font-size: 2.7rem;
+    /* font-size: 2.7rem; */
   }
 
   #home p {
