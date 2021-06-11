@@ -192,8 +192,17 @@
         </p>
 
         <p>
-          Once you’ve established your list of event types,  you’d then need a way to identify where to send webhook notifications when an event occurs.  Github has millions of repositories, and when an event happens in one, they only want to notify, at most, the people who have access to that specific repository.  Within that repository, they also might want further specificity if certain users want to be notified in different ways or in different places.  This is where the idea of a subscription comes into play - subscriptions are combinations of URL endpoints and the event types those endpoints should be notified about.  By allowing your users to create subscriptions, you are effectively telling them that you will notify them at a certain URL when certain event types (and only those event types) happen in their repository.  Having distinct subscriptions also enables your users to create multiple subscriptions for themselves if they need to, or if they want their webhook notifications to go to multiple URL endpoints.
+          Once you’ve established your list of event types,  you’d then need a way to identify where to send webhook notifications when an event occurs.  Github has millions of repositories, and when an event happens in one, they only want to notify, at most, the people who have access to that specific repository.  Within that repository, they might want to further specify which of that repo's users gets notified and for which events.  This is where the idea of a subscription comes into play.
+        </p>  
+
+        <p>
+          Subscriptions are URL endpoints and the event types those endpoints should be notified about.  For example, if a Github user wants to be notified at "www.myurl.com/branches" when branches are created or deleted on their team's repo, they would create a subscription that specifies that.  By allowing your users to create subscriptions, you are effectively telling them that you will notify them at a certain URL when certain event types (and only those event types) happen in their repository.  
         </p>
+        
+        <p>  
+            Having distinct subscriptions also enables your users to create multiple subscriptions if they'd like to handle different events in different ways.  If the user above also wants to be notified when pull requests are made, but they want to be notified at "www.myurl.com/pullrequests", they would create a second subscription for that.
+        </p>
+
         <p>
           Once you have event types and subscriptions, you have all of the information you need to properly notify your subscribers when events happen.  From Github’s perspective, the previous branch creation example would look something like:
         </p>
