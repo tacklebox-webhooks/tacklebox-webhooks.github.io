@@ -575,11 +575,8 @@ new_service = tb.service.create(service_data)
           </ul>
           <pre name="js" class="language-js line-numbers selected">
             <code>
-              const Tacklebox = require('tacklebox-lib');
+              // Setup code omitted 
 
-              const apiKey = "ibY83fHnC99OlAN4YGoTE7TuBDB7xRjD7B0dYi0k";
-              const baseUrl = "https://ukfl963bh1.execute-api.us-west-1.amazonaws.com/v1/";
-              const tb = new Tacklebox(apiKey, baseUrl);
               const serviceId = "be43fe8d-d06a-46f7-bb8b-a75693e3810a";
               const eventTypeData = { name: "todo_created" };
 
@@ -590,11 +587,8 @@ new_service = tb.service.create(service_data)
           </pre>
           <pre name="ruby" class="language-ruby line-numbers">
             <code>
-              require "tacklebox"
-​
-api_key = "ZOyhHr4Czd4jZHUR4T7j0aUFhyUfIQuN6NOpFV8M"
-base_url = "https://98co0luvh2.execute-api.us-east-2.amazonaws.com/v1/"
-tb = Tacklebox.new(api_key, base_url)
+              # Setup code omitted 
+
 service_id = "d90af763-5839-4a90-834c-5512980984f5"
 event_type_data = {"name" => "todo_created"}
 ​
@@ -604,14 +598,9 @@ new_event_type = tb.event_type.create(service_id, event_type_data)
           </pre>
           <pre name="go" class="language-go line-numbers">
             <code>
-              package main
-
-              import "github.com/tacklebox-webhooks/golang"
-              ​
               func main() {
-                  tb := tacklebox.Webhooks{
-                      ApiKey:  "ZOyhHr4Czd4jZHUR4T7j0aUFhyUfIQuN6NOpFV8M",
-                      BaseUrl: "https://98co0luvh2.execute-api.us-east-2.amazonaws.com/v1/"}
+                  /* Setup code omitted */
+
                   serviceId := "d90af763-5839-4a90-834c-5512980984f5"
                   eventTypeData := map[string]interface{}{"name": "todo_created"}
 
@@ -621,11 +610,8 @@ new_event_type = tb.event_type.create(service_id, event_type_data)
           </pre>
           <pre name="python" class="language-py line-numbers">
             <code>
-              from tacklebox_webhooks import Tacklebox
-​
-api_key = "ZOyhHr4Czd4jZHUR4T7j0aUFhyUfIQuN6NOpFV8M"
-base_url = "https://98co0luvh2.execute-api.us-east-2.amazonaws.com/v1/"
-tb = Tacklebox(api_key, base_url)
+              # Setup code omitted 
+
 service_id = "d90af763-5839-4a90-834c-5512980984f5"
 event_type_data = {"name": "todo_created"}
 ​
@@ -681,12 +667,7 @@ new_event_type = tb.event_type.create(service_id, event_type_data)
           </ul>
           <pre name="js" class="language-js line-numbers selected">
             <code>
-              const Tacklebox = require('tacklebox-lib');
-
-              const apiKey = "ibY83fHnC99OlAN4YGoTE7TuBDB7xRjD7B0dYi0k";
-              const baseUrl = "https://ukfl963bh1.execute-api.us-west-1.amazonaws.com/v1/";
-              const tb = new Tacklebox(apiKey, baseUrl);
-              const serviceId = "be43fe8d-d06a-46f7-bb8b-a75693e3810a";
+              // Setup code omitted 
 
               const handleAddUser = async (userData) => {
                 const webhookUserData = await tb.user.create(serviceId, userData);
@@ -696,12 +677,7 @@ new_event_type = tb.event_type.create(service_id, event_type_data)
           </pre>
           <pre name="ruby" class="language-ruby line-numbers">
             <code>
-              require "tacklebox"
-​
-api_key = "ZOyhHr4Czd4jZHUR4T7j0aUFhyUfIQuN6NOpFV8M"
-base_url = "https://98co0luvh2.execute-api.us-east-2.amazonaws.com/v1/"
-tb = Tacklebox.new(api_key, base_url)
-service_id = "d90af763-5839-4a90-834c-5512980984f5"
+              # Setup code omitted 
 ​
 def handle_add_user(user_data)
   webhook_user_data = tb.user.create(service_id, user_data)
@@ -711,31 +687,17 @@ end
           </pre>
           <pre name="go" class="language-go line-numbers">
             <code>
-              package main
-
-              import "github.com/tacklebox-webhooks/golang"
+              /* Setup code omitted */
               ​
               func handleAddUser(tb tacklebox.Webhooks, serviceId string, userData map[string]interface{}) {
                   webhookUserData := tb.User().Create(serviceId, userData)
                   addUserToMainApplication(userData, webhookUserData)
               }
-
-              func main() {
-                  tb := tacklebox.Webhooks{
-                      ApiKey:  "ZOyhHr4Czd4jZHUR4T7j0aUFhyUfIQuN6NOpFV8M",
-                      BaseUrl: "https://98co0luvh2.execute-api.us-east-2.amazonaws.com/v1/"}
-                  serviceId := "d90af763-5839-4a90-834c-5512980984f5"
-              }
             </code>
           </pre>
           <pre name="python" class="language-py line-numbers">
             <code>
-              from tacklebox_webhooks import Tacklebox
-​
-api_key = "ZOyhHr4Czd4jZHUR4T7j0aUFhyUfIQuN6NOpFV8M"
-base_url = "https://98co0luvh2.execute-api.us-east-2.amazonaws.com/v1/"
-tb = Tacklebox(api_key, base_url)
-service_id = "d90af763-5839-4a90-834c-5512980984f5"
+              # Setup code omitted 
 
 def handle_add_user(user_data):
   	webhook_user_data = tb.user.create(service_id, user_data)
@@ -792,12 +754,7 @@ def handle_add_user(user_data):
           </ul>
           <pre name="js" class="language-js line-numbers selected">
             <code>
-              const Tacklebox = require('tacklebox-lib');
-
-              const apiKey = "ibY83fHnC99OlAN4YGoTE7TuBDB7xRjD7B0dYi0k";
-              const baseUrl = "https://ukfl963bh1.execute-api.us-west-1.amazonaws.com/v1/";
-              const tb = new Tacklebox(apiKey, baseUrl);
-              const serviceId = "be43fe8d-d06a-46f7-bb8b-a75693e3810a";
+              // Setup code omitted 
 
               const handleAddSubscription = async (userId, subscriptionData) => {
                 const newSubscription = await tb.subscription.create(serviceId, userId, subscriptionData);
@@ -806,45 +763,25 @@ def handle_add_user(user_data):
           </pre>
           <pre name="ruby" class="language-ruby line-numbers">
             <code>
-              require "tacklebox"
-​
-api_key = "ZOyhHr4Czd4jZHUR4T7j0aUFhyUfIQuN6NOpFV8M"
-base_url = "https://98co0luvh2.execute-api.us-east-2.amazonaws.com/v1/"
-tb = Tacklebox.new(api_key, base_url)
-service_id = "d90af763-5839-4a90-834c-5512980984f5"
+              # Setup code omitted 
 ​
 def handle_add_subscription(user_id, subscription_data)
   new_subscription = tb.subscription.create(service_id, user_id, subscription_data)
 end
-
             </code>
           </pre>
           <pre name="go" class="language-go line-numbers">
             <code>
-              package main
-
-              import "github.com/tacklebox-webhooks/golang"
+              /* Setup code omitted */
               ​
               func handleAddSubscription(tb tacklebox.Webhooks, serviceId, userId string, subscriptionData map[string]interface{}) {
                   newSubscription := tb.Subscription().Create(serviceId, userId, subscriptionData)
-              }
-
-              func main() {
-                  tb := tacklebox.Webhooks{
-                      ApiKey:  "ZOyhHr4Czd4jZHUR4T7j0aUFhyUfIQuN6NOpFV8M",
-                      BaseUrl: "https://98co0luvh2.execute-api.us-east-2.amazonaws.com/v1/"}
-                  serviceId := "d90af763-5839-4a90-834c-5512980984f5"
               }
             </code>
           </pre>
           <pre name="python" class="language-py line-numbers">
             <code>
-              from tacklebox_webhooks import Tacklebox
-​
-api_key = "ZOyhHr4Czd4jZHUR4T7j0aUFhyUfIQuN6NOpFV8M"
-base_url = "https://98co0luvh2.execute-api.us-east-2.amazonaws.com/v1/"
-tb = Tacklebox(api_key, base_url)
-service_id = "d90af763-5839-4a90-834c-5512980984f5"
+              # Setup code omitted 
 
 def handle_add_subscription(user_id, subscription_data):
 	new_subscription = tb.subscription.create(service_id, user_id, subscription_data)
@@ -921,12 +858,7 @@ def handle_add_subscription(user_id, subscription_data):
           </ul>
           <pre name="js" class="language-js line-numbers selected">
             <code>
-              const Tacklebox = require('tacklebox-lib');
-
-              const apiKey = "ibY83fHnC99OlAN4YGoTE7TuBDB7xRjD7B0dYi0k";
-              const baseUrl = "https://ukfl963bh1.execute-api.us-west-1.amazonaws.com/v1/";
-              const tb = new Tacklebox(apiKey, baseUrl);
-              const serviceId = "be43fe8d-d06a-46f7-bb8b-a75693e3810a";
+              // Setup code omitted 
 
               const handleTodoCreated = async (userId, todoData) => {
                 createTodoInApplication(todoData);
@@ -937,12 +869,7 @@ def handle_add_subscription(user_id, subscription_data):
           </pre>
           <pre name="ruby" class="language-ruby line-numbers">
             <code>
-              require "tacklebox"
-​
-api_key = "ZOyhHr4Czd4jZHUR4T7j0aUFhyUfIQuN6NOpFV8M"
-base_url = "https://98co0luvh2.execute-api.us-east-2.amazonaws.com/v1/"
-tb = Tacklebox.new(api_key, base_url)
-service_id = "d90af763-5839-4a90-834c-5512980984f5"
+              # Setup code omitted 
 
 def handle_todo_created(user_id, todo_data)
   create_todo_in_application(todo_data)
@@ -953,30 +880,16 @@ end
           </pre>
           <pre name="go" class="language-go line-numbers">
             <code>
-              package main
-
-              import "github.com/tacklebox-webhooks/golang"
+              /* Setup code omitted */
               ​
               func handleTodoCreated(tb tacklebox.Webhooks, serviceId, userId string, todoData map[string]interface{}) {
                   newTodo := tb.Event().Create(serviceId, userId, todoData)
-              }
-
-              func main() {
-                  tb := tacklebox.Webhooks{
-                      ApiKey:  "ZOyhHr4Czd4jZHUR4T7j0aUFhyUfIQuN6NOpFV8M",
-                      BaseUrl: "https://98co0luvh2.execute-api.us-east-2.amazonaws.com/v1/"}
-                  serviceId := "d90af763-5839-4a90-834c-5512980984f5"
               }
             </code>
           </pre>
           <pre name="python" class="language-py line-numbers">
             <code>
-              from tacklebox_webhooks import Tacklebox
-​
-api_key = "ZOyhHr4Czd4jZHUR4T7j0aUFhyUfIQuN6NOpFV8M"
-base_url = "https://98co0luvh2.execute-api.us-east-2.amazonaws.com/v1/"
-tb = Tacklebox(api_key, base_url)
-service_id = "d90af763-5839-4a90-834c-5512980984f5"
+              # Setup code omitted 
 
 def handle_todo_created(user_id, event_data):
     create_todo_in_application(todo_data)
@@ -1033,7 +946,7 @@ def handle_todo_created(user_id, event_data):
         <h3 id="UI">5.3 Teardown</h3>
 
         <p>
-          If you no longer need Tacklebox for one of your applications, you can use one of the following to delete it:
+          If you no longer need Tacklebox for <i>one</i> of your applications, you can use one of the following to delete it:
         </p>
 
         <div class="code-block">
@@ -1056,12 +969,7 @@ def handle_todo_created(user_id, event_data):
           </ul>
           <pre name="js" class="language-js line-numbers selected">
             <code>
-              const Tacklebox = require('tacklebox-lib');
-
-              const apiKey = "ibY83fHnC99OlAN4YGoTE7TuBDB7xRjD7B0dYi0k";
-              const baseUrl = "https://ukfl963bh1.execute-api.us-west-1.amazonaws.com/v1/";
-              const tb = new Tacklebox(apiKey, baseUrl);
-              const serviceId = "be43fe8d-d06a-46f7-bb8b-a75693e3810a";
+              // Setup code omitted 
 
               (async () => {
                 const deletedService = await tb.service.delete(serviceId);
@@ -1070,40 +978,23 @@ def handle_todo_created(user_id, event_data):
           </pre>
           <pre name="ruby" class="language-ruby line-numbers">
             <code>
-              require "tacklebox"
-​
-api_key = "ZOyhHr4Czd4jZHUR4T7j0aUFhyUfIQuN6NOpFV8M"
-base_url = "https://98co0luvh2.execute-api.us-east-2.amazonaws.com/v1/"
-tb = Tacklebox.new(api_key, base_url)
-service_id = "d90af763-5839-4a90-834c-5512980984f5"
+              # Setup code omitted 
 ​
 deleted_service = tb.service.delete(service_id)
             </code>
           </pre>
           <pre name="go" class="language-go line-numbers">
             <code>
-              package main
+              /* Setup code omitted */
 
-              import "github.com/tacklebox-webhooks/golang"
-              ​
-              func main() {
-                  tb := tacklebox.Webhooks{
-                      ApiKey:  "ZOyhHr4Czd4jZHUR4T7j0aUFhyUfIQuN6NOpFV8M",
-                      BaseUrl: "https://98co0luvh2.execute-api.us-east-2.amazonaws.com/v1/"}
-                  serviceId := "d90af763-5839-4a90-834c-5512980984f5"
-                  
+              func main() {                  
                   deletedService := tb.Service().Delete(serviceId)
               }
             </code>
           </pre>
           <pre name="python" class="language-py line-numbers">
             <code>
-              from tacklebox_webhooks import Tacklebox
-​
-api_key = "ZOyhHr4Czd4jZHUR4T7j0aUFhyUfIQuN6NOpFV8M"
-base_url = "https://98co0luvh2.execute-api.us-east-2.amazonaws.com/v1/"
-tb = Tacklebox(api_key, base_url)
-service_id = "d90af763-5839-4a90-834c-5512980984f5"
+              # Setup code omitted 
 
 deleted_service = tb.service.delete(service_id)
             </code>
